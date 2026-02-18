@@ -1,0 +1,28 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.example
+    env_file: .env
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:3000:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    networks:
+      - app
+      - signoz-net
+      - hexagonal-corsys_app
+
+networks:
+  app:
+    driver: bridge
+  signoz-net:
+    external: true
+  hexagonal-corsys_app:
+    external: true

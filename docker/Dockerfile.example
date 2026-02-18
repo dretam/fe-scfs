@@ -1,0 +1,38 @@
+# Stage 1: Builder
+FROM node:24-bookworm AS builder
+
+WORKDIR /app
+
+# Enable pnpm via corepack
+RUN corepack enable
+
+# Copy dependency files (cache friendly)
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm install --frozen-lockfile
+
+# Copy source
+COPY . .
+
+# Build Next.js
+RUN pnpm build
+
+
+# Stage 2: Runner
+FROM node:24-bookworm AS runner
+
+WORKDIR /app
+
+# Copy ONLY runtime artifacts (standalone)
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+
+EXPOSE 3000
+
+# Simple healthcheck
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD node -e "fetch('http://localhost:3000').then(()=>process.exit(0)).catch(()=>process.exit(1))"
+
+# server.js berasal dari .next/standalone
+CMD ["node", "server.js"]
