@@ -2,15 +2,15 @@
 
 import useSWR from "swr";
 import {UseReadHook} from "@/types/hook";
-import {getListUser, getRetrieveUser} from "@/data/user";
-import {BadRequestResponse, ReadResponse, UnauthorizedResponse, UserResponse} from "@/types/response";
-import {GetListUserRequest, GetRetrieveUserRequest} from "@/types/request";
+import {getListDocument, getDocumentById} from "@/data/document";
+import {BadRequestResponse, DocumentResponse, ReadResponse, UnauthorizedResponse} from "@/types/response";
+import {GetListDocumentRequest, GetRetrieveDocumentRequest} from "@/types/request";
 
-export function useUserList(request: GetListUserRequest): UseReadHook<ReadResponse<UserResponse[]>> {
+export function useDocumentList(request: GetListDocumentRequest): UseReadHook<ReadResponse<DocumentResponse[]>> {
 	const {data, error, isLoading} = useSWR(
-		["user-list", request],
+		["document-list", request],
 		async () => {
-			const list: ReadResponse<UserResponse[]> | UnauthorizedResponse | BadRequestResponse = await getListUser(request)
+			const list: ReadResponse<DocumentResponse[]> | UnauthorizedResponse | BadRequestResponse = await getListDocument(request)
 			if ('data' in list) {
 				return list
 			} else {
@@ -30,11 +30,11 @@ export function useUserList(request: GetListUserRequest): UseReadHook<ReadRespon
 	}
 }
 
-export function useUserRetrieve(request: GetRetrieveUserRequest): UseReadHook<ReadResponse<UserResponse>> {
+export function useDocumentRetrieve(request: GetRetrieveDocumentRequest): UseReadHook<ReadResponse<DocumentResponse>> {
 	const {data, error, isLoading} = useSWR(
-		["user-retrieve", request],
+		["document-retrieve", request],
 		async () => {
-			const retrieve: ReadResponse<UserResponse> | UnauthorizedResponse | BadRequestResponse = await getRetrieveUser(request)
+			const retrieve: ReadResponse<DocumentResponse> | UnauthorizedResponse | BadRequestResponse = await getDocumentById(request)
 			if ('data' in retrieve) {
 				return retrieve
 			} else {

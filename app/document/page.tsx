@@ -6,11 +6,11 @@ import { BreadcrumbNavItem } from "@/types/common";
 import HeadingSmall from "@/components/common/heading-small";
 import { PageDocumentDataTable } from "@/components/page/document/document-input";
 
-export default async function UserPage() {
+export default async function DocumentPage() {
   const breadcrumbs: BreadcrumbNavItem[] = [
     {
       title: "Documents",
-      href: "/documents",
+      href: "/document",
     },
   ];
 
@@ -19,8 +19,8 @@ export default async function UserPage() {
       <SidebarAppHeader breadcrumbs={breadcrumbs} />
       <HeadingSmall
         className="m-5"
-        title="Upload Document"
-        description="Upload a document to extract text using OCR."
+        title="Document Management"
+        description="Upload and manage documents with OCR processing."
       />
       <PageDocumentDataTable className="m-5" />
     </SidebarAppWrapper>

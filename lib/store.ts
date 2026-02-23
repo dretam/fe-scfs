@@ -1,4 +1,5 @@
 import userReducer from '@/stores/entity/user';
+import roleReducer from '@/stores/entity/role';
 import logoutDialogReducer from '@/stores/dialog/logout';
 import {configureStore} from '@reduxjs/toolkit';
 import {
@@ -16,6 +17,7 @@ import {combineReducers} from "redux";
 
 export const rootReducer = combineReducers({
 	user: userReducer,
+	role: roleReducer,
 	logoutDialog: logoutDialogReducer,
 });
 

@@ -1,6 +1,6 @@
 "use client"
 
-import {ChevronRight, Building2Icon, type LucideIcon} from "lucide-react"
+import {ChevronRight, Building2Icon, UsersIcon, FileTextIcon, ShieldIcon, DatabaseIcon, FileBarChartIcon, type LucideIcon} from "lucide-react"
 
 import {
 	Collapsible,
@@ -43,18 +43,38 @@ export function NavMain() {
 				{
 					title: "Users",
 					url: "/user",
+				},
+				{
+					title: "Roles",
+					url: "/role",
 				}
 			],
 		},
 		{
 			title: "Documents",
 			url: "#",
-			icon: Building2Icon,
+			icon: FileTextIcon,
 			isActive: true,
 			items: [
 				{
 					title: "Documents",
 					url: "/document",
+				},
+				{
+					title: "OCR Data",
+					url: "/ocr-data",
+				}
+			],
+		},
+		{
+			title: "System",
+			url: "#",
+			icon: ShieldIcon,
+			isActive: true,
+			items: [
+				{
+					title: "Access Logs",
+					url: "/logs",
 				}
 			],
 		}

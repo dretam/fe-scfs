@@ -104,3 +104,18 @@ export interface OCRResponse {
   deletedAt: any
   deletedBy: any
 }
+
+export interface AccessLogResponse {
+	id: number;
+	user: UserResponse | null;
+	ipAddress: string;
+	userAgent: string;
+	uri: string;
+	queryParams: string | null;
+	requestBody: string | null;
+	statusCode: number;
+	responseTimeMs: number;
+	errorMessage: string | null;
+	httpMethod: string;
+	createdAt: string;
+}

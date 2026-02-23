@@ -190,7 +190,7 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
                     <TableRow key={item.id}>
                       <TableCell>{item.id}</TableCell>
                       <TableCell>{item.atasNama}</TableCell>
-                      <TableCell>{formatCurrency(item.nominal)}</TableCell>
+                      <TableCell>Rp. {item.nominal}</TableCell>
                       <TableCell>{item.jangkaWaktu}</TableCell>
                       <TableCell>{item.periode}</TableCell>
                       <TableCell>{item.rate}%</TableCell>

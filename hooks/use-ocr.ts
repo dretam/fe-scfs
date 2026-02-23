@@ -2,15 +2,15 @@
 
 import useSWR from "swr";
 import {UseReadHook} from "@/types/hook";
-import {getListUser, getRetrieveUser} from "@/data/user";
-import {BadRequestResponse, ReadResponse, UnauthorizedResponse, UserResponse} from "@/types/response";
-import {GetListUserRequest, GetRetrieveUserRequest} from "@/types/request";
+import {getListOcrData, getOcrDataById} from "@/data/ocr";
+import {BadRequestResponse, OCRResponse, ReadResponse, UnauthorizedResponse} from "@/types/response";
+import {GetListOcrDataRequest, GetRetrieveOcrDataRequest} from "@/types/request";
 
-export function useUserList(request: GetListUserRequest): UseReadHook<ReadResponse<UserResponse[]>> {
+export function useOcrDataList(request: GetListOcrDataRequest): UseReadHook<ReadResponse<OCRResponse[]>> {
 	const {data, error, isLoading} = useSWR(
-		["user-list", request],
+		["ocr-data-list", request],
 		async () => {
-			const list: ReadResponse<UserResponse[]> | UnauthorizedResponse | BadRequestResponse = await getListUser(request)
+			const list: ReadResponse<OCRResponse[]> | UnauthorizedResponse | BadRequestResponse = await getListOcrData(request)
 			if ('data' in list) {
 				return list
 			} else {
@@ -30,11 +30,11 @@ export function useUserList(request: GetListUserRequest): UseReadHook<ReadRespon
 	}
 }
 
-export function useUserRetrieve(request: GetRetrieveUserRequest): UseReadHook<ReadResponse<UserResponse>> {
+export function useOcrDataRetrieve(request: GetRetrieveOcrDataRequest): UseReadHook<ReadResponse<OCRResponse>> {
 	const {data, error, isLoading} = useSWR(
-		["user-retrieve", request],
+		["ocr-data-retrieve", request],
 		async () => {
-			const retrieve: ReadResponse<UserResponse> | UnauthorizedResponse | BadRequestResponse = await getRetrieveUser(request)
+			const retrieve: ReadResponse<OCRResponse> | UnauthorizedResponse | BadRequestResponse = await getOcrDataById(request)
 			if ('data' in retrieve) {
 				return retrieve
 			} else {
