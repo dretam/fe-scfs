@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import {NavMain} from "@/components/sidebar/nav-main"
-import {NavMonitors} from "@/components/sidebar/nav-monitors"
 import {NavUser} from "@/components/sidebar/nav-user"
 import {
 	Sidebar,
@@ -39,7 +38,6 @@ export default function SidebarAppSidebar({...props}: React.ComponentProps<typeo
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain/>
-				<NavMonitors/>
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser/>

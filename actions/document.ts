@@ -3,13 +3,13 @@
 import { uploadDocument } from "@/data/document";
 import { badRequestResponse } from "@/lib/utils";
 import { TransactionAction } from "@/types/action";
-import { DocumentEntity } from "@/types/entity";
+import { OCRDataEntity } from "@/types/entity";
 import { BadRequestResponse, UnauthorizedResponse } from "@/types/response";
 
 export async function uploadDocumentAction(
 	formData: FormData
 ): Promise<
-	TransactionAction<DocumentEntity | UnauthorizedResponse | BadRequestResponse>
+	TransactionAction<OCRDataEntity[] | UnauthorizedResponse | BadRequestResponse>
 > {
 	const file = formData.get("file") as File | null;
 

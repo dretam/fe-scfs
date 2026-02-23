@@ -6,7 +6,7 @@ export interface UnauthorizedResponse {
 export interface BadRequestResponse {
 	status: number;
 	type: string;
-	message: Record<string, string> | string;
+	message?: Record<string, string> | string | undefined;
 }
 
 export interface AuthLoginResponse {
@@ -82,4 +82,25 @@ export interface DocumentResponse {
   updatedBy: number
   deletedAt: string
   deletedBy: number
+}
+
+
+export interface OCRResponse {
+  id: number
+  atasNama: string
+  nominal: string
+  jangkaWaktu: string
+  periode: string
+  rate: string
+  alokasi: string
+  namaRekeningTujuanPencairan: string
+  nomorRekeningTujuanPencairan: string
+  nomorRekeningPengirim: string
+  nomorRekeningPlacement: string
+  createdAt: string
+  createdBy: number
+  updatedAt: any
+  updatedBy: any
+  deletedAt: any
+  deletedBy: any
 }

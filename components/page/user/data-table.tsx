@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useUserList } from "@/hooks/use-user";
 import * as React from "react";
 import PageUserFilterTable from "@/components/page/user/filter-table";
+import {columns} from "@/components/page/user/column-table";
 
 export function PageUserDataTable({ className, ...props }: React.ComponentProps<"div">) {
   const searchParams = useSearchParams();

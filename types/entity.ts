@@ -17,3 +17,18 @@ export interface DocumentEntity {
 	fileName: string,
 	url: string,
 }
+
+export interface OCRDataEntity {
+  id: number
+  atasNama: string
+  nominal: string
+  jangkaWaktu: string
+  periode: string
+  rate: string
+  alokasi: string
+  namaRekeningTujuanPencairan: string
+  nomorRekeningTujuanPencairan: string
+  nomorRekeningPengirim: string
+  nomorRekeningPlacement: string
+}
+

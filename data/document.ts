@@ -1,13 +1,13 @@
 "use server";
 
-import {DocumentEntity} from "@/types/entity";
-import {cookies} from "next/headers";
-import {BACKEND_URL, COOKIE_ACCESS_TOKEN} from "@/lib/config-const";
-import {BadRequestResponse, DocumentResponse, ReadResponse, UnauthorizedResponse, UserResponse} from "@/types/response";
-import {badRequestResponse, unauthorizedResponse} from "@/lib/utils";
+import { OCRDataEntity } from "@/types/entity";
+import { cookies } from "next/headers";
+import { BACKEND_URL, COOKIE_ACCESS_TOKEN } from "@/lib/config-const";
+import { BadRequestResponse, OCRResponse, ReadResponse, UnauthorizedResponse } from "@/types/response";
+import { badRequestResponse, unauthorizedResponse } from "@/lib/utils";
 
 export async function uploadDocument(file: File): Promise<
-	DocumentEntity | UnauthorizedResponse | BadRequestResponse
+	OCRDataEntity[] | UnauthorizedResponse | BadRequestResponse
 > {
 	const appCookies = await cookies();
 	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
@@ -26,7 +26,7 @@ export async function uploadDocument(file: File): Promise<
 	const response: Response = await fetch(url, {
 		method: "POST",
 		headers: {
-			Authorization: `Bearer ${accessToken}`, 
+			Authorization: `Bearer ${accessToken}`,
 		},
 		body: formData
 	});
@@ -35,11 +35,7 @@ export async function uploadDocument(file: File): Promise<
 		return badRequestResponse(await response.json());
 	}
 
-	const document: ReadResponse<DocumentResponse> = await response.json();
+	const ocrResponse: ReadResponse<OCRResponse[]> = await response.json();
 
-	return {
-		id: document.data.id,
-		fileName: document.data.filename,
-		url: document.data.filePath,
-	};
+	return ocrResponse.data.map(ocrData => ocrData) // mapping
 }

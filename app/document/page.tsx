@@ -19,8 +19,8 @@ export default async function UserPage() {
       <SidebarAppHeader breadcrumbs={breadcrumbs} />
       <HeadingSmall
         className="m-5"
-        title="Document list"
-        description="list of documents"
+        title="Upload Document"
+        description="Upload a document to extract text using OCR."
       />
       <PageDocumentDataTable className="m-5" />
     </SidebarAppWrapper>

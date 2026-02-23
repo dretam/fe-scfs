@@ -73,7 +73,7 @@ export default function FormLogin({className, ...props}: React.ComponentProps<"f
 				<FieldGroup>
 					<div className="flex flex-col items-center gap-1 text-center">
 						<h1 className="text-2xl font-bold">Login to your account</h1>
-						<p className="text-muted-foreground text-nowrap text-sm text-balance">
+						<p className="text-muted-foreground text-nowrap text-sm">
 							Enter your username or email below to login to your account
 						</p>
 					</div>
@@ -117,7 +117,6 @@ export default function FormLogin({className, ...props}: React.ComponentProps<"f
 										<Field orientation="horizontal">
 											<Checkbox
 												id="auth-remember-me"
-												defaultValue={field.value}
 												onCheckedChange={(checked: boolean) => {
 													field.value = checked
 												}}
