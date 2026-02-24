@@ -73,7 +73,6 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
         const result = await uploadDocumentAction(formData);
 
         console.log(result);
-        
 
         if (!result.isSuccess) {
           toast.error(`Failed: ${file.name}`, { id: toastId });
@@ -90,9 +89,9 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
   };
 
   const formatCurrency = (value: string) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(parseFloat(value));
@@ -168,8 +167,8 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
             <CardTitle>Extracted OCR Data</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="rounded-md border">
-              <Table>
+            <div className="w-full overflow-x-auto">
+              <Table className="min-w-300">
                 <TableHeader>
                   <TableRow>
                     <TableHead>ID</TableHead>
@@ -186,9 +185,9 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {ocrData.map((item) => (
+                  {ocrData.map((item, index) => (
                     <TableRow key={item.id}>
-                      <TableCell>{item.id}</TableCell>
+                      <TableCell>{index + 1}</TableCell>
                       <TableCell>{item.atasNama}</TableCell>
                       <TableCell>Rp. {item.nominal}</TableCell>
                       <TableCell>{item.jangkaWaktu}</TableCell>

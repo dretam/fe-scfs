@@ -10,7 +10,7 @@ export default async function SidebarAppWrapper({children}: { children: React.Re
 		<>
 			<SidebarProvider>
 				<SidebarAppSidebar/>
-				<SidebarInset>
+				<SidebarInset className="min-w-0 overflow-x-auto">
 					{children}
 				</SidebarInset>
 			</SidebarProvider>
