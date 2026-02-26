@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components/common/data-table";
 import { useSearchParams } from "next/navigation";
-import { useUserList } from "@/hooks/use-user";
+import { useUserList } from "@/hooks/api/use-user";
 import * as React from "react";
 import PageUserFilterTable from "@/components/page/user/filter-table";
 import {columns} from "@/components/page/user/column-table";
@@ -10,7 +10,7 @@ import {UserResponse} from "@/types/response";
 import {Button} from "@/components/ui/button";
 import {Plus} from "lucide-react";
 import {DialogLogout} from "@/components/dialog/logout";
-import {useAppDispatch} from "@/hooks/use-app-dispatch";
+import {useAppDispatch} from "@/hooks/store/use-app-dispatch";
 import {setLogoutDialog} from "@/stores/dialog/logout";
 import {toast} from "sonner";
 import {userDeleteAction, userDestroyAction} from "@/actions/user";

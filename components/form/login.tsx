@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/field"
 import {Input} from "@/components/ui/input"
 import React from "react";
-import {useAppDispatch} from "@/hooks/use-app-dispatch";
+import {useAppDispatch} from "@/hooks/store/use-app-dispatch";
 import {authLoginFormSchema} from "@/schemas/auth";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";

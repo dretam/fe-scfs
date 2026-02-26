@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components/common/data-table";
 import { useSearchParams } from "next/navigation";
-import { useOcrDataList } from "@/hooks/use-ocr";
+import { useOcrDataList } from "@/hooks/api/use-ocr";
 import * as React from "react";
 import PageOcrDataFilterTable from "@/components/page/ocr-data/filter-table";
 import { columns } from "@/components/page/ocr-data/column-table";

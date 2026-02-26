@@ -19,7 +19,7 @@ import { selectUserId } from "@/stores/entity/user";
 import InputPassword from "@/components/input/password";
 import { userChangePasswordAction } from "@/actions/user";
 import { UserEntity } from "@/types/entity";
-import { useAppSelector } from "@/hooks/use-app-selector";
+import { useAppSelector } from "@/hooks/store/use-app-selector";
 import { cn } from "@/lib/utils";
 import * as z from "zod";
 import { BadRequestResponse, UnauthorizedResponse } from "@/types/response";

@@ -12,10 +12,10 @@ import {
 } from "@/components/ui/alert-dialog"
 import * as React from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
-import {useAppSelector} from "@/hooks/use-app-selector";
+import {useAppSelector} from "@/hooks/store/use-app-selector";
 import {selectLogoutDialogIsOpen, setLogoutDialog} from "@/stores/dialog/logout";
 import {useRouter} from "next/navigation";
-import {useAppDispatch} from "@/hooks/use-app-dispatch";
+import {useAppDispatch} from "@/hooks/store/use-app-dispatch";
 import {resetUser} from "@/stores/entity/user";
 import {logoutAction} from "@/actions/auth";
 

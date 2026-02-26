@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components/common/data-table";
 import { useSearchParams } from "next/navigation";
-import { useRoleList } from "@/hooks/use-role";
+import { useRoleList } from "@/hooks/api/use-role";
 import * as React from "react";
 import PageRoleFilterTable from "@/components/page/role/filter-table";
 import {columns} from "@/components/page/role/column-table";

@@ -18,12 +18,12 @@ import {toast} from "sonner";
 import {selectUserEmail, selectUserId, selectUserName, setUser} from "@/stores/entity/user";
 import {userChangeProfileAction} from "@/actions/user";
 import {UserEntity} from "@/types/entity";
-import {useAppSelector} from "@/hooks/use-app-selector";
+import {useAppSelector} from "@/hooks/store/use-app-selector";
 import {cn} from "@/lib/utils";
 import * as z from "zod"
 import {BadRequestResponse, UnauthorizedResponse} from "@/types/response";
 import {Input} from "@/components/ui/input";
-import {useAppDispatch} from "@/hooks/use-app-dispatch";
+import {useAppDispatch} from "@/hooks/store/use-app-dispatch";
 
 
 export default function FormSettingProfile({className, ...props}: React.ComponentProps<"form">) {

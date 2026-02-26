@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components/common/data-table";
 import { useSearchParams } from "next/navigation";
-import { useDocumentList } from "@/hooks/use-document";
+import { useDocumentList } from "@/hooks/api/use-document";
 import * as React from "react";
 import {documentListColumns} from "@/components/page/document/list/column-table";
 import {DocumentResponse} from "@/types/response";

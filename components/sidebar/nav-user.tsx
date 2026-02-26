@@ -26,8 +26,8 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar"
-import {useAppSelector} from "@/hooks/use-app-selector";
-import {useAppDispatch} from "@/hooks/use-app-dispatch";
+import {useAppSelector} from "@/hooks/store/use-app-selector";
+import {useAppDispatch} from "@/hooks/store/use-app-dispatch";
 import {selectUserEmail, selectUserInitial, selectUserName} from "@/stores/entity/user";
 import {setLogoutDialog} from "@/stores/dialog/logout";
 import Link from "next/link";
