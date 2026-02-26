@@ -4,6 +4,7 @@ import SidebarAppHeader from "@/components/sidebar/app-header";
 import SidebarAppWrapper from "@/components/sidebar/app-wrapper";
 import {BreadcrumbNavItem} from "@/types/common";
 import HeadingSmall from "@/components/common/heading-small";
+import {PageLogsDataTable} from "@/components/page/logs/data-table";
 
 export default async function LogsPage() {
 	const breadcrumbs: BreadcrumbNavItem[] = [
@@ -17,9 +18,7 @@ export default async function LogsPage() {
 		<SidebarAppWrapper>
 			<SidebarAppHeader breadcrumbs={breadcrumbs}/>
 			<HeadingSmall className="m-5" title="Access Logs" description="system access logs"/>
-			<div className="m-5">
-				<p className="text-muted-foreground">Access Logs viewer page - coming soon</p>
-			</div>
+			<PageLogsDataTable className="m-5"/>
 		</SidebarAppWrapper>
 	)
 }

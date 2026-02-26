@@ -24,7 +24,6 @@ import * as z from "zod"
 import {BadRequestResponse, UnauthorizedResponse} from "@/types/response";
 import {Input} from "@/components/ui/input";
 import {useAppDispatch} from "@/hooks/use-app-dispatch";
-import { useTranslations } from "next-intl";
 
 
 export default function FormSettingProfile({className, ...props}: React.ComponentProps<"form">) {
@@ -33,7 +32,6 @@ export default function FormSettingProfile({className, ...props}: React.Componen
 		const userEmail: string | null = useAppSelector(selectUserEmail);
 		const dispatch = useAppDispatch();
 		const formSchema = userChangeProfileFormSchema()
-		const t = useTranslations();
 
 
 		// 1. Define your form.
@@ -65,7 +63,6 @@ export default function FormSettingProfile({className, ...props}: React.Componen
 				}
 			}
 		} else {
-			toast(t('toast1'))
 			dispatch(setUser(action.response))
 		}
 	}
@@ -84,7 +81,7 @@ export default function FormSettingProfile({className, ...props}: React.Componen
 							name="name"
 							render={({field}) => (
 								<FormItem>
-									<FormLabel>{t("name")}</FormLabel>
+									<FormLabel>{"name"}</FormLabel>
 									<FormControl>
 										<Input type="text" placeholder="johndoe" {...field} />
 									</FormControl>
@@ -99,7 +96,7 @@ export default function FormSettingProfile({className, ...props}: React.Componen
 							name="email"
 							render={({field}) => (
 								<FormItem>
-									<FormLabel>{t("email")}</FormLabel>
+									<FormLabel>{"email"}</FormLabel>
 									<FormControl>
 										<Input type="email" placeholder="johndoe@bankmega.com" {...field} />
 									</FormControl>
@@ -113,7 +110,7 @@ export default function FormSettingProfile({className, ...props}: React.Componen
 					<div>
 						<Button variant="default" type="submit" className="cursor-pointer"
 						        disabled={!form.formState.isDirty || form.formState.isSubmitting}>
-							{t("submit")}
+							{"submit"}
 						</Button>
 					</div>
 				</div>

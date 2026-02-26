@@ -7,7 +7,8 @@ import {BadRequestResponse, OCRResponse, ReadResponse, UnauthorizedResponse} fro
 import {GetListOcrDataRequest, GetRetrieveOcrDataRequest} from "@/types/request";
 
 export function useOcrDataList(request: GetListOcrDataRequest): UseReadHook<ReadResponse<OCRResponse[]>> {
-	const {data, error, isLoading} = useSWR(
+	
+	const {data, error, isLoading } = useSWR(
 		["ocr-data-list", request],
 		async () => {
 			const list: ReadResponse<OCRResponse[]> | UnauthorizedResponse | BadRequestResponse = await getListOcrData(request)

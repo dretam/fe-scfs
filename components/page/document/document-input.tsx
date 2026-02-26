@@ -87,16 +87,6 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
       }
     });
   };
-
-  const formatCurrency = (value: string) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(parseFloat(value));
-  };
-
   return (
     <div className="not-prose flex flex-col gap-4 p-5">
       <Dropzone {...dropzone}>
@@ -180,7 +170,6 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
                     <TableHead>Alokasi</TableHead>
                     <TableHead>Rekening Tujuan</TableHead>
                     <TableHead>No. Rekening Tujuan</TableHead>
-                    <TableHead>No. Rekening Pengirim</TableHead>
                     <TableHead>No. Rekening Placement</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -196,7 +185,6 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
                       <TableCell>{item.alokasi}</TableCell>
                       <TableCell>{item.namaRekeningTujuanPencairan}</TableCell>
                       <TableCell>{item.nomorRekeningTujuanPencairan}</TableCell>
-                      <TableCell>{item.nomorRekeningPengirim}</TableCell>
                       <TableCell>{item.nomorRekeningPlacement}</TableCell>
                     </TableRow>
                   ))}

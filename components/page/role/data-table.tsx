@@ -2,18 +2,14 @@
 
 import { DataTable } from "@/components/common/data-table";
 import { useSearchParams } from "next/navigation";
-import { useUserList } from "@/hooks/use-user";
+import { useRoleList } from "@/hooks/use-role";
 import * as React from "react";
-import PageUserFilterTable from "@/components/page/user/filter-table";
-import {columns} from "@/components/page/user/column-table";
-import {UserResponse} from "@/types/response";
+import PageRoleFilterTable from "@/components/page/role/filter-table";
+import {columns} from "@/components/page/role/column-table";
+import {RoleResponse} from "@/types/response";
 import {Button} from "@/components/ui/button";
 import {Plus} from "lucide-react";
-import {DialogLogout} from "@/components/dialog/logout";
-import {useAppDispatch} from "@/hooks/use-app-dispatch";
-import {setLogoutDialog} from "@/stores/dialog/logout";
 import {toast} from "sonner";
-import {userDeleteAction, userDestroyAction} from "@/actions/user";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -24,68 +20,66 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {roleDeleteAction, roleDestroyAction} from "@/actions/role";
 
-export function PageUserDataTable({ className, ...props }: React.ComponentProps<"div">) {
+export function PageRoleDataTable({ className, ...props }: React.ComponentProps<"div">) {
 	const searchParams = useSearchParams();
-	const dispatch = useAppDispatch();
 
 	const request = React.useMemo(() => ({
 		page: Number(searchParams.get("page") ?? 1),
 		perPage: Number(searchParams.get("perPage") ?? 10),
 		filter: searchParams.get("filter"),
-		expands: "role"
 	}), [searchParams]);
 
-	const { response, isLoading, isError } = useUserList(request);
+	const { response, isLoading, isError } = useRoleList(request);
 
-	// Dialog states
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
-	const [selectedUser, setSelectedUser] = React.useState<UserResponse | null>(null);
+	const [selectedRole, setSelectedRole] = React.useState<RoleResponse | null>(null);
 	const [isHardDelete, setIsHardDelete] = React.useState(false);
 
-	const handleEdit = (user: UserResponse) => {
+	const handleEdit = (role: RoleResponse) => {
 		// TODO: Open edit dialog
-		toast.info(`Edit user: ${user.name}`);
+		toast.info(`Edit role: ${role.name}`);
 	};
 
-	const handleDelete = (user: UserResponse) => {
-		setSelectedUser(user);
+	const handleDelete = (role: RoleResponse) => {
+		setSelectedRole(role);
 		setIsHardDelete(false);
 		setIsDeleteDialogOpen(true);
 	};
 
-	const handleHardDelete = (user: UserResponse) => {
-		setSelectedUser(user);
+	const handleHardDelete = (role: RoleResponse) => {
+		setSelectedRole(role);
 		setIsHardDelete(true);
 		setIsDeleteDialogOpen(true);
 	};
 
 	const confirmDelete = async () => {
-		if (!selectedUser) return;
+		if (!selectedRole) return;
 
 		if (isHardDelete) {
-			const result = await userDestroyAction(selectedUser.id);
+			const result = await roleDestroyAction(selectedRole.id);
 			if (result.isSuccess) {
-				toast.success("User permanently deleted");
+				toast.success("Role permanently deleted");
 			} else {
-				toast.error("Failed to delete user");
+				toast.error("Failed to delete role");
 			}
 		} else {
-			const result = await userDeleteAction({ userId: selectedUser.id });
+			const result = await roleDeleteAction({ roleId: selectedRole.id });
 			if (result.isSuccess) {
-				toast.success("User soft deleted");
+				toast.success("Role soft deleted");
 			} else {
-				toast.error("Failed to delete user");
+				toast.error("Failed to delete role");
 			}
 		}
 
 		setIsDeleteDialogOpen(false);
-		setSelectedUser(null);
+		setSelectedRole(null);
 		// Refetch the list
 		window.location.reload();
 	};
 
-	const userColumns = React.useMemo(() => 
+	const roleColumns = React.useMemo(() =>
 		columns({ onEdit: handleEdit, onDelete: handleDelete }),
 		[]
 	);
@@ -93,10 +87,10 @@ export function PageUserDataTable({ className, ...props }: React.ComponentProps<
 	return (
 		<div className={className} {...props}>
 			<div className="flex justify-between items-center mb-4">
-				<PageUserFilterTable className="my-0" />
-				<Button onClick={() => toast.info("Create user - coming soon")}>
+				<PageRoleFilterTable className="my-0" />
+				<Button onClick={() => toast.info("Create role - coming soon")}>
 					<Plus className="mr-2 h-4 w-4"/>
-					Add User
+					Add Role
 				</Button>
 			</div>
 
@@ -111,7 +105,7 @@ export function PageUserDataTable({ className, ...props }: React.ComponentProps<
 			{!isLoading && !isError && response && (
 				<DataTable
 					data={response.data}
-					columns={userColumns}
+					columns={roleColumns}
 					pagination={response.pagination}
 				/>
 			)}
@@ -121,22 +115,22 @@ export function PageUserDataTable({ className, ...props }: React.ComponentProps<
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>
-							{isHardDelete ? "Permanently Delete User?" : "Soft Delete User?"}
+							{isHardDelete ? "Permanently Delete Role?" : "Soft Delete Role?"}
 						</AlertDialogTitle>
 						<AlertDialogDescription>
-							{isHardDelete 
-								? "This action cannot be undone. This will permanently delete the user from the database."
-								: "This will soft delete the user. The user will be marked as deleted but can be recovered."
+							{isHardDelete
+								? "This action cannot be undone. This will permanently delete the role from the database."
+								: "This will soft delete the role. The role will be marked as deleted but can be recovered."
 							}
-							{selectedUser && (
-								<span className="mt-2 font-medium">User: {selectedUser.name} ({selectedUser.email})</span>
+							{selectedRole && (
+								<span className="mt-2 font-medium">Role: {selectedRole.name}</span>
 							)}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
-						<AlertDialogAction 
-							className="cursor-pointer bg-red-500" 
+						<AlertDialogAction
+							className="cursor-pointer bg-red-500"
 							onClick={confirmDelete}
 						>
 							{isHardDelete ? "Permanently Delete" : "Soft Delete"}

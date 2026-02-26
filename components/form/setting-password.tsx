@@ -23,7 +23,6 @@ import { useAppSelector } from "@/hooks/use-app-selector";
 import { cn } from "@/lib/utils";
 import * as z from "zod";
 import { BadRequestResponse, UnauthorizedResponse } from "@/types/response";
-import { useTranslations } from "next-intl";
 
 export default function FormSettingPassword({
   className,
@@ -31,7 +30,6 @@ export default function FormSettingPassword({
 }: React.ComponentProps<"form">) {
   const userId: number | null = useAppSelector(selectUserId);
   const formSchema = userChangePasswordFormSchema();
-  const t = useTranslations();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -59,7 +57,7 @@ export default function FormSettingPassword({
         });
       }
     } else {
-      toast(t("toast1"));
+      toast("Success");
       form.reset();
     }
   };
@@ -78,7 +76,7 @@ export default function FormSettingPassword({
               name="existingPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("existing")}</FormLabel>
+                  <FormLabel>{"existing"}</FormLabel>
                   <FormControl>
                     <InputPassword
                       placeholder="******"
@@ -97,7 +95,7 @@ export default function FormSettingPassword({
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("new")}</FormLabel>
+                  <FormLabel>{"new"}</FormLabel>
                   <FormControl>
                     <InputPassword
                       placeholder="******"
@@ -116,7 +114,7 @@ export default function FormSettingPassword({
               name="retypeNewPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("retype")}</FormLabel>
+                  <FormLabel>{"retype"}</FormLabel>
                   <FormControl>
                     <InputPassword
                       placeholder="******"
@@ -138,12 +136,12 @@ export default function FormSettingPassword({
               type="button"
               className="cursor-pointer"
             >
-              {t("reset")}
+              {"reset"}
             </Button>
           </div>
           <div>
             <Button variant="default" type="submit" className="cursor-pointer">
-              {t("submit")}
+              {"submit"}
             </Button>
           </div>
         </div>

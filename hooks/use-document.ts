@@ -3,7 +3,7 @@
 import useSWR from "swr";
 import {UseReadHook} from "@/types/hook";
 import {getListDocument, getDocumentById} from "@/data/document";
-import {BadRequestResponse, DocumentResponse, ReadResponse, UnauthorizedResponse} from "@/types/response";
+import {BadRequestResponse, ReadResponse, UnauthorizedResponse, DocumentResponse} from "@/types/response";
 import {GetListDocumentRequest, GetRetrieveDocumentRequest} from "@/types/request";
 
 export function useDocumentList(request: GetListDocumentRequest): UseReadHook<ReadResponse<DocumentResponse[]>> {
