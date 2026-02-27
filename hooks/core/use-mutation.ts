@@ -2,56 +2,50 @@
 
 import { useState } from "react"
 import { mutate } from "swr"
+import { ApiResponse } from "@/types/response"
 
-type ApiError = {
-    status?: number
-    message?: string
-}
-
-export function useMutation<TResponse, TRequest>(
-    apiCall: (req: TRequest) => Promise<TResponse>,
-    revalidateKeys?: (string | any[])[]
+export function useMutation<TData, TRequest>(
+  apiCall: (req: TRequest) => Promise<ApiResponse<TData>>,
+  revalidateKeys?: (string | any[])[],
 ) {
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState<Error | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<ApiResponse<any> | null>(null)
 
-    const execute = async (request: TRequest): Promise<TResponse> => {
-        try {
-            setIsLoading(true)
-            setError(null)
+  const execute = async (
+    request: TRequest
+  ): Promise<ApiResponse<TData>> => {
 
-            const result: any = await apiCall(request)
+    try {
+      setIsLoading(true)
+      setError(null)
 
-            // Handle backend union response
-            if (!("data" in result) && result?.status) {
-                const err = new Error(
-                    typeof result.message === "string"
-                        ? result.message
-                        : JSON.stringify(result.message)
-                )
-                throw err
-            }
+      const response = await apiCall(request)
 
-            // 🔥 Revalidate after success
-            if (revalidateKeys?.length) {
-                await Promise.all(
-                    revalidateKeys.map((key) => mutate(key))
-                )
-            }
+      const isSuccess =
+        response.status >= 200 && response.status < 300
 
-            return result
+      if (!isSuccess) {
+        setError(response)
+        return response
+      }
 
-        } catch (err: any) {
-            setError(err)
-            throw err
-        } finally {
-            setIsLoading(false)
-        }
+      if (revalidateKeys?.length) {
+        await Promise.all(
+          revalidateKeys.map((key) => mutate(key))
+        )
+      }
+
+      return response
+
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    return {
-        execute,
-        isLoading,
-        isError: error,
-    }
+  return {
+    execute,
+    isLoading,
+    isError: !!error,
+    error,
+  }
 }

@@ -11,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
-export function pathRemoveLocale(path, locales = ["en", "id"]) {
+export function pathRemoveLocale(path: string, locales = ["en", "id"]) {
 	const regex = new RegExp(`^/(${locales.join("|")})(/|$)`);
 	return path.replace(regex, "/");
 }
