@@ -1,7 +1,7 @@
+import { BACKEND_URL } from "../config-const"
 import { getAccessToken } from "./server-auth"
 import { ApiResponse } from "./server-response"
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 interface ServerFetchOptions extends RequestInit {
   withAuth?: boolean
@@ -24,7 +24,7 @@ export async function serverFetch<T>(
     }
   }
 
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
+  const res = await fetch(`${BACKEND_URL}${endpoint}`, {
     ...options,
     headers,
     cache: "no-store",

@@ -17,12 +17,6 @@ import {
 import { serverFetch } from "@/lib/server/server-fetch"
 import { RoleResponse, ReadResponse } from "@/types/response"
 
-
-
-/* =========================================================
-   GET LIST
-========================================================= */
-
 export async function getListRole(
   request: GetListRoleRequest
 ): Promise<ApiResponse<RoleResponse[]>> {
@@ -45,11 +39,6 @@ export async function getListRole(
 }
 
 
-
-/* =========================================================
-   GET DETAIL
-========================================================= */
-
 export async function getRetrieveRole(
   request: GetRetrieveRoleRequest
 ): Promise<ApiResponse<RoleResponse>> {
@@ -62,12 +51,6 @@ export async function getRetrieveRole(
     }
   )
 }
-
-
-
-/* =========================================================
-   CREATE
-========================================================= */
 
 export async function createRole(
   request: PostRoleRequest
@@ -87,12 +70,6 @@ export async function createRole(
   return mapToEntity(data)
 }
 
-
-
-/* =========================================================
-   UPDATE
-========================================================= */
-
 export async function updateRole(
   request: PutRoleRequest
 ): Promise<RoleEntity> {
@@ -110,12 +87,6 @@ export async function updateRole(
 
   return mapToEntity(data)
 }
-
-
-
-/* =========================================================
-   SOFT DELETE
-========================================================= */
 
 export async function softDeleteRole(
   request: DeleteRoleRequest
