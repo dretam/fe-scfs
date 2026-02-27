@@ -8,6 +8,10 @@ export interface BadRequestResponse {
 	type: string;
 	message?: Record<string, string> | string | undefined;
 }
+export type ApiResponse<T> =
+  | ReadResponse<T>
+  | UnauthorizedResponse
+  | BadRequestResponse
 
 export interface AuthLoginResponse {
 	status: number;
@@ -37,7 +41,7 @@ export interface ReadResponse<T> {
 	status: number;
 	message: string;
 	data: T;
-	pagination: PaginationResponse
+	pagination?: PaginationResponse
 }
 
 export interface RoleResponse {

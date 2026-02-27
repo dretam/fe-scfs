@@ -27,7 +27,7 @@ import { cn, reverseMapper, toBackendSort } from "@/lib/utils";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  pagination: PaginationResponse;
+  pagination?: PaginationResponse;
 
   rowSelection?: any;
   onRowSelectionChange?: any;
@@ -56,7 +56,18 @@ export function DataTable<TData, TValue>({
     pageSize,
   });
 
+  const defaultPagination = {
+    currentPage: 1,
+    perPage: 10,
+    totalPage: 1,
+    total: data.length,
+  };
+
+  const safePagination = pagination ?? defaultPagination;
+
   React.useEffect(() => {
+    if (!pagination) return;
+
     setPaginationState({
       pageIndex: pagination.currentPage - 1,
       pageSize: pagination.perPage,
@@ -126,8 +137,8 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     manualPagination: true,
-    pageCount: pagination.totalPage, // ✅ WAJIB
-    rowCount: pagination.total,
+    pageCount: pagination ? safePagination.totalPage : undefined,
+    rowCount: pagination ? safePagination.total : undefined,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onPaginationChange: handlePaginationChange,
@@ -140,8 +151,8 @@ export function DataTable<TData, TValue>({
 
     state: {
       sorting,
-      pagination: paginationState,
-      rowSelection, // ✅ penting
+      pagination: pagination ? paginationState : undefined,
+        rowSelection,
     },
   });
   function getStickyClass(

@@ -1,34 +1,124 @@
-import { BACKEND_URL } from "../config-const"
-import { getAccessToken } from "./server-auth"
-import { ApiResponse } from "./server-response"
+import { cookies } from "next/headers"
+import { BACKEND_URL, COOKIE_ACCESS_TOKEN } from "@/lib/config-const"
+import {
+  unauthorizedResponse,
+  badRequestResponse,
+} from "@/lib/utils"
 
+import {
+  UnauthorizedResponse,
+  BadRequestResponse,
+} from "@/types/response"
 
-interface ServerFetchOptions extends RequestInit {
+interface FetchOptions extends RequestInit {
   withAuth?: boolean
 }
 
-export async function serverFetch<T>(
-  endpoint: string,
-  options?: ServerFetchOptions
-): Promise<ApiResponse<T>> {
+class ServerHttp {
 
-  const headers = new Headers(options?.headers)
+  private async request<T>(
+    endpoint: string,
+    options: FetchOptions = {}
+  ): Promise<
+    T |
+    UnauthorizedResponse |
+    BadRequestResponse
+  > {
 
-  headers.set("Content-Type", "application/json")
+    const { withAuth = false, ...fetchOptions } = options
+    const cookieStore = await cookies()
 
-  if (options?.withAuth) {
-    const token = await getAccessToken()
+    if (withAuth && !cookieStore.has(COOKIE_ACCESS_TOKEN)) {
+      return unauthorizedResponse()
+    }
 
-    if (token) {
+    const token = cookieStore.get(COOKIE_ACCESS_TOKEN)?.value
+
+    const headers = new Headers(fetchOptions.headers)
+
+    if (!(fetchOptions.body instanceof FormData)) {
+      headers.set("Content-Type", "application/json")
+    }
+
+    if (withAuth && token) {
       headers.set("Authorization", `Bearer ${token}`)
     }
+
+    const response = await fetch(
+      `${BACKEND_URL}${endpoint}`,
+      {
+        ...fetchOptions,
+        headers,
+      }
+    )
+
+    if (response.status === 401) {
+      return unauthorizedResponse()
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null)
+      return badRequestResponse(errorData)
+    }
+
+    return await response.json() as T
   }
 
-  const res = await fetch(`${BACKEND_URL}${endpoint}`, {
-    ...options,
-    headers,
-    cache: "no-store",
-  })
+  async get<T>(
+    endpoint: string,
+    options?: FetchOptions
+  ) {
+    return this.request<T>(endpoint, {
+      method: "GET",
+      ...options,
+    })
+  }
 
-  return res.json()
+  async post<T>(
+    endpoint: string,
+    body?: any,
+    options?: FetchOptions
+  ) {
+    return this.request<T>(endpoint, {
+      method: "POST",
+      body: body ? JSON.stringify(body) : undefined,
+      ...options,
+    })
+  }
+
+  async put<T>(
+    endpoint: string,
+    body?: any,
+    options?: FetchOptions
+  ) {
+    return this.request<T>(endpoint, {
+      method: "PUT",
+      body: body ? JSON.stringify(body) : undefined,
+      ...options,
+    })
+  }
+
+  async patch<T>(
+    endpoint: string,
+    body?: any,
+    options?: FetchOptions
+  ) {
+    return this.request<T>(endpoint, {
+      method: "PATCH",
+      body: body ? JSON.stringify(body) : undefined,
+      ...options,
+    })
+  }
+
+  async delete<T>(
+    endpoint: string,
+    options?: FetchOptions
+  ) {
+    return this.request<T>(endpoint, {
+      method: "DELETE",
+      ...options,
+    })
+  }
 }
+
+export const serverHttp = new ServerHttp()
