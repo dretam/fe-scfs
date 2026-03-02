@@ -40,10 +40,6 @@ export function PageOcrDataDataTable({
 
   const { response, isLoading, isError } = useOcrDataList(request);
 
-
-  console.log(response);
-  
-
   const [rowSelection, setRowSelection] = React.useState({});
 
   // Dialog states
