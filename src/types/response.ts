@@ -1,17 +1,19 @@
-export interface UnauthorizedResponse {
-	status: number;
-	message: string;
+// types/api-result.ts
+
+export interface ApiError {
+	status: number
+	message?: string | Record<string, string>
+	type?: string
 }
 
-export interface BadRequestResponse {
-	status: number;
-	type: string;
-	message?: Record<string, string> | string | undefined;
+export interface Paginated<T> {
+	items: T
+	pagination?: PaginationResponse
 }
-export type ApiResponse<T> =
-  | ReadResponse<T>
-  | UnauthorizedResponse
-  | BadRequestResponse
+
+export type Result<T> =
+	| { success: true; data: T, pagination?: PaginationResponse }
+	| { success: false; error: ApiError }
 
 export interface AuthLoginResponse {
 	status: number;
@@ -72,41 +74,41 @@ export interface UserResponse {
 
 
 export interface DocumentResponse {
-  id: number
-  filename: string
-  originalName: string
-  filePath: string
-  fileSize: number
-  mimeType: string
-  uploadedBy: number
-  userId: number
-  createdAt: string
-  createdBy: number
-  updatedAt: string
-  updatedBy: number
-  deletedAt: string
-  deletedBy: number
+	id: number
+	filename: string
+	originalName: string
+	filePath: string
+	fileSize: number
+	mimeType: string
+	uploadedBy: number
+	userId: number
+	createdAt: string
+	createdBy: number
+	updatedAt: string
+	updatedBy: number
+	deletedAt: string
+	deletedBy: number
 }
 
 
 export interface OCRResponse {
-  id: number
-  atasNama: string
-  nominal: string
-  jangkaWaktu: string
-  periode: string
-  rate: string
-  alokasi: string
-  namaRekeningTujuanPencairan: string
-  nomorRekeningTujuanPencairan: string
-  nomorRekeningPengirim: string
-  nomorRekeningPlacement: string
-  createdAt: string
-  createdBy: number
-  updatedAt: any
-  updatedBy: any
-  deletedAt: any
-  deletedBy: any
+	id: number
+	atasNama: string
+	nominal: string
+	jangkaWaktu: string
+	periode: string
+	rate: string
+	alokasi: string
+	namaRekeningTujuanPencairan: string
+	nomorRekeningTujuanPencairan: string
+	nomorRekeningPengirim: string
+	nomorRekeningPlacement: string
+	createdAt: string
+	createdBy: number
+	updatedAt: any
+	updatedBy: any
+	deletedAt: any
+	deletedBy: any
 }
 
 export interface AccessLogResponse {

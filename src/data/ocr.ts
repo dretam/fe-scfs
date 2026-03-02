@@ -1,124 +1,121 @@
 "use server";
 
 import {
-	GetListOcrDataRequest,
-	GetRetrieveOcrDataRequest,
-	PutOcrDataRequest
+  GetListOcrDataRequest,
+  GetRetrieveOcrDataRequest,
+  PutOcrDataRequest
 } from "@/types/request";
-import {OCRDataEntity} from "@/types/entity";
-import {cookies} from "next/headers";
-import {BACKEND_URL, COOKIE_ACCESS_TOKEN} from "@/lib/config-const";
-import {BadRequestResponse, OCRResponse, ReadResponse, UnauthorizedResponse} from "@/types/response";
-import {badRequestResponse, unauthorizedResponse} from "@/lib/utils";
 
+import { OCRResponse, Result } from "@/types/response";
+import { OCRDataEntity } from "@/types/entity";
+import { serverHttp } from "@/lib/server/server-fetch";
 
-export async function getListOcrData(request: GetListOcrDataRequest): Promise<ReadResponse<OCRResponse[]> | UnauthorizedResponse | BadRequestResponse> {
-	const appCookies = await cookies();
-	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
-	if (!isHasAccessToken) {
-		return unauthorizedResponse();
-	}
-	const accessToken = appCookies.get(COOKIE_ACCESS_TOKEN)?.value
-	const params = new URLSearchParams({
-		page: String(request.page ?? 1),
-		perPage: String(request.perPage ?? 5),
-		...(request.filter && { filter: request.filter }),
-		...(request.sort && { sort: request.sort }),
-		...(request.expands && { expands: request.expands }),
-	});
-	const url = `${BACKEND_URL}/ocr-data?${params.toString()}`;
-	const response: Response = await fetch(url, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${accessToken}`
-		}
-	})
-	if (!response.ok) {
-		return badRequestResponse(await response.json());
-	}
-	return await response.json() as ReadResponse<OCRResponse[]>
+/**
+ * GET LIST
+ */
+export async function getListOcrData(
+  request: GetListOcrDataRequest
+): Promise<Result<OCRResponse[]>> {
+
+  const params = new URLSearchParams({
+    page: String(request.page ?? 1),
+    perPage: String(request.perPage ?? 5),
+    ...(request.filter && { filter: request.filter }),
+    ...(request.sort && { sort: request.sort }),
+    ...(request.expands && { expands: request.expands }),
+  });
+
+  return serverHttp.get<OCRResponse[]>(
+    `/ocr-data?${params.toString()}`,
+    { withAuth: true }
+  );
 }
 
-export async function getOcrDataById(request: GetRetrieveOcrDataRequest): Promise<ReadResponse<OCRResponse> | UnauthorizedResponse | BadRequestResponse> {
-	const appCookies = await cookies();
-	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
-	if (!isHasAccessToken || !request.id) {
-		return unauthorizedResponse();
-	}
-	const accessToken = appCookies.get(COOKIE_ACCESS_TOKEN)?.value
-	let url = `${BACKEND_URL}/ocr-data/${request.id}`;
-	if (request.expands) {
-		const params = new URLSearchParams({
-			'expands': request.expands
-		});
-		url = `${BACKEND_URL}/ocr-data/${request.id}?${params.toString()}`;
-	}
-	const response: Response = await fetch(url, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${accessToken}`
-		}
-	})
-	if (!response.ok) {
-		return badRequestResponse(await response.json());
-	}
-	return await response.json() as ReadResponse<OCRResponse>
+
+
+/**
+ * GET DETAIL
+ */
+export async function getOcrDataById(
+  request: GetRetrieveOcrDataRequest
+): Promise<Result<OCRResponse>> {
+
+  if (!request.id) {
+    return {
+      success: false,
+      error: {
+        status: 400,
+        message: "OCR Data ID is required"
+      }
+    };
+  }
+
+  let endpoint = `/ocr-data/${request.id}`;
+
+  if (request.expands) {
+    const params = new URLSearchParams({
+      expands: request.expands
+    });
+    endpoint += `?${params.toString()}`;
+  }
+
+  return serverHttp.get<OCRResponse>(
+    endpoint,
+    { withAuth: true }
+  );
 }
 
-export async function updateOcrData(request: PutOcrDataRequest): Promise<OCRDataEntity | UnauthorizedResponse | BadRequestResponse> {
-	const appCookies = await cookies();
-	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
-	if (!isHasAccessToken) {
-		return unauthorizedResponse();
-	}
-	const accessToken = appCookies.get(COOKIE_ACCESS_TOKEN)?.value
-	const url = `${BACKEND_URL}/ocr-data`;
-	const response: Response = await fetch(url, {
-		method: "PUT",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${accessToken}`
-		},
-		body: JSON.stringify(request)
-	})
-	if (!response.ok) {
-		return badRequestResponse(await response.json());
-	}
-	const ocrData: ReadResponse<OCRResponse> = await response.json();
-	return {
-		id: ocrData.data.id,
-		atasNama: ocrData.data.atasNama,
-		nominal: ocrData.data.nominal,
-		jangkaWaktu: ocrData.data.jangkaWaktu,
-		periode: ocrData.data.periode,
-		rate: ocrData.data.rate,
-		alokasi: ocrData.data.alokasi,
-		namaRekeningTujuanPencairan: ocrData.data.namaRekeningTujuanPencairan,
-		nomorRekeningTujuanPencairan: ocrData.data.nomorRekeningTujuanPencairan,
-		nomorRekeningPengirim: ocrData.data.nomorRekeningPengirim,
-		nomorRekeningPlacement: ocrData.data.nomorRekeningPlacement,
-	}
+
+
+/**
+ * UPDATE
+ */
+export async function updateOcrData(
+  request: PutOcrDataRequest
+): Promise<Result<OCRDataEntity>> {
+
+  const result = await serverHttp.put<OCRResponse>(
+    "/ocr-data",
+    request,
+    { withAuth: true }
+  );
+
+  if (!result.success) {
+    return result;
+  }
+
+  // Map OCRResponse → OCRDataEntity
+  const data = result.data;
+
+  return {
+    success: true,
+    data: {
+      id: data.id,
+      atasNama: data.atasNama,
+      nominal: data.nominal,
+      jangkaWaktu: data.jangkaWaktu,
+      periode: data.periode,
+      rate: data.rate,
+      alokasi: data.alokasi,
+      namaRekeningTujuanPencairan: data.namaRekeningTujuanPencairan,
+      nomorRekeningTujuanPencairan: data.nomorRekeningTujuanPencairan,
+      nomorRekeningPengirim: data.nomorRekeningPengirim,
+      nomorRekeningPlacement: data.nomorRekeningPlacement,
+    }
+  };
 }
 
-export async function hardDeleteOcrData(id: number): Promise<{id: number} | UnauthorizedResponse | BadRequestResponse> {
-	const appCookies = await cookies();
-	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
-	if (!isHasAccessToken) {
-		return unauthorizedResponse();
-	}
-	const accessToken = appCookies.get(COOKIE_ACCESS_TOKEN)?.value
-	const url = `${BACKEND_URL}/ocr-data/${id}/destroy`;
-	const response: Response = await fetch(url, {
-		method: "DELETE",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${accessToken}`
-		},
-	})
-	if (!response.ok) {
-		return badRequestResponse(await response.json());
-	}
-	return { id };
+
+
+/**
+ * HARD DELETE
+ */
+export async function hardDeleteOcrData(
+  id: number
+): Promise<Result<{ id: number }>> {
+
+  return serverHttp.delete<{ id: number }>(
+    `/ocr-data/${id}/destroy`,
+    { withAuth: true }
+  );
 }

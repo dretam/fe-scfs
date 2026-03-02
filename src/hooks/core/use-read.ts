@@ -19,6 +19,9 @@ export function useReadHook<
     defaultSWRConfig
   )
 
+  console.log(data);
+  
+
   return {
     response: data,
     isLoading,

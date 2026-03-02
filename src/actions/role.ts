@@ -1,89 +1,81 @@
-"use server";
+"use server"
 
-import {RoleFormActionFormData, RoleDeleteActionFormData} from "@/types/form-data";
-import {TransactionAction} from "@/types/action";
-import {RoleEntity} from "@/types/entity";
-import {createRole, updateRole, softDeleteRole, hardDeleteRole} from "@/data/role";
-import {BadRequestResponse, UnauthorizedResponse} from "@/types/response";
+import {
+  RoleFormActionFormData,
+  RoleDeleteActionFormData
+} from "@/types/form-data"
+import {
+  createRole,
+  updateRole,
+  softDeleteRole,
+  hardDeleteRole
+} from "@/data/role"
+import { Result, RoleResponse } from "@/types/response"
 
 
-export async function roleCreateAction(formData: RoleFormActionFormData): Promise<TransactionAction<RoleEntity | UnauthorizedResponse | BadRequestResponse>> {
-	const response: RoleEntity | UnauthorizedResponse | BadRequestResponse = await createRole({
-		name: formData.name,
-		icon: formData.icon,
-		description: formData.description
-	});
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	} else {
-		return {
-			isSuccess: true,
-			response: response
-		};
-	}
+/**
+ * CREATE
+ */
+export async function roleCreateAction(
+  formData: RoleFormActionFormData
+): Promise<Result<RoleResponse>> {
+
+  return createRole({
+    name: formData.name,
+    icon: formData.icon,
+    description: formData.description
+  })
 }
 
-export async function roleUpdateAction(formData: RoleFormActionFormData): Promise<TransactionAction<RoleEntity | UnauthorizedResponse | BadRequestResponse>> {
-	if (!formData.id) {
-		return {
-			isSuccess: false,
-			response: {
-				status: 400,
-				type: "Bad Request",
-				message: "Role ID is required"
-			}
-		};
-	}
-	const response: RoleEntity | UnauthorizedResponse | BadRequestResponse = await updateRole({
-		id: formData.id,
-		name: formData.name,
-		icon: formData.icon,
-		description: formData.description
-	});
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	} else {
-		return {
-			isSuccess: true,
-			response: response
-		};
-	}
+
+
+/**
+ * UPDATE
+ */
+export async function roleUpdateAction(
+  formData: RoleFormActionFormData
+): Promise<Result<RoleResponse>> {
+
+  if (!formData.id) {
+    return {
+      success: false,
+      error: {
+        status: 400,
+        message: "Role ID is required"
+      }
+    }
+  }
+
+  return updateRole({
+    id: formData.id,
+    name: formData.name,
+    icon: formData.icon,
+    description: formData.description
+  })
 }
 
-export async function roleDeleteAction(formData: RoleDeleteActionFormData): Promise<TransactionAction<RoleEntity | UnauthorizedResponse | BadRequestResponse>> {
-	const response: RoleEntity | UnauthorizedResponse | BadRequestResponse = await softDeleteRole({
-		id: formData.roleId
-	});
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	} else {
-		return {
-			isSuccess: true,
-			response: response
-		};
-	}
+
+
+/**
+ * SOFT DELETE
+ */
+export async function roleDeleteAction(
+  formData: RoleDeleteActionFormData
+): Promise<Result<RoleResponse>> {
+
+  return softDeleteRole({
+    id: formData.roleId
+  })
 }
 
-export async function roleDestroyAction(roleId: number): Promise<TransactionAction<{id: number} | UnauthorizedResponse | BadRequestResponse>> {
-	const response: {id: number} | UnauthorizedResponse | BadRequestResponse = await hardDeleteRole(roleId);
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	} else {
-		return {
-			isSuccess: true,
-			response: response
-		};
-	}
+
+
+/**
+ * HARD DELETE
+ */
+export async function roleDestroyAction(
+  roleId: number
+): Promise<Result<{ id: number }>> {
+
+  return hardDeleteRole(roleId)
 }

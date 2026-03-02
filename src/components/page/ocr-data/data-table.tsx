@@ -65,7 +65,7 @@ export function PageOcrDataDataTable({
     if (isHardDelete) {
       const result = await destroyOcrDataAction(selectedOcrData.id);
 
-      if (result.isSuccess) {
+      if (result.success) {
         toast.success("OCR data permanently deleted");
         router.refresh(); // ✅ instead of window.location.reload()
       } else {

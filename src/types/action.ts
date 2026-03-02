@@ -1,4 +1,5 @@
 import {UserEntity} from "@/types/entity";
+import { Result } from "./response";
 
 export interface AuthLoginAction {
 	status: number;
@@ -6,7 +7,4 @@ export interface AuthLoginAction {
 	user: UserEntity | null;
 }
 
-export interface TransactionAction<T> {
-	isSuccess: boolean;
-	response: T;
-}
+export type TransactionAction<T> = Result<T>

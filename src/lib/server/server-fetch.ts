@@ -1,14 +1,7 @@
 import { cookies } from "next/headers"
 import { BACKEND_URL, COOKIE_ACCESS_TOKEN } from "@/lib/config-const"
-import {
-  unauthorizedResponse,
-  badRequestResponse,
-} from "@/lib/utils"
+import { ReadResponse, Result } from "@/types/response"
 
-import {
-  UnauthorizedResponse,
-  BadRequestResponse,
-} from "@/types/response"
 
 interface FetchOptions extends RequestInit {
   withAuth?: boolean
@@ -19,21 +12,22 @@ class ServerHttp {
   private async request<T>(
     endpoint: string,
     options: FetchOptions = {}
-  ): Promise<
-    T |
-    UnauthorizedResponse |
-    BadRequestResponse
-  > {
+  ): Promise<Result<T>> {
 
     const { withAuth = false, ...fetchOptions } = options
     const cookieStore = await cookies()
 
     if (withAuth && !cookieStore.has(COOKIE_ACCESS_TOKEN)) {
-      return unauthorizedResponse()
+      return {
+        success: false,
+        error: {
+          status: 401,
+          message: "Unauthorized"
+        }
+      }
     }
 
     const token = cookieStore.get(COOKIE_ACCESS_TOKEN)?.value
-
     const headers = new Headers(fetchOptions.headers)
 
     if (!(fetchOptions.body instanceof FormData)) {
@@ -52,16 +46,25 @@ class ServerHttp {
       }
     )
 
-    if (response.status === 401) {
-      return unauthorizedResponse()
-    }
+    const data: ReadResponse<T> | any = await response
+      .json()
+      .catch(() => null)
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => null)
-      return badRequestResponse(errorData)
+      return {
+        success: false,
+        error: {
+          status: response.status,
+          message: data?.message ?? "Something went wrong"
+        }
+      }
     }
 
-    return await response.json() as T
+    return {
+      success: true,
+      data: data.data,
+      pagination: data.pagination
+    }
   }
 
   async get<T>(

@@ -8,12 +8,10 @@ import {
   PutRoleRequest,
 } from "@/types/request"
 
-import { RoleEntity } from "@/types/entity"
-
 import {
   ReadResponse,
+  Result,
   RoleResponse,
-  ApiResponse,
 } from "@/types/response"
 import { serverHttp } from "@/lib/server/server-fetch"
 
@@ -21,7 +19,7 @@ import { serverHttp } from "@/lib/server/server-fetch"
 export async function getListRole(
   request: GetListRoleRequest
 ): Promise<
-  ApiResponse<RoleResponse[]>
+  Result<ReadResponse<RoleResponse[]>>
 > {
 
   const params = new URLSearchParams({
@@ -38,72 +36,79 @@ export async function getListRole(
     withAuth: true,
   })
 }
+
+/**
+ * GET /roles/:id
+ */
 export async function getRetrieveRole(
   request: GetRetrieveRoleRequest
-): Promise<
-  ApiResponse<RoleResponse>
-> {
-  return serverHttp.get<
-    ReadResponse<RoleResponse>
-  >(`/roles/${request.id}`, {
-    withAuth: true,
-  })
+): Promise<Result<ReadResponse<RoleResponse>>> {
+
+  return serverHttp.get(
+    `/roles/${request.id}`,
+    { withAuth: true }
+  )
 }
 
+
+
+/**
+ * POST /roles
+ */
 export async function createRole(
   request: PostRoleRequest
-): Promise<
-  ApiResponse<RoleEntity>
-> {
+): Promise<Result<RoleResponse>> {
 
-  const result = await serverHttp.post<
-    ReadResponse<RoleResponse>
-  >("/roles", request, {
-    withAuth: true,
-  })
-
-  return result
+  return serverHttp.post<RoleResponse>(
+    "/roles",
+    request,
+    { withAuth: true }
+  )
 }
 
+
+/**
+ * PUT /roles/:id
+ */
 export async function updateRole(
   request: PutRoleRequest
-): Promise<
-  ApiResponse<RoleEntity>
-> {
+): Promise<Result<RoleResponse>> {
 
-  const result = await serverHttp.post<
-    ReadResponse<RoleResponse>
-  >("/roles", request, {
-    withAuth: true,
-  })
-
-  return result
+  return serverHttp.put<RoleResponse>(
+    `/roles/${request.id}`,
+    request,
+    { withAuth: true }
+  )
 }
 
 
+
+/**
+ * DELETE /roles (soft delete)
+ */
 export async function softDeleteRole(
   request: DeleteRoleRequest
-): Promise<
-  ApiResponse<RoleEntity>> {
-  const result = await serverHttp.delete<
-    ReadResponse<RoleResponse>
-  >("/roles", {
-    body: JSON.stringify(request),
-    withAuth: true,
-  })
+): Promise<Result<RoleResponse>> {
 
-  return result
+  return serverHttp.delete(
+    "/roles",
+    {
+      body: JSON.stringify(request),
+      withAuth: true,
+    }
+  )
 }
 
+
+/**
+ * DELETE /roles/:id/destroy (hard delete)
+ */
 export async function hardDeleteRole(
   id: number
-): Promise<
-  ApiResponse<any>
-> {
+): Promise<Result<{ id: number }>> {
 
-  return await serverHttp.delete(
+  return serverHttp.delete(
     `/roles/${id}/destroy`,
     { withAuth: true }
   )
-
 }

@@ -1,158 +1,116 @@
 "use server";
 
-import { uploadDocument, getListDocument, getDocumentById, updateDocument, softDeleteDocument, hardDeleteDocument, uploadMultipleDocuments } from "@/data/document";
-import { badRequestResponse } from "@/lib/utils";
-import { TransactionAction } from "@/types/action";
-import { OCRDataEntity, DocumentEntity } from "@/types/entity";
-import { BadRequestResponse, DocumentResponse, ReadResponse, UnauthorizedResponse } from "@/types/response";
-import { GetListDocumentRequest, GetRetrieveDocumentRequest, DeleteDocumentRequest } from "@/types/request";
+import { DocumentUpdateActionFormData } from "@/types/form-data";
+import { DocumentEntity } from "@/types/entity";
+import {
+  uploadDocument,
+  getListDocument,
+  getDocumentById,
+  updateDocument,
+  softDeleteDocument,
+  hardDeleteDocument,
+  uploadMultipleDocuments
+} from "@/data/document";
+import {
+  GetListDocumentRequest,
+  GetRetrieveDocumentRequest,
+} from "@/types/request";
+import { DocumentResponse, Result } from "@/types/response";
 
+
+/**
+ * UPLOAD
+ */
 export async function uploadDocumentAction(
-	formData: FormData
-): Promise<
-	TransactionAction<OCRDataEntity[] | UnauthorizedResponse | BadRequestResponse>
-> {
-	const file = formData.get("file") as File | null;
+  formData: FormData
+): Promise<Result<DocumentResponse>> {
+  const file = formData.get("file") as File | null;
 
-	if (!file) {
-		return {
-			isSuccess: false,
-			response: badRequestResponse({ message: "File is required" })
-		};
-	}
+  if (!file) {
+    return {
+      success: false,
+      error: {
+        status: 400,
+        message: "File is required"
+      }
+    };
+  }
 
-	const response = await uploadDocument(file);
-
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	}
-
-	return {
-		isSuccess: true,
-		response: response
-	};
+  return uploadDocument(file);
 }
 
+
+/**
+ * UPLOAD MULTIPLE
+ */
 export async function uploadMultipleDocumentsAction(
-	files: File[]
-): Promise<
-	TransactionAction<DocumentResponse[] | UnauthorizedResponse | BadRequestResponse>
-> {
-	const response = await uploadMultipleDocuments(files);
+  files: File[]
+): Promise<Result<DocumentResponse[]>> {
 
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	}
-
-	return {
-		isSuccess: true,
-		response: response
-	};
+  return uploadMultipleDocuments(files);
 }
 
+
+/**
+ * LIST
+ */
 export async function listDocumentsAction(
-	request: GetListDocumentRequest
-): Promise<
-	TransactionAction<ReadResponse<DocumentResponse[]> | UnauthorizedResponse | BadRequestResponse>
-> {
-	const response = await getListDocument(request);
+  request: GetListDocumentRequest
+): Promise<Result<DocumentResponse[]>> {
 
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	}
-
-	return {
-		isSuccess: true,
-		response: response
-	};
+  return getListDocument(request);
 }
 
+
+/**
+ * DETAIL
+ */
 export async function getDocumentAction(
-	request: GetRetrieveDocumentRequest
-): Promise<
-	TransactionAction<ReadResponse<DocumentResponse> | UnauthorizedResponse | BadRequestResponse>
-> {
-	const response = await getDocumentById(request);
+  request: GetRetrieveDocumentRequest
+): Promise<Result<DocumentResponse>> {
 
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	}
-
-	return {
-		isSuccess: true,
-		response: response
-	};
+  return getDocumentById(request);
 }
 
+
+/**
+ * UPDATE
+ */
 export async function updateDocumentAction(
-	id: number,
-	file: File
-): Promise<
-	TransactionAction<DocumentResponse | UnauthorizedResponse | BadRequestResponse>
-> {
-	const response = await updateDocument(id, file);
+  formData: DocumentUpdateActionFormData
+): Promise<Result<DocumentEntity>> {
 
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	}
+  if (!formData.id) {
+    return {
+      success: false,
+      error: {
+        status: 400,
+        message: "Document ID is required"
+      }
+    };
+  }
 
-	return {
-		isSuccess: true,
-		response: response
-	};
+  return updateDocument(formData.id, formData.file);
 }
 
+
+/**
+ * SOFT DELETE
+ */
 export async function deleteDocumentAction(
-	id: number
-): Promise<
-	TransactionAction<DocumentResponse | UnauthorizedResponse | BadRequestResponse>
-> {
-	const response = await softDeleteDocument(id);
+  documentId: number
+): Promise<Result<{ id: number }>> {
 
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	}
-
-	return {
-		isSuccess: true,
-		response: response
-	};
+  return softDeleteDocument({ id: documentId });
 }
 
+
+/**
+ * HARD DELETE
+ */
 export async function destroyDocumentAction(
-	id: number
-): Promise<
-	TransactionAction<{id: number} | UnauthorizedResponse | BadRequestResponse>
-> {
-	const response = await hardDeleteDocument(id);
+  documentId: number
+): Promise<Result<{ id: number }>> {
 
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	}
-
-	return {
-		isSuccess: true,
-		response: response
-	};
+  return hardDeleteDocument(documentId);
 }
