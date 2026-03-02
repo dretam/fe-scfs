@@ -7,7 +7,6 @@ import {
   GetRetrieveUserRequest
 } from "@/types/request"
 import {
-  ReadResponse,
   UserResponse
 } from "@/types/response"
 
@@ -15,7 +14,7 @@ export function useUserList(
   request: GetListUserRequest
 ) {
   return useReadHook<
-    ReadResponse<UserResponse[]>,
+    UserResponse[],
     GetListUserRequest
   >(
     "user-list",
@@ -28,7 +27,7 @@ export function useUserRetrieve(
   request: GetRetrieveUserRequest
 ) {
   return useReadHook<
-    ReadResponse<UserResponse>,
+    UserResponse,
     GetRetrieveUserRequest
   >(
     "user-retrieve",

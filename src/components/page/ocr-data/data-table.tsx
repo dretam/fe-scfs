@@ -38,7 +38,7 @@ export function PageOcrDataDataTable({
     [searchParams],
   );
 
-  const { response, isLoading, isError } = useOcrDataList(request);
+  const { data: response, isLoading, isError } = useOcrDataList(request);
 
   const [rowSelection, setRowSelection] = React.useState({});
 

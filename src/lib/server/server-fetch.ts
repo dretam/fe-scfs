@@ -20,6 +20,7 @@ class ServerHttp {
     if (withAuth && !cookieStore.has(COOKIE_ACCESS_TOKEN)) {
       return {
         success: false,
+        data: null,
         error: {
           status: 401,
           message: "Unauthorized"
@@ -46,24 +47,24 @@ class ServerHttp {
       }
     )
 
-    const data: ReadResponse<T> | any = await response
+    const data = await response
       .json()
       .catch(() => null)
 
     if (!response.ok) {
       return {
         success: false,
+        data: null,
         error: {
           status: response.status,
           message: data?.message ?? "Something went wrong"
         }
       }
     }
-
+    
     return {
       success: true,
-      data: data.data,
-      pagination: data.pagination
+      ...data
     }
   }
 

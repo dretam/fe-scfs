@@ -11,9 +11,24 @@ export interface Paginated<T> {
 	pagination?: PaginationResponse
 }
 
+export interface SuccessResult<T> {
+	success: true;
+	message: string; 
+	data: T; 
+	pagination?: PaginationResponse
+	accessToken?: string
+	refreshToken?: string
+}
+
+export interface ErrorResult {
+	success: false; 
+	data: any | null;
+	error: ApiError
+}
+
 export type Result<T> =
-	| { success: true; data: T, pagination?: PaginationResponse }
-	| { success: false; error: ApiError }
+	| SuccessResult<T>
+	| ErrorResult
 
 export interface AuthLoginResponse {
 	status: number;

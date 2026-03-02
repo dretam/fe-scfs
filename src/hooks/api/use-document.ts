@@ -7,7 +7,6 @@ import {
   GetRetrieveDocumentRequest
 } from "@/types/request"
 import {
-  ReadResponse,
   DocumentResponse
 } from "@/types/response"
 
@@ -15,7 +14,7 @@ export function useDocumentList(
   request: GetListDocumentRequest
 ) {
   return useReadHook<
-    ReadResponse<DocumentResponse[]>,
+    DocumentResponse[],
     GetListDocumentRequest
   >(
     "document-list",
@@ -28,7 +27,7 @@ export function useDocumentRetrieve(
   request: GetRetrieveDocumentRequest
 ) {
   return useReadHook<
-    ReadResponse<DocumentResponse>,
+    DocumentResponse,
     GetRetrieveDocumentRequest
   >(
     "document-retrieve",

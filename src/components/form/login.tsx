@@ -31,6 +31,8 @@ import { toast } from "sonner";
 import { setUser } from "@/stores/entity/user";
 import InputPassword from "@/components/input/password";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Result } from "@/types/response";
+import { UserEntity } from "@/types/entity";
 
 export default function FormLogin({
   className,
@@ -54,8 +56,9 @@ export default function FormLogin({
   const onSubmit = async (
     values: z.infer<typeof formSchema>,
   ): Promise<void> => {
-    const action: AuthLoginAction = await loginAction(values);
-    if (!action.isSuccess) {
+    const { success, data }: Result<UserEntity> = await loginAction(values);
+
+    if (!success) {
       form.setError("username", {
         type: "server",
         message: "Please check your username again",
@@ -65,11 +68,12 @@ export default function FormLogin({
         message: "Double check your capslock and password",
       });
       toast("Username or Password is wrong!");
-    } else {
-      dispatch(setUser(action.user));
-      toast(`Welcome, ${action.user?.name}`);
-      router.push("/");
+      return;
     }
+
+    dispatch(setUser(data));
+    toast(`Welcome, ${data?.name}`);
+    router.push("/");
   };
 
   return (

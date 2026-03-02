@@ -1,175 +1,178 @@
 "use server";
 
-import {GetListUserRequest, GetRetrieveUserRequest, PostUserRequest, PutUserRequest, DeleteUserRequest} from "@/types/request";
-import {UserEntity} from "@/types/entity";
-import {cookies} from "next/headers";
-import {BACKEND_URL, COOKIE_ACCESS_TOKEN} from "@/lib/config-const";
-import {BadRequestResponse, ReadResponse, UnauthorizedResponse, UserResponse} from "@/types/response";
-import {badRequestResponse, unauthorizedResponse} from "@/lib/utils";
+import {
+  GetListUserRequest,
+  GetRetrieveUserRequest,
+  PostUserRequest,
+  PutUserRequest,
+  DeleteUserRequest
+} from "@/types/request";
+
+import { UserEntity } from "@/types/entity";
+import { UserResponse, Result } from "@/types/response";
+import { serverHttp } from "@/lib/server/server-fetch";
 
 
-export async function getListUser(request: GetListUserRequest): Promise<ReadResponse<UserResponse[]> | UnauthorizedResponse | BadRequestResponse> {
-	const appCookies = await cookies();
-	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
-	if (!isHasAccessToken) {
-		return unauthorizedResponse();
-	}
-	const accessToken = appCookies.get(COOKIE_ACCESS_TOKEN)?.value
-	let url = `${BACKEND_URL}/users`;
-	if (request.expands) {
-		if (request.filter === null || !request.filter) {
-			delete request.filter;
-		}
-		const params = new URLSearchParams({
-			...request
-		});
-		url = `${BACKEND_URL}/users?${params.toString()}`;
-	}
-	const response: Response = await fetch(url, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${accessToken}`
-		}
-	})
-	if (!response.ok) {
-		return badRequestResponse(await response.json());
-	}
-	return await response.json() as ReadResponse<UserResponse[]>
-}
+/**
+ * GET LIST
+ */
+export async function getListUser(
+  request: GetListUserRequest
+): Promise<Result<UserResponse[]>> {
 
-export async function getRetrieveUser(request: GetRetrieveUserRequest): Promise<ReadResponse<UserResponse> | UnauthorizedResponse | BadRequestResponse> {
-	const appCookies = await cookies();
-	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
-	if (!isHasAccessToken || !request.id) {
-		return unauthorizedResponse();
-	}
-	const accessToken = appCookies.get(COOKIE_ACCESS_TOKEN)?.value
-	let url = `${BACKEND_URL}/users/${request.id}`;
-	if (request.expands) {
-		const params = new URLSearchParams({
-			'expands': request.expands
-		});
-		url = `${BACKEND_URL}/users/${request.id}?${params.toString()}`;
-	}
-	const response: Response = await fetch(url, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${accessToken}`
-		}
-	})
-	if (!response.ok) {
-		return badRequestResponse(await response.json());
-	}
-	return await response.json() as ReadResponse<UserResponse>
+  const params = new URLSearchParams({
+    page: String(request.page ?? 1),
+    perPage: String(request.perPage ?? 5),
+    ...(request.filter && { filter: request.filter }),
+    ...(request.sort && { sort: request.sort }),
+    ...(request.expands && { expands: request.expands }),
+  });
+
+  return serverHttp.get<UserResponse[]>(
+    `/users?${params.toString()}`,
+    { withAuth: true }
+  );
 }
 
 
-export async function putUser(request: PutUserRequest): Promise<UserEntity | UnauthorizedResponse | BadRequestResponse> {
-	const appCookies = await cookies();
-	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
-	if (!isHasAccessToken) {
-		return unauthorizedResponse();
-	}
-	const accessToken = appCookies.get(COOKIE_ACCESS_TOKEN)?.value
-	const url = `${BACKEND_URL}/users`;
-	const response: Response = await fetch(url, {
-		method: "PUT",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${accessToken}`
-		},
-		body: JSON.stringify(request)
-	})
-	if (!response.ok) {
-		return badRequestResponse(await response.json());
-	}
-	const user: ReadResponse<UserResponse> = await response.json();
-	return {
-		id: user.data.id,
-		name: user.data.name,
-		email: user.data.email,
-		role: user.data.role,
-	}
-}
+/**
+ * GET DETAIL
+ */
+export async function getRetrieveUser(
+  request: GetRetrieveUserRequest
+): Promise<Result<UserResponse>> {
 
-export async function createUser(request: PostUserRequest): Promise<UserEntity | UnauthorizedResponse | BadRequestResponse> {
-	const appCookies = await cookies();
-	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
-	if (!isHasAccessToken) {
-		return unauthorizedResponse();
-	}
-	const accessToken = appCookies.get(COOKIE_ACCESS_TOKEN)?.value
-	const url = `${BACKEND_URL}/users`;
-	const response: Response = await fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${accessToken}`
-		},
-		body: JSON.stringify(request)
-	})
-	if (!response.ok) {
-		return badRequestResponse(await response.json());
-	}
-	const user: ReadResponse<UserResponse> = await response.json();
-	return {
-		id: user.data.id,
-		name: user.data.name,
-		email: user.data.email,
-		role: user.data.role,
-	}
-}
+  if (!request.id) {
+    return {
+      success: false,
+      data: null,
+      error: {
+        status: 400,
+        message: "User ID is required"
+      }
+    };
+  }
 
-export async function softDeleteUser(request: DeleteUserRequest): Promise<UserEntity | UnauthorizedResponse | BadRequestResponse> {
-	const appCookies = await cookies();
-	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
-	if (!isHasAccessToken) {
-		return unauthorizedResponse();
-	}
-	const accessToken = appCookies.get(COOKIE_ACCESS_TOKEN)?.value
-	const url = `${BACKEND_URL}/users`;
-	const response: Response = await fetch(url, {
-		method: "DELETE",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${accessToken}`
-		},
-		body: JSON.stringify(request)
-	})
-	if (!response.ok) {
-		return badRequestResponse(await response.json());
-	}
-	const user: ReadResponse<UserResponse> = await response.json();
-	return {
-		id: user.data.id,
-		name: user.data.name,
-		email: user.data.email,
-		role: user.data.role,
-	}
-}
+  let endpoint = `/users/${request.id}`;
 
-export async function hardDeleteUser(id: number): Promise<{id: number} | UnauthorizedResponse | BadRequestResponse> {
-	const appCookies = await cookies();
-	const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
-	if (!isHasAccessToken) {
-		return unauthorizedResponse();
-	}
-	const accessToken = appCookies.get(COOKIE_ACCESS_TOKEN)?.value
-	const url = `${BACKEND_URL}/users/${id}/destroy`;
-	const response: Response = await fetch(url, {
-		method: "DELETE",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${accessToken}`
-		},
-	})
-	if (!response.ok) {
-		return badRequestResponse(await response.json());
-	}
-	return { id };
+  if (request.expands) {
+    const params = new URLSearchParams({
+      expands: request.expands
+    });
+    endpoint += `?${params.toString()}`;
+  }
+
+  return serverHttp.get<UserResponse>(
+    endpoint,
+    { withAuth: true }
+  );
 }
 
 
+/**
+ * UPDATE
+ */
+export async function putUser(
+  request: PutUserRequest
+): Promise<Result<UserEntity>> {
 
+  const result = await serverHttp.put<UserResponse>(
+    "/users",
+    request,
+    { withAuth: true }
+  );
+
+  if (!result.success) {
+    return result;
+  }
+
+  const data = result.data;
+
+  return {
+    success: true,
+    data: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+    }
+  };
+}
+
+
+/**
+ * CREATE
+ */
+export async function createUser(
+  request: PostUserRequest
+): Promise<Result<UserEntity>> {
+
+  const result = await serverHttp.post<UserResponse>(
+    "/users",
+    request,
+    { withAuth: true }
+  );
+
+  if (!result.success) {
+    return result;
+  }
+
+  const data = result.data;
+
+  return {
+    success: true,
+    data: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+    }
+  };
+}
+
+
+/**
+ * SOFT DELETE
+ */
+export async function softDeleteUser(
+  request: DeleteUserRequest
+): Promise<Result<UserEntity>> {
+
+  const result = await serverHttp.delete<UserResponse>(
+    "/users",
+    {
+      body: JSON.stringify(request),
+      withAuth: true,
+    }
+  );
+
+  if (!result.success) {
+    return result;
+  }
+
+  const data = result.data;
+
+  return {
+    success: true,
+    data: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+    }
+  };
+}
+
+
+/**
+ * HARD DELETE
+ */
+export async function hardDeleteUser(
+  id: number
+): Promise<Result<{ id: number }>> {
+
+  return serverHttp.delete<{ id: number }>(
+    `/users/${id}/destroy`,
+    { withAuth: true }
+  );
+}

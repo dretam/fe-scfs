@@ -15,7 +15,7 @@ export function useAccessLogList(
   request: GetListAccessLogRequest
 ) {
   return useReadHook<
-    ReadResponse<AccessLogResponse[]>,
+    AccessLogResponse[],
     GetListAccessLogRequest
   >(
     "access-log-list",
@@ -28,7 +28,7 @@ export function useAccessLogRetrieve(
   request: GetRetrieveAccessLogRequest
 ) {
   return useReadHook<
-    ReadResponse<AccessLogResponse>,
+    AccessLogResponse,
     GetRetrieveAccessLogRequest
   >(
     "access-log-retrieve",

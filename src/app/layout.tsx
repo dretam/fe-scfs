@@ -6,7 +6,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import ReduxProvider from "@/app/redux-provider";
 import ThemeProvider from "@/app/theme-provider";
-import { NextIntlClientProvider } from "next-intl";
+import QueryProvider from "./query-provider";
 
 export const metadata: Metadata = {
   title: "Dashboard TMG",
@@ -29,10 +29,12 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ReduxProvider>
-            {children}
-            <Toaster />
-          </ReduxProvider>
+          <QueryProvider>
+            <ReduxProvider>
+              {children}
+              <Toaster />
+            </ReduxProvider>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>

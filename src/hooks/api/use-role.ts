@@ -7,7 +7,6 @@ import {
   GetRetrieveRoleRequest
 } from "@/types/request"
 import {
-  ReadResponse,
   RoleResponse
 } from "@/types/response"
 
@@ -15,7 +14,7 @@ export function useRoleList(
   request: GetListRoleRequest
 ) {
   return useReadHook<
-    ReadResponse<RoleResponse[]>,
+    RoleResponse[],
     GetListRoleRequest
   >(
     "role-list",
@@ -28,7 +27,7 @@ export function useRoleRetrieve(
   request: GetRetrieveRoleRequest
 ) {
   return useReadHook<
-    ReadResponse<RoleResponse>,
+    RoleResponse,
     GetRetrieveRoleRequest
   >(
     "role-retrieve",

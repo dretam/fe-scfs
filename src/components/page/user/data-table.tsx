@@ -72,7 +72,7 @@ export function PageUserDataTable({
     [searchParams],
   );
 
-  const { response, isLoading, isError } = useUserList(request);
+  const { data: response, isLoading, isError } = useUserList(request);
 
   // Dialog states
   const [isAddOpen, setIsAddOpen] = React.useState(false);
@@ -94,14 +94,14 @@ export function PageUserDataTable({
 
     if (isHardDelete) {
       const result = await userDestroyAction(selectedUser.id);
-      if (result.isSuccess) {
+      if (result.success) {
         toast.success("User permanently deleted");
       } else {
         toast.error("Failed to delete user");
       }
     } else {
       const result = await userDeleteAction({ userId: selectedUser.id });
-      if (result.isSuccess) {
+      if (result.success) {
         toast.success("User soft deleted");
       } else {
         toast.error("Failed to delete user");

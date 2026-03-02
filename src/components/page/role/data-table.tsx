@@ -31,7 +31,7 @@ export function PageRoleDataTable({ className, ...props }: React.ComponentProps<
 		filter: searchParams.get("filter"),
 	}), [searchParams]);
 
-	const { response, isLoading, isError } = useRoleList(request);
+	const { data: response, isLoading, isError } = useRoleList(request);
 
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 	const [selectedRole, setSelectedRole] = React.useState<RoleResponse | null>(null);
@@ -48,25 +48,19 @@ export function PageRoleDataTable({ className, ...props }: React.ComponentProps<
 		setIsDeleteDialogOpen(true);
 	};
 
-	const handleHardDelete = (role: RoleResponse) => {
-		setSelectedRole(role);
-		setIsHardDelete(true);
-		setIsDeleteDialogOpen(true);
-	};
-
 	const confirmDelete = async () => {
 		if (!selectedRole) return;
 
 		if (isHardDelete) {
 			const result = await roleDestroyAction(selectedRole.id);
-			if (result.isSuccess) {
+			if (result.success) {
 				toast.success("Role permanently deleted");
 			} else {
 				toast.error("Failed to delete role");
 			}
 		} else {
 			const result = await roleDeleteAction({ roleId: selectedRole.id });
-			if (result.isSuccess) {
+			if (result.success) {
 				toast.success("Role soft deleted");
 			} else {
 				toast.error("Failed to delete role");

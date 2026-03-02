@@ -1,31 +1,36 @@
-'use client'
-
-import useSWR from "swr"
-import { swrFetcher } from "./fetcher"
-import { defaultSWRConfig } from "./swr-options"
+import { Result } from "@/types/response"
+import { useQuery } from "@tanstack/react-query"
 
 export function useReadHook<
-  TSuccess,
-  TRequest,
-  TError = any
+  TData,
+  TRequest
 >(
   key: string,
   request: TRequest,
-  apiCall: (req: TRequest) => Promise<TSuccess | TError>
+  apiCall: (req: TRequest) => Promise<Result<TData>>,
+  options?: {
+    enabled?: boolean
+  }
 ) {
-  const { data, error, isLoading, mutate } = useSWR(
-    [key, request],
-    () => swrFetcher<TSuccess>(apiCall(request)),
-    defaultSWRConfig
-  )
+  const query = useQuery({
+    queryKey: [key, request],
+    queryFn: async () => {
+      const response = await apiCall(request)
 
-  console.log(data);
-  
+      if (!response.success) {
+        throw response
+      }
+
+      return response
+    },
+    enabled: options?.enabled ?? true,
+  })
 
   return {
-    response: data,
-    isLoading,
-    isError: error,
-    mutate,
+    data: query.data,
+    isLoading: query.isPending,
+    isError: query.isError,
+    error: query.error as Result<any> | null,
+    refetch: query.refetch,
   }
 }

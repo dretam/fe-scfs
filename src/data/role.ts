@@ -19,7 +19,7 @@ import { serverHttp } from "@/lib/server/server-fetch"
 export async function getListRole(
   request: GetListRoleRequest
 ): Promise<
-  Result<ReadResponse<RoleResponse[]>>
+  Result<RoleResponse[]>
 > {
 
   const params = new URLSearchParams({
@@ -31,7 +31,7 @@ export async function getListRole(
   })
 
   return serverHttp.get<
-    ReadResponse<RoleResponse[]>
+    RoleResponse[]
   >(`/roles?${params.toString()}`, {
     withAuth: true,
   })
@@ -42,7 +42,7 @@ export async function getListRole(
  */
 export async function getRetrieveRole(
   request: GetRetrieveRoleRequest
-): Promise<Result<ReadResponse<RoleResponse>>> {
+): Promise<Result<RoleResponse>> {
 
   return serverHttp.get(
     `/roles/${request.id}`,

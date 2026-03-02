@@ -7,7 +7,6 @@ import {
   GetRetrieveOcrDataRequest
 } from "@/types/request"
 import {
-  ReadResponse,
   OCRResponse
 } from "@/types/response"
 
@@ -15,7 +14,7 @@ export function useOcrDataList(
   request: GetListOcrDataRequest
 ) {
   return useReadHook<
-    ReadResponse<OCRResponse[]>,
+    OCRResponse[],
     GetListOcrDataRequest
   >(
     "ocr-data-list",
@@ -28,7 +27,7 @@ export function useOcrDataRetrieve(
   request: GetRetrieveOcrDataRequest
 ) {
   return useReadHook<
-    ReadResponse<OCRResponse>,
+    OCRResponse,
     GetRetrieveOcrDataRequest
   >(
     "ocr-data-retrieve",

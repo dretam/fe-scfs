@@ -1,51 +1,38 @@
 'use client'
 
-import { useState } from "react"
-import { mutate } from "swr"
-import { ApiResponse } from "@/types/response"
+import { Result } from '@/types/response'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-export function useMutation<TData, TRequest>(
-  apiCall: (req: TRequest) => Promise<ApiResponse<TData>>,
-  revalidateKeys?: (string | any[])[],
+export function useAppMutation<TData, TRequest>(
+  apiCall: (req: TRequest) => Promise<Result<TData>>,
+  invalidateKeys?: string[]
 ) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<ApiResponse<any> | null>(null)
+  const queryClient = useQueryClient()
 
-  const execute = async (
-    request: TRequest
-  ): Promise<ApiResponse<TData>> => {
-
-    try {
-      setIsLoading(true)
-      setError(null)
-
+  const mutation = useMutation({
+    mutationFn: async (request: TRequest) => {
       const response = await apiCall(request)
 
-      const isSuccess =
-        response.status >= 200 && response.status < 300
+      return response
+    },
 
-      if (!isSuccess) {
-        setError(response)
-        return response
-      }
-
-      if (revalidateKeys?.length) {
+    onSuccess: async () => {
+      if (invalidateKeys?.length) {
         await Promise.all(
-          revalidateKeys.map((key) => mutate(key))
+          invalidateKeys.map((key) =>
+            queryClient.invalidateQueries({
+              queryKey: [key],
+            })
+          )
         )
       }
-
-      return response
-
-    } finally {
-      setIsLoading(false)
-    }
-  }
+    },
+  })
 
   return {
-    execute,
-    isLoading,
-    isError: !!error,
-    error,
+    execute: mutation.mutateAsync,
+    isLoading: mutation.isPending,
+    isError: mutation.isError,
+    error: mutation.error as Result<any> | null,
   }
 }

@@ -1,43 +1,30 @@
 "use server";
 
-import {TransactionAction} from "@/types/action";
-import {AccessLogResponse, BadRequestResponse, ReadResponse, UnauthorizedResponse} from "@/types/response";
-import {GetListAccessLogRequest, GetRetrieveAccessLogRequest} from "@/types/request";
-import {getListAccessLogs, getAccessLogById} from "@/data/log";
+import {
+  GetListAccessLogRequest,
+  GetRetrieveAccessLogRequest
+} from "@/types/request";
+import { AccessLogResponse, Result } from "@/types/response";
+import { getListAccessLogs, getAccessLogById } from "@/data/log";
 
 
+/**
+ * LIST
+ */
 export async function listAccessLogsAction(
-	request: GetListAccessLogRequest
-): Promise<TransactionAction<ReadResponse<AccessLogResponse[]> | UnauthorizedResponse | BadRequestResponse>> {
-	const response = await getListAccessLogs(request);
+  request: GetListAccessLogRequest
+): Promise<Result<AccessLogResponse[]>> {
 
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	}
-
-	return {
-		isSuccess: true,
-		response: response
-	};
+  return getListAccessLogs(request);
 }
 
+
+/**
+ * DETAIL
+ */
 export async function getAccessLogAction(
-	request: GetRetrieveAccessLogRequest
-): Promise<TransactionAction<ReadResponse<AccessLogResponse> | UnauthorizedResponse | BadRequestResponse>> {
-	const response = await getAccessLogById(request);
+  request: GetRetrieveAccessLogRequest
+): Promise<Result<AccessLogResponse>> {
 
-	if ("status" in response) {
-		return {
-			isSuccess: false,
-			response: response
-		};
-	}
-
-	return {
-		isSuccess: true,
-		response: response
-	};
+  return getAccessLogById(request);
 }

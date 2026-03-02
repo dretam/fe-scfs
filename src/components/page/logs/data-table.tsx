@@ -26,7 +26,7 @@ export function PageLogsDataTable({ className, ...props }: React.ComponentProps<
 		expands: "user",
 	}), [searchParams]);
 
-	const { response, isLoading, isError } = useAccessLogList(request);
+	const { data: response, isLoading, isError } = useAccessLogList(request);
 
 	// Dialog states
 	const [selectedLog, setSelectedLog] = React.useState<AccessLogResponse | null>(null);
