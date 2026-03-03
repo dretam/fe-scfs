@@ -6,11 +6,14 @@ import {
   getListOcrData,
   getOcrDataById,
   updateOcrData,
+  approveOcrData,
+  rejectOcrData,
   hardDeleteOcrData
 } from "@/data/ocr";
 import {
   GetListOcrDataRequest,
-  GetRetrieveOcrDataRequest
+  GetRetrieveOcrDataRequest,
+  PostBulkOcrDataRequest
 } from "@/types/request";
 import { OCRResponse, Result } from "@/types/response";
 
@@ -69,6 +72,50 @@ export async function updateOcrDataAction(
     nomorRekeningPengirim: formData.nomorRekeningPengirim,
     nomorRekeningPlacement: formData.nomorRekeningPlacement,
   });
+}
+
+
+
+/**
+ * BULK APPROVE
+ */
+export async function approveOcrDataAction(
+  request: PostBulkOcrDataRequest
+): Promise<Result<OCRDataEntity[]>> {
+
+  if (!request.ids || request.ids.length === 0) {
+    return {
+      success: false,
+      error: {
+        status: 400,
+        message: "ids cannot be empty"
+      }
+    };
+  }
+
+  return approveOcrData(request);
+}
+
+
+
+/**
+ * BULK REJECT
+ */
+export async function rejectOcrDataAction(
+  request: PostBulkOcrDataRequest
+): Promise<Result<OCRDataEntity[]>> {
+
+  if (!request.ids || request.ids.length === 0) {
+    return {
+      success: false,
+      error: {
+        status: 400,
+        message: "ids cannot be empty"
+      }
+    };
+  }
+
+  return rejectOcrData(request);
 }
 
 

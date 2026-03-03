@@ -114,6 +114,10 @@ export interface PutOcrDataRequest {
 	nomorRekeningPlacement?: string;
 }
 
+export interface PostBulkOcrDataRequest {
+	ids: number[];
+}
+
 export interface GetListAccessLogRequest {
 	page?: number | null;
 	perPage?: number | null;

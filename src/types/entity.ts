@@ -37,6 +37,7 @@ export interface DocumentEntity {
 
 export interface OCRDataEntity {
   id: number
+  document?: DocumentEntity | null
   atasNama: string
   nominal: string
   jangkaWaktu: string
@@ -47,6 +48,7 @@ export interface OCRDataEntity {
   nomorRekeningTujuanPencairan: string
   nomorRekeningPengirim: string
   nomorRekeningPlacement: string
+  status: string
 }
 
 export interface AccessLogEntity {

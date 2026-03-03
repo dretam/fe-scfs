@@ -91,6 +91,8 @@ export interface UserResponse {
 export interface DocumentResponse {
 	id: number
 	filename: string
+	url: string
+	fileName: string
 	originalName: string
 	filePath: string
 	fileSize: number
@@ -108,6 +110,7 @@ export interface DocumentResponse {
 
 export interface OCRResponse {
 	id: number
+	document: DocumentResponse | null
 	atasNama: string
 	nominal: string
 	jangkaWaktu: string
@@ -118,6 +121,7 @@ export interface OCRResponse {
 	nomorRekeningTujuanPencairan: string
 	nomorRekeningPengirim: string
 	nomorRekeningPlacement: string
+	status: string
 	createdAt: string
 	createdBy: number
 	updatedAt: any

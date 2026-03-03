@@ -1,25 +1,13 @@
 "use client";
 
-import { DataTable } from "@/components/common/data-table";
-import { useSearchParams } from "next/navigation";
-import { useOcrDataList } from "@/hooks/api/use-ocr";
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
+import { DataTable } from "@/components/common/data-table";
 import PageOcrDataFilterTable from "@/components/page/ocr-data/filter-table";
 import { columns } from "@/components/page/ocr-data/column-table";
+import { useApproveOcrData, useOcrDataList, useRejectOcrData } from "@/hooks/api/use-ocr";
 import { OCRResponse } from "@/types/response";
 import { toast } from "sonner";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { destroyOcrDataAction } from "@/actions/ocr";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 export function PageOcrDataDataTable({
@@ -27,7 +15,6 @@ export function PageOcrDataDataTable({
   ...props
 }: React.ComponentProps<"div">) {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const request = React.useMemo(
     () => ({
@@ -38,52 +25,123 @@ export function PageOcrDataDataTable({
     [searchParams],
   );
 
-  const { data: response, isLoading, isError } = useOcrDataList(request);
+  const { data: response, isLoading, isError } =
+    useOcrDataList(request);
 
-  const [rowSelection, setRowSelection] = React.useState({});
+  const { execute: approveOcr, isLoading: isApproving } =
+    useApproveOcrData();
 
-  const handleSingleApprove = (ocrData: OCRResponse) => {
-    toast.info(`Edit OCR data: ${ocrData.atasNama}`);
+  const { execute: rejectOcr, isLoading: isRejecting } =
+    useRejectOcrData();
+
+  const [rowSelection, setRowSelection] =
+    React.useState<Record<string, boolean>>({});
+
+  const handleSingleApprove = async (ocrData: OCRResponse) => {
+    try {
+      await approveOcr({ ids: [ocrData.id] });
+      toast.success(`OCR data ${ocrData.atasNama} approved`);
+    } catch (err: any) {
+      toast.error(err?.error?.message ?? "Failed to approve data");
+    }
   };
 
-  const ocrDataColumns = React.useMemo(
-    () => columns({ onApprove: handleSingleApprove }),
-    [],
-  );
+  const handleSingleReject = async (ocrData: OCRResponse) => {
+    try {
+      await rejectOcr({ ids: [ocrData.id] });
+      toast.success(`OCR data ${ocrData.atasNama} rejected`);
+    } catch (err: any) {
+      toast.error(err?.error?.message ?? "Failed to reject data");
+    }
+  };
 
   const handleBulkApprove = async () => {
     const selectedIds = Object.keys(rowSelection);
 
-    if (selectedIds.length === 0) {
+    if (!selectedIds.length) {
       toast.warning("No data selected");
       return;
     }
 
     try {
-      toast.success(`${selectedIds.length} OCR data approved ${selectedIds}`);
+      await approveOcr({
+        ids: selectedIds.map(Number),
+      });
+
+      toast.success(
+        `${selectedIds.length} OCR data approved successfully`,
+      );
+
       setRowSelection({});
-      router.refresh();
-    } catch (err) {
-      toast.error("Failed to approve data");
+    } catch (err: any) {
+      toast.error(err?.error?.message ?? "Failed to approve data");
     }
   };
+
+  const handleBulkReject = async () => {
+    const selectedIds = Object.keys(rowSelection);
+
+    if (!selectedIds.length) {
+      toast.warning("No data selected");
+      return;
+    }
+
+    try {
+      await rejectOcr({
+        ids: selectedIds.map(Number),
+      });
+
+      toast.success(
+        `${selectedIds.length} OCR data rejected successfully`,
+      );
+
+      setRowSelection({});
+    } catch (err: any) {
+      toast.error(err?.error?.message ?? "Failed to reject data");
+    }
+  };
+
+  const ocrDataColumns = React.useMemo(
+    () =>
+      columns({
+        onApprove: handleSingleApprove,
+        onReject: handleSingleReject,
+      }),
+    [],
+  );
+
+  const selectedCount = Object.keys(rowSelection).length;
 
   return (
     <div className={className} {...props}>
       <div className="flex justify-between items-center mb-4">
         <PageOcrDataFilterTable className="my-0" />
-        <Button
-          onClick={handleBulkApprove}
-          disabled={Object.keys(rowSelection).length === 0}
-        >
-          Approve Selected ({Object.keys(rowSelection).length})
-        </Button>
-      </div>
 
+        <div className="flex gap-2">
+          <Button
+            variant="destructive"
+            onClick={handleBulkReject}
+            disabled={selectedCount === 0 || isRejecting}
+          >
+            {isRejecting
+              ? "Rejecting..."
+              : `Reject Selected (${selectedCount})`}
+          </Button>
+
+          <Button
+            onClick={handleBulkApprove}
+            disabled={selectedCount === 0 || isApproving}
+          >
+            {isApproving
+              ? "Approving..."
+              : `Approve Selected (${selectedCount})`}
+          </Button>
+        </div>
+      </div>
 
       {isError && <div>Something went wrong.</div>}
 
-      {response?.success && response && (
+      {response?.success && (
         <DataTable
           data={response.data}
           columns={ocrDataColumns}

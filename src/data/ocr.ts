@@ -3,7 +3,8 @@
 import {
   GetListOcrDataRequest,
   GetRetrieveOcrDataRequest,
-  PutOcrDataRequest
+  PutOcrDataRequest,
+  PostBulkOcrDataRequest
 } from "@/types/request";
 
 import { OCRResponse, Result } from "@/types/response";
@@ -92,6 +93,7 @@ export async function updateOcrData(
     message: result.message,
     data: {
       id: data.id,
+      document: data.document ?? undefined,
       atasNama: data.atasNama,
       nominal: data.nominal,
       jangkaWaktu: data.jangkaWaktu,
@@ -102,7 +104,90 @@ export async function updateOcrData(
       nomorRekeningTujuanPencairan: data.nomorRekeningTujuanPencairan,
       nomorRekeningPengirim: data.nomorRekeningPengirim,
       nomorRekeningPlacement: data.nomorRekeningPlacement,
+      status: data.status,
     }
+  };
+}
+
+
+
+/**
+ * BULK APPROVE
+ */
+export async function approveOcrData(
+  request: PostBulkOcrDataRequest
+): Promise<Result<OCRDataEntity[]>> {
+
+  const result = await serverHttp.post<OCRResponse[]>(
+    "/ocr-data/approve",
+    request,
+    { withAuth: true }
+  );
+
+  if (!result.success) {
+    return result;
+  }
+
+  // Map OCRResponse[] → OCRDataEntity[]
+  return {
+    success: true,
+    message: result.message,
+    data: result.data.map((data) => ({
+      id: data.id,
+      document: data.document ?? undefined,
+      atasNama: data.atasNama,
+      nominal: data.nominal,
+      jangkaWaktu: data.jangkaWaktu,
+      periode: data.periode,
+      rate: data.rate,
+      alokasi: data.alokasi,
+      namaRekeningTujuanPencairan: data.namaRekeningTujuanPencairan,
+      nomorRekeningTujuanPencairan: data.nomorRekeningTujuanPencairan,
+      nomorRekeningPengirim: data.nomorRekeningPengirim,
+      nomorRekeningPlacement: data.nomorRekeningPlacement,
+      status: data.status,
+    }))
+  };
+}
+
+
+
+/**
+ * BULK REJECT
+ */
+export async function rejectOcrData(
+  request: PostBulkOcrDataRequest
+): Promise<Result<OCRDataEntity[]>> {
+
+  const result = await serverHttp.post<OCRResponse[]>(
+    "/ocr-data/reject",
+    request,
+    { withAuth: true }
+  );
+
+  if (!result.success) {
+    return result;
+  }
+
+  // Map OCRResponse[] → OCRDataEntity[]
+  return {
+    success: true,
+    message: result.message,
+    data: result.data.map((data) => ({
+      id: data.id,
+      document: data.document ?? undefined,
+      atasNama: data.atasNama,
+      nominal: data.nominal,
+      jangkaWaktu: data.jangkaWaktu,
+      periode: data.periode,
+      rate: data.rate,
+      alokasi: data.alokasi,
+      namaRekeningTujuanPencairan: data.namaRekeningTujuanPencairan,
+      nomorRekeningTujuanPencairan: data.nomorRekeningTujuanPencairan,
+      nomorRekeningPengirim: data.nomorRekeningPengirim,
+      nomorRekeningPlacement: data.nomorRekeningPlacement,
+      status: data.status,
+    }))
   };
 }
 

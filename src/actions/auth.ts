@@ -8,7 +8,7 @@ import {
 } from "@/lib/auth-token";
 import { getAuthSession, postAuthLogin } from "@/data/auth";
 import { persistor } from "@/lib/store";
-import { AuthLoginResponse, Result } from "@/types/response";
+import { Result } from "@/types/response";
 import { AuthLoginActionFormData } from "@/types/form-data";
 import { UserEntity } from "@/types/entity";
 
@@ -51,7 +51,7 @@ export async function loginAction(
   }
 
   return {
+    ...sessionResult,
     success: true,
-    data: sessionResult.data
   };
 }

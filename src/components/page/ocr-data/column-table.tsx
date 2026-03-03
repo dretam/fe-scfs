@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { OCRResponse } from "@/types/response";
 import { Button } from "@/components/ui/button";
 import { SortIcon } from "@/components/common/sort-icon";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Check, MoreHorizontal, Pencil, Trash2, X } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,14 +10,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
 
 interface ColumnsProps {
   onApprove: (ocrData: OCRResponse) => void;
+  onReject: (ocrData: OCRResponse) => void;
 }
 
 // Helper function to handle null values
 const formatValue = (value: any): string => {
-  if (value === null || value === undefined || value === "" || value === "null") {
+  if (
+    value === null ||
+    value === undefined ||
+    value === "" ||
+    value === "null"
+  ) {
     return "-";
   }
   return String(value);
@@ -25,6 +32,7 @@ const formatValue = (value: any): string => {
 
 export const columns = ({
   onApprove,
+  onReject,
 }: ColumnsProps): ColumnDef<OCRResponse>[] => [
   {
     id: "select",
@@ -145,12 +153,50 @@ export const columns = ({
   {
     accessorKey: "nomorRekeningTujuanPencairan",
     header: "No. Rekening Tujuan",
-    cell: ({ row }) => formatValue(row.getValue("nomorRekeningTujuanPencairan")),
+    cell: ({ row }) =>
+      formatValue(row.getValue("nomorRekeningTujuanPencairan")),
   },
   {
     accessorKey: "nomorRekeningPlacement",
     header: "No. Rekening Placement",
     cell: ({ row }) => formatValue(row.getValue("nomorRekeningPlacement")),
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.getValue("status") as string;
+
+      if (!status) return "-";
+
+      const statusMap: Record<
+        string,
+        {
+          label: string;
+          variant: "default" | "secondary" | "destructive" | "outline";
+        }
+      > = {
+        PENDING: {
+          label: "Pending",
+          variant: "secondary",
+        },
+        APPROVED: {
+          label: "Approved",
+          variant: "default",
+        },
+        REJECTED: {
+          label: "Rejected",
+          variant: "destructive",
+        },
+      };
+
+      const config = statusMap[status] ?? {
+        label: status,
+        variant: "outline",
+      };
+
+      return <Badge variant={config.variant}>{config.label}</Badge>;
+    },
   },
   {
     accessorKey: "createdAt",
@@ -168,12 +214,12 @@ export const columns = ({
     cell: ({ row }) => {
       const value = row.getValue("createdAt");
       if (!value) return "-";
-      
+
       try {
         const date = new Date(value as string);
         // Check if date is valid
         if (isNaN(date.getTime())) return "-";
-        
+
         return date.toLocaleDateString("id-ID", {
           year: "numeric",
           month: "short",
@@ -199,8 +245,16 @@ export const columns = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => onApprove(ocrData)}>
-              <Pencil className="mr-2 h-4 w-4" />
+              <Check className="mr-2 h-4 w-4 text-green-600" />
               Approve
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={() => onReject(ocrData)}
+              className="text-red-600 focus:text-red-600"
+            >
+              <X className="mr-2 h-4 w-4" />
+              Reject
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
