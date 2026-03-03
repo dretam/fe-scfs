@@ -161,43 +161,7 @@ export const columns = ({
     header: "No. Rekening Placement",
     cell: ({ row }) => formatValue(row.getValue("nomorRekeningPlacement")),
   },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status = row.getValue("status") as string;
 
-      if (!status) return "-";
-
-      const statusMap: Record<
-        string,
-        {
-          label: string;
-          variant: "default" | "secondary" | "destructive" | "outline";
-        }
-      > = {
-        PENDING: {
-          label: "Pending",
-          variant: "secondary",
-        },
-        APPROVED: {
-          label: "Approved",
-          variant: "default",
-        },
-        REJECTED: {
-          label: "Rejected",
-          variant: "destructive",
-        },
-      };
-
-      const config = statusMap[status] ?? {
-        label: status,
-        variant: "outline",
-      };
-
-      return <Badge variant={config.variant}>{config.label}</Badge>;
-    },
-  },
   {
     accessorKey: "createdAt",
     header: ({ column }) => {
@@ -231,8 +195,51 @@ export const columns = ({
     },
   },
   {
+    accessorKey: "status",
+    header: "Status",
+    size: 60,
+    cell: ({ row }) => {
+      const status = row.getValue("status") as string;
+
+      if (!status) return "-";
+
+      const statusMap: Record<
+        string,
+        {
+          label: string;
+          variant: "default" | "secondary" | "destructive" | "outline";
+        }
+      > = {
+        PENDING: {
+          label: "Pending",
+          variant: "secondary",
+        },
+        APPROVED: {
+          label: "Approved",
+          variant: "default",
+        },
+        REJECTED: {
+          label: "Rejected",
+          variant: "destructive",
+        },
+      };
+
+      const config = statusMap[status] ?? {
+        label: status,
+        variant: "outline",
+      };
+
+      return <Badge variant={config.variant}>{config.label}</Badge>;
+    },
+    meta: {
+      sticky: "right",
+      width: 60,
+    },
+  },
+  {
     id: "actions",
     header: "Actions",
+    size: 60,
     cell: ({ row }) => {
       const ocrData = row.original;
 
@@ -262,6 +269,7 @@ export const columns = ({
     },
     meta: {
       sticky: "right",
+      width: 60,
     },
   },
 ];

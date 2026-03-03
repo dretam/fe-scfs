@@ -32,7 +32,7 @@ export default async function RootLayout({
           <QueryProvider>
             <ReduxProvider>
               {children}
-              <Toaster />
+              <Toaster richColors />
             </ReduxProvider>
           </QueryProvider>
         </ThemeProvider>

@@ -39,7 +39,6 @@ import {
 } from "@/components/page/user/user-form-dialog";
 
 import { UserResponse } from "@/types/response";
-import { userCreateAction, userDeleteAction } from "@/actions/user";
 
 export function PageUserDataTable({
   className,
@@ -96,10 +95,6 @@ export function PageUserDataTable({
     },
     500,
   );
-  /* ======================================================
-     AUTO FILL FROM INTERNAL USER
-  ====================================================== */
-
   React.useEffect(() => {
     if (!internalUser?.data) return;
 
@@ -109,9 +104,6 @@ export function PageUserDataTable({
     });
   }, [internalUser, form]);
 
-  /* ======================================================
-     DIALOG STATES
-  ====================================================== */
 
   const [isAddOpen, setIsAddOpen] = React.useState(false);
   const [isEditOpen, setIsEditOpen] = React.useState(false);
@@ -121,9 +113,6 @@ export function PageUserDataTable({
     null,
   );
 
-  /* ======================================================
-     ADD
-  ====================================================== */
 
   const handleOpenAdd = () => {
     form.reset({

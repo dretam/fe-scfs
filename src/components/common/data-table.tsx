@@ -152,25 +152,60 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       pagination: pagination ? paginationState : undefined,
-        rowSelection,
+      rowSelection,
     },
   });
-  function getStickyClass(
-    sticky: "left" | "right" | undefined,
+
+  function getStickyStyle(
+    column: any,
     type: "header" | "cell",
-    columnId?: string,
-  ) {
-    return cn(
-      sticky === "left" &&
-        "sticky left-0 shadow-[4px_0_6px_-4px_rgba(0,0,0,0.2)]",
+    table: any,
+  ): React.CSSProperties | undefined {
+    const sticky = column.columnDef.meta?.sticky;
+    if (!sticky) return undefined;
 
-      sticky === "right" &&
-        "sticky right-0 shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.2)]",
+    const allLeafColumns = table.getAllLeafColumns();
 
-      sticky && (type === "header" ? "z-30" : "z-20"),
+    const baseStyle: React.CSSProperties = {
+      position: "sticky",
+      zIndex: type === "header" ? 50 : 40,
+    };
 
-      sticky && (columnId === "select" ? "bg-muted" : "bg-background"),
-    );
+    if (sticky === "left") {
+      // Get ALL columns that appear BEFORE this column (by order), and are also sticky left
+      const currentIndex = allLeafColumns.findIndex(
+        (col: any) => col.id === column.id,
+      );
+
+      const offset = allLeafColumns
+        .slice(0, currentIndex) // all columns before current
+        .filter((col: any) => col.columnDef.meta?.sticky === "left") // only sticky left ones
+        .reduce((total: number, col: any) => total + col.getSize(), 0);
+
+      return {
+        ...baseStyle,
+        left: offset,
+      };
+    }
+
+    if (sticky === "right") {
+      // Get ALL columns that appear AFTER this column (by order), and are also sticky right
+      const currentIndex = allLeafColumns.findIndex(
+        (col: any) => col.id === column.id,
+      );
+
+      const offset = allLeafColumns
+        .slice(currentIndex + 1) // all columns after current
+        .filter((col: any) => col.columnDef.meta?.sticky === "right") // only sticky right ones
+        .reduce((total: number, col: any) => total + col.getSize(), 0);
+
+      return {
+        ...baseStyle,
+        right: offset,
+      };
+    }
+
+    return undefined;
   }
 
   return (
@@ -183,11 +218,8 @@ export function DataTable<TData, TValue>({
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className={getStickyClass(
-                      header.column.columnDef.meta?.sticky,
-                      "header",
-                      header.column.id,
-                    )}
+                    className="bg-background"
+                    style={getStickyStyle(header.column, "header", table)}
                   >
                     {header.isPlaceholder
                       ? null
@@ -223,11 +255,8 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={getStickyClass(
-                        cell.column.columnDef.meta?.sticky,
-                        "cell",
-                        cell.column.id,
-                      )}
+                      className={`bg-background ${row.getIsSelected() ? "bg-muted" : ""}`}
+                      style={getStickyStyle(cell.column, "cell", table)}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
