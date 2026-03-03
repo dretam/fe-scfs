@@ -18,8 +18,7 @@ export interface UserChangeProfileActionFormData {
 }
 
 export interface UserCreateActionFormData {
-	name: string;
-	email: string;
+	username: string;
 	password: string;
 	roleId: number;
 }

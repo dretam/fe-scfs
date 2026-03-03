@@ -13,25 +13,24 @@ import {
 export function useRoleList(
   request: GetListRoleRequest
 ) {
-  return useReadHook<
-    RoleResponse[],
-    GetListRoleRequest
-  >(
-    "role-list",
-    request,
-    getListRole
-  )
+  return useReadHook<RoleResponse[]>({
+    queryKey: [
+      "role-list",
+      request.page,
+      request.perPage,
+      request.filter,
+      request.expands,
+    ],
+    apiCall: () => getListRole(request),
+  })
 }
 
 export function useRoleRetrieve(
   request: GetRetrieveRoleRequest
 ) {
-  return useReadHook<
-    RoleResponse,
-    GetRetrieveRoleRequest
-  >(
-    "role-retrieve",
-    request,
-    getRetrieveRole
-  )
+  return useReadHook<RoleResponse>({
+    queryKey: ["role-retrieve", request.id],
+    apiCall: () => getRetrieveRole(request),
+    enabled: !!request.id,
+  })
 }

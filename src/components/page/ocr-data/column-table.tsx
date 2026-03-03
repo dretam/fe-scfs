@@ -12,21 +12,19 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface ColumnsProps {
-  onEdit: (ocrData: OCRResponse) => void;
-  onDelete: (ocrData: OCRResponse) => void;
+  onApprove: (ocrData: OCRResponse) => void;
 }
 
 // Helper function to handle null values
 const formatValue = (value: any): string => {
-  if (value === null || value === undefined || value === "") {
+  if (value === null || value === undefined || value === "" || value === "null") {
     return "-";
   }
   return String(value);
 };
 
 export const columns = ({
-  onEdit,
-  onDelete,
+  onApprove,
 }: ColumnsProps): ColumnDef<OCRResponse>[] => [
   {
     id: "select",
@@ -200,17 +198,9 @@ export const columns = ({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => onEdit(ocrData)}>
+            <DropdownMenuItem onClick={() => onApprove(ocrData)}>
               <Pencil className="mr-2 h-4 w-4" />
               Approve
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onEdit(ocrData)}>
-              <Pencil className="mr-2 h-4 w-4" />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onDelete(ocrData)}>
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

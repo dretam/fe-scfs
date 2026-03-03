@@ -26,7 +26,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { loginAction } from "@/actions/auth";
-import { AuthLoginAction } from "@/types/action";
 import { toast } from "sonner";
 import { setUser } from "@/stores/entity/user";
 import InputPassword from "@/components/input/password";

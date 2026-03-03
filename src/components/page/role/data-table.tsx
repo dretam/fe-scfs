@@ -96,7 +96,7 @@ export function PageRoleDataTable({ className, ...props }: React.ComponentProps<
 				<div>Something went wrong.</div>
 			)}
 
-			{!isLoading && !isError && response && (
+			{!isLoading && response?.success && (
 				<DataTable
 					data={response.data}
 					columns={roleColumns}

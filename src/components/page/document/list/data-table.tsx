@@ -120,7 +120,7 @@ export function PageDocumentListTable({ className, ...props }: React.ComponentPr
 				<div>Something went wrong.</div>
 			)}
 
-			{!isLoading && !isError && response && (
+			{!isLoading && response?.success && (
 				<>
 					<DataTable
 						data={response.data}

@@ -13,25 +13,24 @@ import {
 export function useOcrDataList(
   request: GetListOcrDataRequest
 ) {
-  return useReadHook<
-    OCRResponse[],
-    GetListOcrDataRequest
-  >(
-    "ocr-data-list",
-    request,
-    getListOcrData
-  )
+  return useReadHook<OCRResponse[]>({
+    queryKey: [
+      "ocr-data-list",
+      request.page,
+      request.perPage,
+      request.filter,
+      request.expands,
+    ],
+    apiCall: () => getListOcrData(request),
+  })
 }
 
 export function useOcrDataRetrieve(
   request: GetRetrieveOcrDataRequest
 ) {
-  return useReadHook<
-    OCRResponse,
-    GetRetrieveOcrDataRequest
-  >(
-    "ocr-data-retrieve",
-    request,
-    getOcrDataById
-  )
+  return useReadHook<OCRResponse>({
+    queryKey: ["ocr-data-retrieve", request.id],
+    apiCall: () => getOcrDataById(request),
+    enabled: !!request.id,
+  })
 }

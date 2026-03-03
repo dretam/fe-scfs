@@ -13,6 +13,10 @@ export function useAppMutation<TData, TRequest>(
     mutationFn: async (request: TRequest) => {
       const response = await apiCall(request)
 
+      if (!response.success) {
+        throw response
+      }
+
       return response
     },
 
@@ -22,6 +26,7 @@ export function useAppMutation<TData, TRequest>(
           invalidateKeys.map((key) =>
             queryClient.invalidateQueries({
               queryKey: [key],
+              exact: false, 
             })
           )
         )
@@ -31,6 +36,8 @@ export function useAppMutation<TData, TRequest>(
 
   return {
     execute: mutation.mutateAsync,
+    mutate: mutation.mutate,
+    data: mutation.data,
     isLoading: mutation.isPending,
     isError: mutation.isError,
     error: mutation.error as Result<any> | null,

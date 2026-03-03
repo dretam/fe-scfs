@@ -1,6 +1,6 @@
 import { cookies } from "next/headers"
 import { BACKEND_URL, COOKIE_ACCESS_TOKEN } from "@/lib/config-const"
-import { ReadResponse, Result } from "@/types/response"
+import { Result } from "@/types/response"
 
 
 interface FetchOptions extends RequestInit {

@@ -90,6 +90,7 @@ export async function putUser(
 
   return {
     success: true,
+    message: result.message,
     data: {
       id: data.id,
       name: data.name,
@@ -120,7 +121,8 @@ export async function createUser(
   const data = result.data;
 
   return {
-    success: true,
+    success: true, 
+    message: result.message,
     data: {
       id: data.id,
       name: data.name,
@@ -153,7 +155,8 @@ export async function softDeleteUser(
   const data = result.data;
 
   return {
-    success: true,
+    success: true, 
+    message: result.message,
     data: {
       id: data.id,
       name: data.name,

@@ -13,25 +13,24 @@ import {
 export function useDocumentList(
   request: GetListDocumentRequest
 ) {
-  return useReadHook<
-    DocumentResponse[],
-    GetListDocumentRequest
-  >(
-    "document-list",
-    request,
-    getListDocument
-  )
+  return useReadHook<DocumentResponse[]>({
+    queryKey: [
+      "document-list",
+      request.page,
+      request.perPage,
+      request.filter,
+      request.expands,
+    ],
+    apiCall: () => getListDocument(request),
+  })
 }
 
 export function useDocumentRetrieve(
   request: GetRetrieveDocumentRequest
 ) {
-  return useReadHook<
-    DocumentResponse,
-    GetRetrieveDocumentRequest
-  >(
-    "document-retrieve",
-    request,
-    getDocumentById
-  )
+  return useReadHook<DocumentResponse>({
+    queryKey: ["document-retrieve", request.id],
+    apiCall: () => getDocumentById(request),
+    enabled: !!request.id,
+  })
 }

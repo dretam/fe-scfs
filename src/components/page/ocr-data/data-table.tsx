@@ -42,47 +42,12 @@ export function PageOcrDataDataTable({
 
   const [rowSelection, setRowSelection] = React.useState({});
 
-  // Dialog states
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
-  const [selectedOcrData, setSelectedOcrData] =
-    React.useState<OCRResponse | null>(null);
-    
-  const [isHardDelete, setIsHardDelete] = React.useState(false);
-
-  const handleEdit = (ocrData: OCRResponse) => {
+  const handleSingleApprove = (ocrData: OCRResponse) => {
     toast.info(`Edit OCR data: ${ocrData.atasNama}`);
   };
 
-  const handleDelete = (ocrData: OCRResponse) => {
-    setSelectedOcrData(ocrData);
-    setIsHardDelete(false);
-    setIsDeleteDialogOpen(true);
-  };
-
-  const confirmDelete = async () => {
-    if (!selectedOcrData) return;
-
-    if (isHardDelete) {
-      const result = await destroyOcrDataAction(selectedOcrData.id);
-
-      if (result.success) {
-        toast.success("OCR data permanently deleted");
-        router.refresh(); // ✅ instead of window.location.reload()
-      } else {
-        toast.error("Failed to delete OCR data");
-      }
-    } else {
-      toast.info("Soft delete not implemented for OCR data");
-      setIsDeleteDialogOpen(false);
-      return;
-    }
-
-    setIsDeleteDialogOpen(false);
-    setSelectedOcrData(null);
-  };
-
   const ocrDataColumns = React.useMemo(
-    () => columns({ onEdit: handleEdit, onDelete: handleDelete }),
+    () => columns({ onApprove: handleSingleApprove }),
     [],
   );
 
@@ -95,7 +60,6 @@ export function PageOcrDataDataTable({
     }
 
     try {
-
       toast.success(`${selectedIds.length} OCR data approved ${selectedIds}`);
       setRowSelection({});
       router.refresh();
@@ -119,7 +83,7 @@ export function PageOcrDataDataTable({
 
       {isError && <div>Something went wrong.</div>}
 
-      {response && (
+      {response?.success && response && (
         <DataTable
           data={response.data}
           columns={ocrDataColumns}
@@ -129,38 +93,6 @@ export function PageOcrDataDataTable({
           isLoading={isLoading}
         />
       )}
-
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete OCR Data</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will delete the OCR data. The OCR data will be marked as
-              deleted but can be recovered.
-              {selectedOcrData && (
-                <span className="mt-2 font-medium">
-                  Atas Nama: {selectedOcrData.atasNama}
-                </span>
-              )}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="cursor-pointer">
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              className="cursor-pointer bg-red-500"
-              onClick={confirmDelete}
-            >
-              {isHardDelete ? "Permanently Delete" : "Soft Delete"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }

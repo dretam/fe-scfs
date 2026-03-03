@@ -22,7 +22,7 @@ export interface SuccessResult<T> {
 
 export interface ErrorResult {
 	success: false; 
-	data: any | null;
+	data?: any | null;
 	error: ApiError
 }
 
@@ -139,4 +139,30 @@ export interface AccessLogResponse {
 	errorMessage: string | null;
 	httpMethod: string;
 	createdAt: string;
+}
+
+export interface InternalUserResponse {
+  userName: string
+  nama: string
+  joinDate: string
+  jabatan: number
+  approval1: string
+  approval2: string
+  lastLogin: string
+  updatePass: string
+  status: number
+  count: number
+  email: string
+  area: string
+  jobTitle: string
+  direktorat: string
+  sex: string
+  employee: string
+  mobile: string
+  extOffice: any
+  tglLahir: string
+  pangkat: string
+  sessionId: any
+  usersCabang: any
+  usersBranch: any
 }

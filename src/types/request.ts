@@ -27,8 +27,7 @@ export interface PutUserRequest {
 }
 
 export interface PostUserRequest {
-	name: string;
-	email: string;
+	username: string;
 	password: string;
 	roleId: number;
 }
@@ -126,4 +125,8 @@ export interface GetListAccessLogRequest {
 export interface GetRetrieveAccessLogRequest {
 	id: number;
 	expands?: string | null;
+}
+
+export interface GetRetrieveInternalUser {
+	username: string;
 }

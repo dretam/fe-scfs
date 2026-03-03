@@ -7,32 +7,30 @@ import {
   GetRetrieveAccessLogRequest
 } from "@/types/request"
 import {
-  ReadResponse,
   AccessLogResponse
 } from "@/types/response"
 
 export function useAccessLogList(
   request: GetListAccessLogRequest
 ) {
-  return useReadHook<
-    AccessLogResponse[],
-    GetListAccessLogRequest
-  >(
-    "access-log-list",
-    request,
-    getListAccessLogs
-  )
+  return useReadHook<AccessLogResponse[]>({
+    queryKey: [
+      "access-log-list",
+      request.page,
+      request.perPage,
+      request.filter,
+      request.expands,
+    ],
+    apiCall: () => getListAccessLogs(request),
+  })
 }
 
 export function useAccessLogRetrieve(
   request: GetRetrieveAccessLogRequest
 ) {
-  return useReadHook<
-    AccessLogResponse,
-    GetRetrieveAccessLogRequest
-  >(
-    "access-log-retrieve",
-    request,
-    getAccessLogById
-  )
+  return useReadHook<AccessLogResponse>({
+    queryKey: ["access-log-retrieve", request.id],
+    apiCall: () => getAccessLogById(request),
+    enabled: !!request.id,
+  })
 }

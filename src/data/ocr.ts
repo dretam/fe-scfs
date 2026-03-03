@@ -89,6 +89,7 @@ export async function updateOcrData(
 
   return {
     success: true,
+    message: result.message,
     data: {
       id: data.id,
       atasNama: data.atasNama,

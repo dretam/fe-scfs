@@ -1,30 +1,40 @@
-import { Result } from "@/types/response"
-import { useQuery } from "@tanstack/react-query"
+import { Result } from "@/types/response";
+import {
+  useQuery,
+  UseQueryOptions,
+  QueryKey,
+} from "@tanstack/react-query";
 
-export function useReadHook<
-  TData,
-  TRequest
->(
-  key: string,
-  request: TRequest,
-  apiCall: (req: TRequest) => Promise<Result<TData>>,
-  options?: {
-    enabled?: boolean
-  }
+type UseReadHookOptions<TData> = {
+  queryKey: QueryKey;
+  apiCall: () => Promise<Result<TData>>;
+} & Omit<
+  UseQueryOptions<Result<TData>>,
+  "queryKey" | "queryFn"
+>;
+
+export function useReadHook<TData>(
+  options: UseReadHookOptions<TData>
 ) {
+  const {
+    queryKey,
+    apiCall,
+    ...queryOptions
+  } = options;
+
   const query = useQuery({
-    queryKey: [key, request],
+    queryKey,
     queryFn: async () => {
-      const response = await apiCall(request)
+      const response = await apiCall();
 
       if (!response.success) {
-        throw response
+        throw response;
       }
 
-      return response
+      return response;
     },
-    enabled: options?.enabled ?? true,
-  })
+    ...queryOptions,
+  });
 
   return {
     data: query.data,
@@ -32,5 +42,5 @@ export function useReadHook<
     isError: query.isError,
     error: query.error as Result<any> | null,
     refetch: query.refetch,
-  }
+  };
 }

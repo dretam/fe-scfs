@@ -74,8 +74,7 @@ export async function userCreateAction(
 ): Promise<Result<UserEntity>> {
 
   return createUser({
-    name: formData.name,
-    email: formData.email,
+    username: formData.username,
     password: formData.password,
     roleId: formData.roleId
   });
