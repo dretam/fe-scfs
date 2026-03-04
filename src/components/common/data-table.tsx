@@ -255,7 +255,7 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={`bg-background ${row.getIsSelected() ? "bg-muted" : ""}`}
+                      className={`bg-background ${rowSelection && row.getIsSelected() ? "bg-muted" : ""}`}
                       style={getStickyStyle(cell.column, "cell", table)}
                     >
                       {flexRender(
