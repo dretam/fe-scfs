@@ -1,6 +1,6 @@
 'use client'
 
-import { useReadHook } from "../../../hooks/core/use-read"
+import { useReadHook } from "@/hooks/core/use-read"
 import { getListDocument, getDocumentById } from "@/data/document"
 import {
   GetListDocumentRequest,

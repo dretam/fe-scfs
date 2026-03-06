@@ -1,6 +1,6 @@
 "use client";
 
-import { useReadHook } from "../../../hooks/core/use-read";
+import { useReadHook } from "@/hooks/core/use-read";
 import { getRetrieveInternalUser } from "@/data/internal-user";
 import { InternalUserResponse } from "@/types/response";
 
