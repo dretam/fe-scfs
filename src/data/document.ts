@@ -3,7 +3,6 @@
 import {
   GetListDocumentRequest,
   GetRetrieveDocumentRequest,
-  PutDocumentRequest,
   DeleteDocumentRequest
 } from "@/types/request";
 
@@ -13,7 +12,7 @@ import {
   Result
 } from "@/types/response";
 
-import { DocumentEntity } from "@/types/entity";
+import { DocumentEntity, OCRDataEntity } from "@/types/entity";
 import { serverHttp } from "@/lib/server/server-fetch";
 
 /**
@@ -82,12 +81,12 @@ export async function getDocumentById(
  */
 export async function uploadDocument(
   file: File
-): Promise<Result<DocumentResponse>> {
+): Promise<Result<OCRDataEntity[]>> {
 
   const formData = new FormData();
   formData.append("file", file);
 
-  return serverHttp.post<DocumentResponse>(
+  return serverHttp.post<OCRDataEntity[]>(
     "/documents",
     formData,
     {
@@ -125,6 +124,7 @@ export async function updateDocument(
   // mapping response → entity (kalau perlu)
   return {
     success: true,
+    message: result.message,
     data: data as DocumentEntity
   };
 }

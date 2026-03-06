@@ -17,19 +17,91 @@ import { useTransition, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { OCRDataEntity } from "@/types/entity";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  BulkDepositoOcrForm,
+  BulkDepositoOcrFormValues,
+  sumberDanaOptions,
+  rekeningSumberDanaOptions,
+  mataUangOptions,
+  kodeProdukOptions,
+  jenisPerpanjanganOptions,
+  metodeBungaOptions,
+  bankTujuanBungaOptions,
+  jenisTransferBungaOptions,
+  jenisTransaksiSKNBungaOptions,
+  jenisTransaksiRTGSBungaOptions,
+  jenisNasabahPenerimaBungaOptions,
+  statusKependudukanPenerimaBungaOptions,
+  metodePokokOptions,
+  bankTujuanPokokOptions,
+  approverBungaOptions,
+  namaApproverOptions,
+  automaticTransferOptions,
+  transferBungaDanPokokOptions,
+  transferBungaOptions,
+  transferPokokOptions,
+  jenisTransaksiSKNPokokOptions,
+  jenisTransaksiRTGSPokokOptions,
+  biayaTransferOptions,
+  biayaMateraiOptions,
+  FormActions,
+  BatchSummaryForm,
+} from "@/components/form/ocr";
+import { useForm, FormProvider } from "react-hook-form";
 
-export function PageDocumentDataTable({ className }: { className?: string }) {
+export function PageDocumentDataTable() {
   const [isPending, startTransition] = useTransition();
   const [ocrData, setOcrData] = useState<OCRDataEntity[] | null>(null);
+
+  const form = useForm<BulkDepositoOcrFormValues>({
+    defaultValues: {
+      cif: "",
+      namaNasabah: "",
+      sumberDana: "",
+      rekeningSumberDana: "",
+      availBalanceRekeningSumber: 0,
+      mataUang: "",
+      kodeProduk: "",
+      namaProduk: "",
+      tenor: "",
+      jenisPerpanjangan: "",
+      nominal: 0,
+      buktiPenempatanDeposito: "",
+      effectiveDate: "",
+      metodeBunga: "",
+      noRekeningTujuanBunga: "",
+      bankTujuanBunga: "",
+      namaPenerimaBunga: "",
+      remarkBungaPembayaran: "",
+      jenisTransferBunga: "",
+      jenisTransaksiSKNBunga: "",
+      jenisTransaksiRTGSBunga: "",
+      jenisNasabahPenerimaBunga: "",
+      statusKependudukanPenerimaBunga: "",
+      alamatPenerimaBunga: "",
+      metodePokok: "",
+      noRekeningTujuanPokok: "",
+      bankTujuanPokok: "",
+      namaPenerimaPokok: "",
+      remarkPokok: "",
+      totalBunga: 0,
+      approverBunga: "",
+      namaApprover: "",
+      remarkSpecialRate: "",
+      sebagaiAlternate: false,
+      automaticTransfer: "",
+      transferBungaDanPokok: "",
+      transferBunga: "",
+      transferPokok: "",
+      jenisTransaksiSKNPokok: "",
+      jenisTransaksiRTGSPokok: "",
+      biayaTransfer: "",
+      biayaMaterai: "",
+      jumlahRekening: 0,
+      jumlahNominal: 0,
+    },
+  });
 
   const dropzone = useDropzone({
     onDropFile: async (file: File) => {
@@ -54,6 +126,16 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
     },
   });
 
+  const handleAddToList = () => {
+    form.watch();
+    toast.info("Added to list (placeholder action)");
+  };
+
+  const handleKembali = () => {
+    form.reset();
+    toast.info("Form reset");
+  };
+
   const handleSubmit = () => {
     if (dropzone.fileStatuses.length === 0) {
       toast.error("Please select a file");
@@ -72,25 +154,25 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
 
         const result = await uploadDocumentAction(formData);
 
-        console.log(result);
-
-        if (!result.isSuccess) {
+        if (!result.success) {
           toast.error(`Failed: ${file.name}`, { id: toastId });
           return;
         }
 
         toast.success(`Uploaded: ${file.name}`, { id: toastId });
 
-        setOcrData(result.response as OCRDataEntity[]);
+        setOcrData(result.data as OCRDataEntity[]);
       } catch {
         toast.error(`Unexpected error: ${file.name}`, { id: toastId });
       }
     });
   };
   return (
-    <div className="not-prose flex flex-col gap-4 p-5">
+    <div className="flex flex-col justify-start items-start gap-4 p-5">
+
+
       <Dropzone {...dropzone}>
-        <div>
+        <div className="max-w-xl">
           <div className="flex justify-between">
             <DropzoneDescription>
               Please select one document (PDF, Excel, DOCX)
@@ -147,53 +229,64 @@ export function PageDocumentDataTable({ className }: { className?: string }) {
         disabled={isPending || dropzone.fileStatuses.length === 0}
         className="w-fit"
       >
-        {isPending ? "Uploading..." : "Submit"}
+        {isPending ? "Uploading..." : "Scan Document"}
       </Button>
 
-      {/* OCR Data Display */}
-      {ocrData && ocrData.length > 0 && (
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Extracted OCR Data</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="w-full overflow-x-auto">
-              <Table className="min-w-300">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>ID</TableHead>
-                    <TableHead>Atas Nama</TableHead>
-                    <TableHead>Nominal</TableHead>
-                    <TableHead>Jangka Waktu</TableHead>
-                    <TableHead>Periode</TableHead>
-                    <TableHead>Rate</TableHead>
-                    <TableHead>Alokasi</TableHead>
-                    <TableHead>Rekening Tujuan</TableHead>
-                    <TableHead>No. Rekening Tujuan</TableHead>
-                    <TableHead>No. Rekening Placement</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {ocrData.map((item, index) => (
-                    <TableRow key={item.id}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{item.atasNama}</TableCell>
-                      <TableCell>Rp. {item.nominal}</TableCell>
-                      <TableCell>{item.jangkaWaktu}</TableCell>
-                      <TableCell>{item.periode}</TableCell>
-                      <TableCell>{item.rate}%</TableCell>
-                      <TableCell>{item.alokasi}</TableCell>
-                      <TableCell>{item.namaRekeningTujuanPencairan}</TableCell>
-                      <TableCell>{item.nomorRekeningTujuanPencairan}</TableCell>
-                      <TableCell>{item.nomorRekeningPlacement}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {/* Bulk Deposito OCR Form - placed above Dropzone */}
+      <FormProvider {...form}>
+        <BulkDepositoOcrForm
+          form={form}
+          showConditionalFields={true}
+          sumberDanaOptions={sumberDanaOptions}
+          rekeningSumberDanaOptions={rekeningSumberDanaOptions}
+          mataUangOptions={mataUangOptions}
+          kodeProdukOptions={kodeProdukOptions}
+          jenisPerpanjanganOptions={jenisPerpanjanganOptions}
+          metodeBungaOptions={metodeBungaOptions}
+          bankTujuanBungaOptions={bankTujuanBungaOptions}
+          jenisTransferBungaOptions={jenisTransferBungaOptions}
+          jenisTransaksiSKNBungaOptions={jenisTransaksiSKNBungaOptions}
+          jenisTransaksiRTGSBungaOptions={jenisTransaksiRTGSBungaOptions}
+          jenisNasabahPenerimaBungaOptions={jenisNasabahPenerimaBungaOptions}
+          statusKependudukanPenerimaBungaOptions={statusKependudukanPenerimaBungaOptions}
+          metodePokokOptions={metodePokokOptions}
+          bankTujuanPokokOptions={bankTujuanPokokOptions}
+          approverBungaOptions={approverBungaOptions}
+          namaApproverOptions={namaApproverOptions}
+          automaticTransferOptions={automaticTransferOptions}
+          transferBungaDanPokokOptions={transferBungaDanPokokOptions}
+          transferBungaOptions={transferBungaOptions}
+          transferPokokOptions={transferPokokOptions}
+          jenisTransaksiSKNPokokOptions={jenisTransaksiSKNPokokOptions}
+          jenisTransaksiRTGSPokokOptions={jenisTransaksiRTGSPokokOptions}
+          biayaTransferOptions={biayaTransferOptions}
+          biayaMateraiOptions={biayaMateraiOptions}
+        />
+      </FormProvider>
+
+      <Button
+        type="button"
+        variant="secondary"
+        onClick={handleAddToList}
+        disabled={isPending}
+      >
+        {"Add to List"}
+      </Button>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Batch Summary</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <BatchSummaryForm form={form} />
+        </CardContent>
+      </Card>
+
+      <FormActions
+        onSubmit={handleSubmit}
+        onKembali={handleKembali}
+        isSubmitting={isPending}
+      />
     </div>
   );
 }

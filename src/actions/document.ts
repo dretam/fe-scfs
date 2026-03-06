@@ -1,7 +1,7 @@
 "use server";
 
 import { DocumentUpdateActionFormData } from "@/types/form-data";
-import { DocumentEntity } from "@/types/entity";
+import { DocumentEntity, OCRDataEntity } from "@/types/entity";
 import {
   uploadDocument,
   getListDocument,
@@ -15,7 +15,7 @@ import {
   GetListDocumentRequest,
   GetRetrieveDocumentRequest,
 } from "@/types/request";
-import { DocumentResponse, Result } from "@/types/response";
+import { DocumentResponse, OCRResponse, Result } from "@/types/response";
 
 
 /**
@@ -23,7 +23,7 @@ import { DocumentResponse, Result } from "@/types/response";
  */
 export async function uploadDocumentAction(
   formData: FormData
-): Promise<Result<DocumentResponse>> {
+): Promise<Result<OCRDataEntity[]>> {
   const file = formData.get("file") as File | null;
 
   if (!file) {
