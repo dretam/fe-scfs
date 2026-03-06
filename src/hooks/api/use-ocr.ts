@@ -11,7 +11,7 @@ import {
   OCRResponse
 } from "@/types/response"
 import { useAppMutation } from "../core/use-mutation"
-import { approveOcrDataAction, rejectOcrDataAction } from "@/actions/ocr"
+import { approveOcrDataAction, rejectOcrDataAction } from "@/features/ocr-data/api/ocr"
 import { OCRDataEntity } from "@/types/entity"
 
 export function useOcrDataList(

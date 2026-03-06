@@ -17,7 +17,7 @@ import {selectLogoutDialogIsOpen, setLogoutDialog} from "@/stores/dialog/logout"
 import {useRouter} from "next/navigation";
 import {useAppDispatch} from "@/hooks/store/use-app-dispatch";
 import {resetUser} from "@/stores/entity/user";
-import {logoutAction} from "@/actions/auth";
+import {logoutAction} from "@/features/auth/api/auth";
 
 
 export function DialogLogout({...props}: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {

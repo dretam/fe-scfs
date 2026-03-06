@@ -1,4 +1,4 @@
-import FormLogin from "@/components/form/login";
+import { FormLogin } from "@/features/auth";
 import CommonCompanyLogo from "@/components/common/company-logo";
 
 export default function LoginPage() {
@@ -7,13 +7,13 @@ export default function LoginPage() {
 			<div className="flex flex-col gap-4 p-6 md:p-10">
 				<div className="flex justify-center gap-2 md:justify-start">
 					<div className="flex items-center gap-2 font-medium">
-						<CommonCompanyLogo href="/" width={50} height={50}/>
+						<CommonCompanyLogo href="/" width={50} height={50} />
 						Corporate System
 					</div>
 				</div>
 				<div className="flex flex-1 items-center justify-center">
 					<div className="w-full max-w-xs">
-						<FormLogin/>
+						<FormLogin />
 					</div>
 				</div>
 			</div>
