@@ -1,6 +1,6 @@
 'use client'
 
-import { useReadHook } from "../core/use-read"
+import { useReadHook } from "../../../hooks/core/use-read"
 import { getListOcrData, getOcrDataById } from "@/data/ocr"
 import {
   GetListOcrDataRequest,
@@ -10,8 +10,8 @@ import {
 import {
   OCRResponse
 } from "@/types/response"
-import { useAppMutation } from "../core/use-mutation"
-import { approveOcrDataAction, rejectOcrDataAction } from "@/features/ocr-data/api/ocr"
+import { useAppMutation } from "../../../hooks/core/use-mutation"
+import { approveOcrDataAction, rejectOcrDataAction } from "./ocr"
 import { OCRDataEntity } from "@/types/entity"
 
 export function useOcrDataList(

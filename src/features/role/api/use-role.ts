@@ -1,6 +1,6 @@
 'use client'
 
-import { useReadHook } from "../core/use-read"
+import { useReadHook } from "../../../hooks/core/use-read"
 import { getListRole, getRetrieveRole } from "@/data/role"
 import {
   GetListRoleRequest,

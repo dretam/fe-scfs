@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRoleList } from "@/hooks/api/use-role";
+import { useRoleList } from "../../role/api";
 import { passwordValidation } from "@/shared/schema/validation";
 
 export const userSchema = z.object({

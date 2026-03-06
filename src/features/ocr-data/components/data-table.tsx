@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { DataTable } from "@/components/common/data-table";
 import PageOcrDataFilterTable from "@/features/ocr-data/components/filter-table";
 import { columns } from "@/features/ocr-data/components/column-table";
-import { useApproveOcrData, useOcrDataList, useRejectOcrData } from "@/hooks/api/use-ocr";
+import { useApproveOcrData, useOcrDataList, useRejectOcrData } from "../api";
 import { OCRResponse } from "@/types/response";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";

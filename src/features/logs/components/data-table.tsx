@@ -2,18 +2,18 @@
 
 import { DataTable } from "@/components/common/data-table";
 import { useSearchParams } from "next/navigation";
-import { useAccessLogList } from "@/hooks/api/use-log";
+import { useAccessLogList } from "../api";
 import * as React from "react";
 import PageLogsFilterTable from "@/features/logs/components/filter-table";
-import {columns} from "@/features/logs/components/column-table";
-import {AccessLogResponse} from "@/types/response";
+import { columns } from "@/features/logs/components/column-table";
+import { AccessLogResponse } from "@/types/response";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import {Badge} from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 
 export function PageLogsDataTable({ className, ...props }: React.ComponentProps<"div">) {
 	const searchParams = useSearchParams();

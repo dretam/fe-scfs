@@ -28,8 +28,8 @@ import {
   useUserList,
   useUserSoftDelete,
   useUserUpdate,
-} from "@/hooks/api/use-user";
-import { useInternalUserRetrieve } from "@/hooks/api/use-internal-user";
+  useInternalUserRetrieve,
+} from "../api";
 import { useDebouncedCallback } from "@/hooks/helper/useDebounce";
 
 import {

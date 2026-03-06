@@ -2,11 +2,11 @@
 
 import { DataTable } from "@/components/common/data-table";
 import { useSearchParams } from "next/navigation";
-import { useDocumentList } from "@/hooks/api/use-document";
+import { useDocumentList } from "../../api";
 import * as React from "react";
-import {documentListColumns} from "@/features/document/components/list/column-table";
-import {DocumentResponse} from "@/types/response";
-import {toast} from "sonner";
+import { documentListColumns } from "@/features/document/components/list/column-table";
+import { DocumentResponse } from "@/types/response";
+import { toast } from "sonner";
 import {
 	Dialog,
 	DialogContent,
@@ -23,9 +23,9 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {deleteDocumentAction, destroyDocumentAction} from "@/features/document/api/document";
-import {Button} from "@/components/ui/button";
-import {FileText, Download, Plus} from "lucide-react";
+import { deleteDocumentAction, destroyDocumentAction } from "@/features/document/api/document";
+import { Button } from "@/components/ui/button";
+import { FileText, Plus } from "lucide-react";
 import PageDocumentListFilterTable from "@/features/document/components/list/filter-table";
 
 export function PageDocumentListTable({ className, ...props }: React.ComponentProps<"div">) {
@@ -37,7 +37,7 @@ export function PageDocumentListTable({ className, ...props }: React.ComponentPr
 		filter: searchParams.get("filter"),
 	}), [searchParams]);
 
-	const { response, isLoading, isError } = useDocumentList(request);
+	const { data: response, isLoading, isError } = useDocumentList(request);
 
 	// Dialog states
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
@@ -67,14 +67,14 @@ export function PageDocumentListTable({ className, ...props }: React.ComponentPr
 
 		if (isHardDelete) {
 			const result = await destroyDocumentAction(selectedDocument.id);
-			if (result.isSuccess) {
+			if (result.success) {
 				toast.success("Document permanently deleted");
 			} else {
 				toast.error("Failed to delete document");
 			}
 		} else {
 			const result = await deleteDocumentAction(selectedDocument.id);
-			if (result.isSuccess) {
+			if (result.success) {
 				toast.success("Document soft deleted");
 			} else {
 				toast.error("Failed to delete document");
@@ -107,7 +107,7 @@ export function PageDocumentListTable({ className, ...props }: React.ComponentPr
 			<div className="flex justify-between items-center mb-4">
 				<PageDocumentListFilterTable className="my-0" />
 				<Button onClick={() => toast.info("Upload document - use the form above")} variant="outline">
-					<Plus className="mr-2 h-4 w-4"/>
+					<Plus className="mr-2 h-4 w-4" />
 					Upload Document
 				</Button>
 			</div>
@@ -181,7 +181,7 @@ export function PageDocumentListTable({ className, ...props }: React.ComponentPr
 										<div>
 											<p className="text-sm text-muted-foreground">Updated At</p>
 											<p className="font-medium">
-												{selectedDocument.updatedAt 
+												{selectedDocument.updatedAt
 													? new Date(selectedDocument.updatedAt).toLocaleString("id-ID")
 													: '-'
 												}

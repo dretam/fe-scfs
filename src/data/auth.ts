@@ -88,6 +88,7 @@ export async function getAuthSession(): Promise<Result<UserEntity>> {
 
   return {
     success: true,
+    message: "Success",
     data: {
       id: data.id,
       name: data.name,

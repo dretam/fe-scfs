@@ -2,14 +2,14 @@
 
 import { DataTable } from "@/components/common/data-table";
 import { useSearchParams } from "next/navigation";
-import { useRoleList } from "@/hooks/api/use-role";
+import { useRoleList } from "../api";
 import * as React from "react";
 import PageRoleFilterTable from "@/features/role/components/filter-table";
-import {columns} from "@/features/role/components/column-table";
-import {RoleResponse} from "@/types/response";
-import {Button} from "@/components/ui/button";
-import {Plus} from "lucide-react";
-import {toast} from "sonner";
+import { columns } from "@/features/role/components/column-table";
+import { RoleResponse } from "@/types/response";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -20,7 +20,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {roleDeleteAction, roleDestroyAction} from "@/features/role/api/role";
+import { roleDeleteAction, roleDestroyAction } from "@/features/role/api/role";
 
 export function PageRoleDataTable({ className, ...props }: React.ComponentProps<"div">) {
 	const searchParams = useSearchParams();
@@ -83,7 +83,7 @@ export function PageRoleDataTable({ className, ...props }: React.ComponentProps<
 			<div className="flex justify-between items-center mb-4">
 				<PageRoleFilterTable className="my-0" />
 				<Button onClick={() => toast.info("Create role - coming soon")}>
-					<Plus className="mr-2 h-4 w-4"/>
+					<Plus className="mr-2 h-4 w-4" />
 					Add Role
 				</Button>
 			</div>
