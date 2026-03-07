@@ -6,11 +6,14 @@ import {
   removeCookieAccessToken,
   createCookieAccessToken,
 } from "@/lib/auth-token";
-import { getAuthSession, postAuthLogin } from "@/data/auth";
+import { getAuthSession, postAuthLogin } from "../service";
+
 import { persistor } from "@/lib/store";
 import { Result } from "@/types/response";
 import { AuthLoginActionFormData } from "@/types/form-data";
-import { UserEntity } from "@/types/entity";
+import { UserEntity } from "@/features/user";
+
+
 
 
 /**

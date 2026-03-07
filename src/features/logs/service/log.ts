@@ -2,10 +2,11 @@
 
 import {
   GetListAccessLogRequest,
-  GetRetrieveAccessLogRequest
-} from "@/types/request";
+  GetRetrieveAccessLogRequest,
+  AccessLogResponse
+} from "../types";
+import { Result } from "@/types/response";
 
-import { AccessLogResponse, Result } from "@/types/response";
 import { serverHttp } from "@/lib/server/server-fetch";
 
 

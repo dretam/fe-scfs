@@ -1,13 +1,14 @@
 "use server";
 
 import { NextRequest } from 'next/server';
-import { PostAuthLoginRequest } from "@/types/request";
-import { AuthLoginResponse, Result } from "@/types/response";
+import { PostAuthLoginRequest, AuthLoginResponse } from "../types";
+import { Result } from "@/types/response";
+
 import { serverHttp } from "@/lib/server/server-fetch";
 import { cookies } from "next/headers";
 import { COOKIE_ACCESS_TOKEN, COOKIE_REFRESH_TOKEN, BACKEND_URL } from "@/lib/config-const";
-import { UserEntity } from "@/types/entity";
-import { UserResponse } from "@/types/response";
+import { UserEntity, UserResponse } from "@/features/user";
+
 
 
 /**

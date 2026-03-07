@@ -1,21 +1,15 @@
 "use server";
 
 import { OcrDataUpdateActionFormData } from "@/types/form-data";
-import { OCRDataEntity } from "@/types/entity";
-import {
-  getListOcrData,
-  getOcrDataById,
-  updateOcrData,
-  approveOcrData,
-  rejectOcrData,
-  hardDeleteOcrData
-} from "@/data/ocr";
 import {
   GetListOcrDataRequest,
   GetRetrieveOcrDataRequest,
-  PostBulkOcrDataRequest
-} from "@/types/request";
-import { OCRResponse, Result } from "@/types/response";
+  PostBulkOcrDataRequest,
+  OCRResponse,
+  OCRDataEntity
+} from "../types";
+import { Result } from "@/types/response";
+import { getListOcrData, getOcrDataById, updateOcrData, approveOcrData, rejectOcrData, hardDeleteOcrData } from "../service";
 
 
 /**

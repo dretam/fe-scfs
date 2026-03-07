@@ -1,8 +1,10 @@
 "use client";
 
 import { useReadHook } from "@/hooks/core/use-read";
-import { getRetrieveInternalUser } from "@/data/internal-user";
-import { InternalUserResponse } from "@/types/response";
+import { getRetrieveInternalUser } from "../service";
+
+import { InternalUserResponse } from "../types";
+
 
 export function useInternalUserRetrieve(username: string) {
   return useReadHook<InternalUserResponse>({

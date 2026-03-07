@@ -6,7 +6,8 @@ import { useAccessLogList } from "../api";
 import * as React from "react";
 import PageLogsFilterTable from "@/features/logs/components/filter-table";
 import { columns } from "@/features/logs/components/column-table";
-import { AccessLogResponse } from "@/types/response";
+import { AccessLogResponse } from "../types";
+
 import {
 	Dialog,
 	DialogContent,

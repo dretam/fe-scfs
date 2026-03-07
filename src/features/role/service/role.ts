@@ -6,13 +6,10 @@ import {
   PostRoleRequest,
   DeleteRoleRequest,
   PutRoleRequest,
-} from "@/types/request"
+  RoleResponse
+} from "../types";
+import { Result } from "@/types/response";
 
-import {
-  ReadResponse,
-  Result,
-  RoleResponse,
-} from "@/types/response"
 import { serverHttp } from "@/lib/server/server-fetch"
 
 

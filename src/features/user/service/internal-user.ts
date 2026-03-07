@@ -1,8 +1,9 @@
 "use server";
 
 import { serverHttp } from "@/lib/server/server-fetch";
-import { GetRetrieveInternalUser } from "@/types/request";
-import { InternalUserResponse, Result } from "@/types/response";
+import { GetRetrieveInternalUser, InternalUserResponse } from "../types";
+import { Result } from "@/types/response";
+
 
 export async function getRetrieveInternalUser(
   request: GetRetrieveInternalUser

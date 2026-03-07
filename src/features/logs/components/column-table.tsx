@@ -1,23 +1,25 @@
-import {ColumnDef} from "@tanstack/react-table"
-import {AccessLogResponse} from "@/types/response"
-import {Button} from "@/components/ui/button"
-import {SortIcon} from "@/components/common/sort-icon";
-import {Badge} from "@/components/ui/badge";
+import { ColumnDef } from "@tanstack/react-table"
+
+import { AccessLogResponse } from "../types";
+
+import { Button } from "@/components/ui/button"
+import { SortIcon } from "@/components/common/sort-icon";
+import { Badge } from "@/components/ui/badge";
 
 interface ColumnsProps {
 	onViewDetails: (log: AccessLogResponse) => void;
 }
 
-export const columns = ({onViewDetails}: ColumnsProps): ColumnDef<AccessLogResponse>[] => [
+export const columns = ({ onViewDetails }: ColumnsProps): ColumnDef<AccessLogResponse>[] => [
 	{
 		accessorKey: "id",
 		header: "ID",
-		cell: ({row}) => row.getValue("id"),
+		cell: ({ row }) => row.getValue("id"),
 	},
 	{
 		accessorKey: "user",
 		header: "User",
-		cell: ({row}) => {
+		cell: ({ row }) => {
 			const user = row.getValue("user") as AccessLogResponse["user"];
 			return user?.name ?? "-";
 		},
@@ -25,7 +27,7 @@ export const columns = ({onViewDetails}: ColumnsProps): ColumnDef<AccessLogRespo
 	{
 		accessorKey: "httpMethod",
 		header: "Method",
-		cell: ({row}) => {
+		cell: ({ row }) => {
 			const method = row.getValue("httpMethod") as string;
 			const methodColors: Record<string, string> = {
 				GET: "bg-blue-500",
@@ -43,7 +45,7 @@ export const columns = ({onViewDetails}: ColumnsProps): ColumnDef<AccessLogRespo
 	},
 	{
 		accessorKey: "uri",
-		header: ({column}) => {
+		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
@@ -52,20 +54,20 @@ export const columns = ({onViewDetails}: ColumnsProps): ColumnDef<AccessLogRespo
 					}
 				>
 					URI
-					<SortIcon column={column}/>
+					<SortIcon column={column} />
 				</Button>
 			)
 		},
-		cell: ({row}) => row.getValue("uri"),
+		cell: ({ row }) => row.getValue("uri"),
 	},
 	{
 		accessorKey: "ipAddress",
 		header: "IP Address",
-		cell: ({row}) => row.getValue("ipAddress"),
+		cell: ({ row }) => row.getValue("ipAddress"),
 	},
 	{
 		accessorKey: "statusCode",
-		header: ({column}) => {
+		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
@@ -74,11 +76,11 @@ export const columns = ({onViewDetails}: ColumnsProps): ColumnDef<AccessLogRespo
 					}
 				>
 					Status
-					<SortIcon column={column}/>
+					<SortIcon column={column} />
 				</Button>
 			)
 		},
-		cell: ({row}) => {
+		cell: ({ row }) => {
 			const statusCode = row.getValue("statusCode") as number;
 			const statusColor = statusCode >= 400 ? "text-red-500" : statusCode >= 300 ? "text-yellow-500" : "text-green-500";
 			return <span className={statusColor}>{statusCode}</span>;
@@ -86,7 +88,7 @@ export const columns = ({onViewDetails}: ColumnsProps): ColumnDef<AccessLogRespo
 	},
 	{
 		accessorKey: "responseTimeMs",
-		header: ({column}) => {
+		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
@@ -95,15 +97,15 @@ export const columns = ({onViewDetails}: ColumnsProps): ColumnDef<AccessLogRespo
 					}
 				>
 					Response Time
-					<SortIcon column={column}/>
+					<SortIcon column={column} />
 				</Button>
 			)
 		},
-		cell: ({row}) => `${row.getValue("responseTimeMs")} ms`,
+		cell: ({ row }) => `${row.getValue("responseTimeMs")} ms`,
 	},
 	{
 		accessorKey: "createdAt",
-		header: ({column}) => {
+		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
@@ -112,11 +114,11 @@ export const columns = ({onViewDetails}: ColumnsProps): ColumnDef<AccessLogRespo
 					}
 				>
 					Created at
-					<SortIcon column={column}/>
+					<SortIcon column={column} />
 				</Button>
 			)
 		},
-		cell: ({row}) => {
+		cell: ({ row }) => {
 			const date = new Date(row.getValue("createdAt") as string);
 			return date.toLocaleDateString("id-ID", {
 				year: "numeric",

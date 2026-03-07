@@ -16,7 +16,8 @@ import { FileIcon, Trash2Icon } from "lucide-react";
 import { useTransition, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { OCRDataEntity } from "@/types/entity";
+import { OCRDataEntity } from "@/features/ocr-data/types";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   BulkDepositoOcrForm,

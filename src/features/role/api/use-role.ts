@@ -1,14 +1,14 @@
 'use client'
 
 import { useReadHook } from "@/hooks/core/use-read"
-import { getListRole, getRetrieveRole } from "@/data/role"
+import { getListRole, getRetrieveRole } from "../service"
+
 import {
   GetListRoleRequest,
-  GetRetrieveRoleRequest
-} from "@/types/request"
-import {
+  GetRetrieveRoleRequest,
   RoleResponse
-} from "@/types/response"
+} from "../types"
+
 
 export function useRoleList(
   request: GetListRoleRequest

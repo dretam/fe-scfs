@@ -1,53 +1,67 @@
-# Backend Dashboard TMG - API Documentation
+# API Documentation Index
 
-This folder contains comprehensive API documentation for the Backend Dashboard TMG application.
-
-## Overview
-
-The application is built using **Hexagonal Architecture** (Ports and Adapters) with Spring Boot 3.5.9 and Java 21.
-
-**Base URL:** `/api/v1`
-
-**Authentication:** JWT Bearer Token (except login/refresh endpoints)
+**Base Path:** `/api/v1`  
+**Project:** Bank Mega Corsys Backend  
+**Version:** 1.0
 
 ---
 
 ## Table of Contents
 
-| Entity | File | Description |
-|--------|------|-------------|
-| Authentication | [auth.md](./auth.md) | Login, logout, token refresh, session management |
-| Roles | [roles.md](./roles.md) | Role management (CRUD operations) |
-| Users | [users.md](./users.md) | User management (CRUD operations) |
-| Documents | [documents.md](./documents.md) | Document upload, management, and OCR processing |
-| OCR Data | [ocr.md](./ocr.md) | OCR data management (read, update, delete) |
-| Access Logs | [logs.md](./logs.md) | Access log viewing and filtering |
+### Authentication & Authorization
+
+1. [Auth API](./01-auth-api.md) - Login, refresh token, session management
+2. [User API](./02-user-api.md) - User CRUD operations
+3. [Role API](./03-role-api.md) - Role management and assignments
+4. [Permission API](./04-permission-api.md) - Permission management
+5. [User Permission API](./05-user-permission-api.md) - User-specific permission overrides
+
+### Resource Management
+
+6. [Menu API](./06-menu-api.md) - Menu/navigation management
+7. [Branch API](./07-branch-api.md) - Branch office management
+8. [Internal User API](./08-internal-user-api.md) - Employee/internal user management
+
+### Document Processing
+
+9. [Document API](./09-document-api.md) - File upload and document management
+10. [OCR Data API](./10-ocr-data-api.md) - OCR data processing and approval
+
+### Monitoring
+
+11. [Log API](./11-log-api.md) - Access log retrieval
+
+### Error Handling
+
+12. [Exception Handling](./12-exception-handling.md) - Global error responses
 
 ---
 
-## Common Response Formats
+## Quick Reference
 
-### Success Response (Single Item)
-```json
-{
-  "status": 200,
-  "message": "OK",
-  "data": { ... }
-}
+### Authentication Flow
+
+```
+1. POST /api/v1/auth/login → Get access token
+2. Use token in Authorization header: Bearer <token>
+3. Token expires? POST /api/v1/auth/refresh
+4. GET /api/v1/auth/session → Get current user info
 ```
 
-### Success Response (List with Pagination)
+### Common Response Formats
+
+#### List Response
 ```json
 {
   "status": 200,
   "message": "OK",
-  "data": [ ... ],
+  "data": [],
   "pagination": {
-    "currentPage": 1,
-    "totalPage": 5,
-    "perPage": 10,
-    "total": 50,
+    "total": 100,
     "count": 10,
+    "currentPage": 1,
+    "perPage": 10,
+    "totalPage": 10,
     "hasNext": true,
     "hasPrevious": false,
     "hasContent": true
@@ -55,148 +69,138 @@ The application is built using **Hexagonal Architecture** (Ports and Adapters) w
 }
 ```
 
-### Error Response
+#### Retrieve Response
+```json
+{
+  "status": 200,
+  "message": "OK",
+  "data": {}
+}
+```
+
+#### Delete Response
+```json
+{
+  "status": 200,
+  "message": "OK",
+  "id": {}
+}
+```
+
+#### Error Response
 ```json
 {
   "status": 400,
-  "message": "Bad Request",
-  "errors": [
-    "Error message 1",
-    "Error message 2"
-  ]
+  "type": "ExceptionClassName",
+  "message": "Error message",
+  "timestamp": "2024-01-01T00:00:00Z"
 }
 ```
+
+---
+
+## Permission Matrix
+
+| Endpoint | Required Permission |
+|----------|---------------------|
+| `/api/v1/users/**` | USER_READ, USER_CREATE, USER_UPDATE, USER_DELETE |
+| `/api/v1/roles/**` | ROLE_READ, ROLE_CREATE, ROLE_UPDATE, ROLE_DELETE |
+| `/api/v1/permissions/**` | PERMISSION_READ, PERMISSION_CREATE, PERMISSION_UPDATE, PERMISSION_DELETE |
+| `/api/v1/menus/**` | MENU_READ, MENU_CREATE, MENU_UPDATE, MENU_DELETE |
+| `/api/v1/users/{userId}/permissions/**` | USER_READ, USER_UPDATE |
+
+---
+
+## HTTP Methods
+
+| Method | Description | Typical Use |
+|--------|-------------|-------------|
+| GET    | Retrieve    | List or get resource |
+| POST   | Create      | Create new resource or action |
+| PUT    | Update      | Update existing resource |
+| DELETE | Delete      | Soft delete or permanent delete |
+
+---
+
+## Query Parameters
+
+### Pagination (All List Endpoints)
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| page      | 1       | Page number |
+| perPage   | 5       | Items per page |
+| filter    | -       | Filter criteria |
+| sort      | -       | Sort criteria |
+| expands   | -       | Expand related entities |
+
+### Sort Syntax
+
+- Ascending: `sort=fieldName`
+- Descending: `sort=-fieldName`
+
+### Filter Syntax
+
+- Simple: `filter=status:active`
+- Multiple: `filter=status:active,role:admin`
 
 ---
 
 ## Authentication
 
-All endpoints (except `/api/v1/auth/login` and `/api/v1/auth/refresh`) require a valid JWT Bearer token.
+All endpoints (except login and refresh) require JWT authentication.
 
 **Header Format:**
 ```
-Authorization: Bearer <your_access_token>
+Authorization: Bearer <access_token>
 ```
 
-### Obtaining a Token
-
-**Request:**
-```http
-POST /api/v1/auth/login
-Content-Type: application/json
-
-{
-  "username": "admin",
-  "password": "password123",
-  "rememberMe": false
-}
-```
-
-**Response:**
-```json
-{
-  "status": 200,
-  "message": "OK",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
-
----
-
-## Common Query Parameters
-
-| Parameter | Type   | Default | Description                    |
-|-----------|--------|---------|--------------------------------|
-| page      | int    | 1       | Page number for pagination     |
-| perPage   | int    | 5       | Items per page                 |
-| filter    | string | -       | Search filter                  |
-| sort      | string | -       | Sort field                     |
-| expands   | string | -       | Related entities to include    |
-
----
-
-## HTTP Status Codes
-
-| Code | Description | Meaning |
-|------|-------------|---------|
-| 200  | OK          | Request successful |
-| 201  | Created     | Resource created successfully |
-| 400  | Bad Request | Invalid request parameters |
-| 401  | Unauthorized | Missing or invalid authentication |
-| 403  | Forbidden   | Insufficient permissions |
-| 404  | Not Found   | Resource not found |
-| 409  | Conflict    | Resource already exists |
-| 413  | Payload Too Large | File size exceeds limit |
-| 422  | Unprocessable Entity | Invalid data format |
-| 500  | Internal Server Error | Server error |
+**Token Types:**
+- **Access Token:** Short-lived, used for API requests
+- **Refresh Token:** Long-lived, used to obtain new access tokens
 
 ---
 
 ## Rate Limiting
 
-All endpoints are protected by rate limiting:
-- **Limit:** 50 requests per second
-- **Header:** `X-RateLimit-Remaining` shows remaining requests
+All endpoints are protected with a global rate limiter.
+
+**Configuration:** Resilience4j Rate Limiter  
+**Name:** `global`
 
 ---
 
-## API Endpoints Summary
+## Base URL
 
-### Auth (`/api/v1/auth`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET    | `/session` | Get current user session |
-| POST   | `/login` | Login and get tokens |
-| POST   | `/refresh` | Refresh access token |
-
-### Roles (`/api/v1/roles`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET    | `/` | List roles (paginated) |
-| GET    | `/{id}` | Get role by ID |
-| POST   | `/` | Create role |
-| PUT    | `/` | Update role |
-| DELETE | `/` | Soft delete role |
-| DELETE | `/{id}/destroy` | Hard delete role |
-
-### Users (`/api/v1/users`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET    | `/` | List users (paginated) |
-| GET    | `/{id}` | Get user by ID |
-| POST   | `/` | Create user |
-| PUT    | `/` | Update user |
-| DELETE | `/` | Soft delete user |
-| DELETE | `/{id}/destroy` | Hard delete user |
-
-### Documents (`/api/v1/documents`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET    | `/` | List documents (paginated) |
-| GET    | `/{id}` | Get document by ID |
-| POST   | `/` | Upload single document |
-| POST   | `/multiple` | Upload multiple documents |
-| PUT    | `/{id}` | Update document |
-| DELETE | `/` | Soft delete document |
-| DELETE | `/{id}/destroy` | Hard delete document |
-
-### OCR Data (`/api/v1/ocr-data`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET    | `/` | List OCR data (paginated) |
-| GET    | `/{id}` | Get OCR data by ID |
-| PUT    | `/` | Update OCR data |
-| DELETE | `/{id}/destroy` | Hard delete OCR data |
-
-### Logs (`/api/v1/logs`)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET    | `/access` | List access logs (paginated) |
-| GET    | `/access/{id}` | Get access log by ID |
+**Development:** `http://localhost:8080/api/v1`  
+**Production:** (Configure per environment)
 
 ---
 
-## Support
+## Related Documentation
 
-For questions or issues, please contact the development team.
+- [RBAC Documentation](../../rbac.md) - Role-Based Access Control details
+- [General Documentation](../../documentation.md) - Project overview
+
+---
+
+## API Files
+
+| File | Description |
+|------|-------------|
+| [01-auth-api.md](./01-auth-api.md) | Authentication endpoints |
+| [02-user-api.md](./02-user-api.md) | User management |
+| [03-role-api.md](./03-role-api.md) | Role management |
+| [04-permission-api.md](./04-permission-api.md) | Permission management |
+| [05-user-permission-api.md](./05-user-permission-api.md) | User permission overrides |
+| [06-menu-api.md](./06-menu-api.md) | Menu management |
+| [07-branch-api.md](./07-branch-api.md) | Branch management |
+| [08-internal-user-api.md](./08-internal-user-api.md) | Internal user management |
+| [09-document-api.md](./09-document-api.md) | Document upload and management |
+| [10-ocr-data-api.md](./10-ocr-data-api.md) | OCR data processing |
+| [11-log-api.md](./11-log-api.md) | Access logging |
+| [12-exception-handling.md](./12-exception-handling.md) | Error handling reference |
+
+---
+
+*Last Updated: March 7, 2026*

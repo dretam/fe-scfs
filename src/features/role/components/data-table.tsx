@@ -6,7 +6,8 @@ import { useRoleList } from "../api";
 import * as React from "react";
 import PageRoleFilterTable from "@/features/role/components/filter-table";
 import { columns } from "@/features/role/components/column-table";
-import { RoleResponse } from "@/types/response";
+import { RoleResponse } from "../types";
+
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";

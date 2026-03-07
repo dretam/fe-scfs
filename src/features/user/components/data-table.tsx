@@ -38,7 +38,8 @@ import {
   userSchema,
 } from "@/features/user/components/user-form-dialog";
 
-import { UserResponse } from "@/types/response";
+import { UserResponse } from "../types";
+
 
 export function PageUserDataTable({
   className,

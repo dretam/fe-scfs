@@ -5,11 +5,13 @@ import {
   GetRetrieveUserRequest,
   PostUserRequest,
   PutUserRequest,
-  DeleteUserRequest
-} from "@/types/request";
+  DeleteUserRequest,
+  UserResponse,
+  UserEntity
+} from "../types";
 
-import { UserEntity } from "@/types/entity";
-import { UserResponse, Result } from "@/types/response";
+import { Result } from "@/types/response";
+
 import { serverHttp } from "@/lib/server/server-fetch";
 
 
@@ -121,7 +123,7 @@ export async function createUser(
   const data = result.data;
 
   return {
-    success: true, 
+    success: true,
     message: result.message,
     data: {
       id: data.id,
@@ -155,7 +157,7 @@ export async function softDeleteUser(
   const data = result.data;
 
   return {
-    success: true, 
+    success: true,
     message: result.message,
     data: {
       id: data.id,

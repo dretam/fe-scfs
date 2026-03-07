@@ -6,14 +6,18 @@ import {
   UserCreateActionFormData,
   UserDeleteActionFormData
 } from "@/types/form-data";
-import { UserEntity } from "@/types/entity";
+
+
 import {
   putUser,
   createUser,
   softDeleteUser,
   hardDeleteUser
-} from "@/data/user";
+} from "../service";
+
+import { UserResponse, UserEntity } from "../types";
 import { Result } from "@/types/response";
+
 
 
 /**

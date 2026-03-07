@@ -1,12 +1,13 @@
-import {NextRequest, NextResponse} from 'next/server';
-import {cookies} from 'next/headers'
+import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers'
 import {
 	COOKIE_ACCESS_TOKEN,
 	COOKIE_REFRESH_TOKEN,
 	PUBLIC_ROUTES
 } from "@/lib/config-const";
-import {postAuthRefresh} from "@/data/auth";
-import {refreshCookieAccessToken} from "@/lib/auth-token";
+import { postAuthRefresh } from "@/features/auth/service";
+
+import { refreshCookieAccessToken } from "@/lib/auth-token";
 
 export default async function proxy(req: NextRequest) {
 	const appCookies = await cookies();

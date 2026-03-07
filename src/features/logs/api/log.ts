@@ -2,10 +2,13 @@
 
 import {
   GetListAccessLogRequest,
-  GetRetrieveAccessLogRequest
-} from "@/types/request";
-import { AccessLogResponse, Result } from "@/types/response";
-import { getListAccessLogs, getAccessLogById } from "@/data/log";
+  GetRetrieveAccessLogRequest,
+  AccessLogResponse,
+} from "../types";
+import { Result } from "@/types/response";
+
+import { getListAccessLogs, getAccessLogById } from "../service";
+
 
 
 /**

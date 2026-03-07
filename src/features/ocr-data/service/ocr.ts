@@ -4,11 +4,13 @@ import {
   GetListOcrDataRequest,
   GetRetrieveOcrDataRequest,
   PutOcrDataRequest,
-  PostBulkOcrDataRequest
-} from "@/types/request";
+  PostBulkOcrDataRequest,
+  OCRResponse
+} from "../types";
+import { Result } from "@/types/response";
 
-import { OCRResponse, Result } from "@/types/response";
-import { OCRDataEntity } from "@/types/entity";
+import { OCRDataEntity } from "../types";
+
 import { serverHttp } from "@/lib/server/server-fetch";
 
 /**

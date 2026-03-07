@@ -9,8 +9,13 @@ import {
   updateRole,
   softDeleteRole,
   hardDeleteRole
-} from "@/data/role"
-import { Result, RoleResponse } from "@/types/response"
+} from "../service"
+
+import { getListRole, getRetrieveRole } from "../service"
+
+import { Result } from "@/types/response"
+import { RoleResponse } from "../types"
+
 
 
 /**

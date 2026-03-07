@@ -5,7 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { useDocumentList } from "../../api";
 import * as React from "react";
 import { documentListColumns } from "@/features/document/components/list/column-table";
-import { DocumentResponse } from "@/types/response";
+import { DocumentResponse } from "../../types";
+
 import { toast } from "sonner";
 import {
 	Dialog,

@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { RoleResponse } from "@/types/response";
+import { RoleResponse } from "../types";
+
 import { Button } from "@/components/ui/button";
 import { SortIcon } from "@/components/common/sort-icon";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
@@ -19,88 +20,88 @@ export const columns = ({
   onEdit,
   onDelete,
 }: ColumnsProps): ColumnDef<RoleResponse>[] => [
-  {
-    accessorKey: "id",
-    header: "ID",
-    cell: ({ row, table }) => {
-      const pageIndex = table.getState().pagination.pageIndex;
-      const pageSize = table.getState().pagination.pageSize;
-      const rowNumber = pageIndex * pageSize + row.index + 1;
-      return rowNumber;
+    {
+      accessorKey: "id",
+      header: "ID",
+      cell: ({ row, table }) => {
+        const pageIndex = table.getState().pagination.pageIndex;
+        const pageSize = table.getState().pagination.pageSize;
+        const rowNumber = pageIndex * pageSize + row.index + 1;
+        return rowNumber;
+      },
     },
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <SortIcon column={column} />
-        </Button>
-      );
+    {
+      accessorKey: "name",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Name
+            <SortIcon column={column} />
+          </Button>
+        );
+      },
+      cell: ({ row }) => row.getValue("name"),
     },
-    cell: ({ row }) => row.getValue("name"),
-  },
-  {
-    accessorKey: "icon",
-    header: "Icon",
-    cell: ({ row }) => row.getValue("icon"),
-  },
-  {
-    accessorKey: "description",
-    header: "Description",
-    cell: ({ row }) => row.getValue("description"),
-  },
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Created at
-          <SortIcon column={column} />
-        </Button>
-      );
+    {
+      accessorKey: "icon",
+      header: "Icon",
+      cell: ({ row }) => row.getValue("icon"),
     },
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt") as string);
-      return date.toLocaleDateString("id-ID", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      });
+    {
+      accessorKey: "description",
+      header: "Description",
+      cell: ({ row }) => row.getValue("description"),
     },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const role = row.original;
+    {
+      accessorKey: "createdAt",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Created at
+            <SortIcon column={column} />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        const date = new Date(row.getValue("createdAt") as string);
+        return date.toLocaleDateString("id-ID", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const role = row.original;
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => onEdit(role)}>
-              <Pencil className="mr-2 h-4 w-4" />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onDelete(role)}>
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onEdit(role)}>
+                <Pencil className="mr-2 h-4 w-4" />
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onDelete(role)}>
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
     },
-  },
-];
+  ];

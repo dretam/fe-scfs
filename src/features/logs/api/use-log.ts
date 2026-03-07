@@ -1,14 +1,14 @@
 'use client'
 
 import { useReadHook } from "@/hooks/core/use-read"
-import { getListAccessLogs, getAccessLogById } from "@/data/log"
+import { getListAccessLogs, getAccessLogById } from "../service"
+
 import {
   GetListAccessLogRequest,
-  GetRetrieveAccessLogRequest
-} from "@/types/request"
-import {
+  GetRetrieveAccessLogRequest,
   AccessLogResponse
-} from "@/types/response"
+} from "../types"
+
 
 export function useAccessLogList(
   request: GetListAccessLogRequest

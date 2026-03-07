@@ -1,7 +1,9 @@
 "use server";
 
 import { DocumentUpdateActionFormData } from "@/types/form-data";
-import { DocumentEntity, OCRDataEntity } from "@/types/entity";
+import { DocumentEntity } from "../types";
+import { OCRDataEntity } from "@/features/ocr-data/types";
+
 import {
   uploadDocument,
   getListDocument,
@@ -10,12 +12,16 @@ import {
   softDeleteDocument,
   hardDeleteDocument,
   uploadMultipleDocuments
-} from "@/data/document";
+} from "../service";
+
 import {
   GetListDocumentRequest,
   GetRetrieveDocumentRequest,
-} from "@/types/request";
-import { DocumentResponse, OCRResponse, Result } from "@/types/response";
+  DocumentResponse,
+} from "../types";
+import { OCRResponse } from "@/features/ocr-data/types";
+import { Result } from "@/types/response";
+
 
 
 /**

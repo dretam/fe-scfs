@@ -1,18 +1,19 @@
 'use client'
 
 import { useReadHook } from "@/hooks/core/use-read"
-import { getListOcrData, getOcrDataById } from "@/data/ocr"
+import { getListOcrData, getOcrDataById } from "../service"
+
 import {
   GetListOcrDataRequest,
   GetRetrieveOcrDataRequest,
-  PostBulkOcrDataRequest
-} from "@/types/request"
-import {
+  PostBulkOcrDataRequest,
   OCRResponse
-} from "@/types/response"
+} from "../types"
+
 import { useAppMutation } from "@/hooks/core/use-mutation"
 import { approveOcrDataAction, rejectOcrDataAction } from "./ocr"
-import { OCRDataEntity } from "@/types/entity"
+import { OCRDataEntity } from "../types";
+
 
 export function useOcrDataList(
   request: GetListOcrDataRequest

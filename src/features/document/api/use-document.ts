@@ -1,14 +1,14 @@
 'use client'
 
 import { useReadHook } from "@/hooks/core/use-read"
-import { getListDocument, getDocumentById } from "@/data/document"
+import { getListDocument, getDocumentById } from "../service"
+
 import {
   GetListDocumentRequest,
-  GetRetrieveDocumentRequest
-} from "@/types/request"
-import {
+  GetRetrieveDocumentRequest,
   DocumentResponse
-} from "@/types/response"
+} from "../types"
+
 
 export function useDocumentList(
   request: GetListDocumentRequest

@@ -3,16 +3,15 @@
 import {
   GetListDocumentRequest,
   GetRetrieveDocumentRequest,
-  DeleteDocumentRequest
-} from "@/types/request";
+  DeleteDocumentRequest,
+  DocumentResponse
+} from "../types";
+import { Result } from "@/types/response";
 
-import {
-  DocumentResponse,
-  ReadResponse,
-  Result
-} from "@/types/response";
 
-import { DocumentEntity, OCRDataEntity } from "@/types/entity";
+import { DocumentEntity } from "../types";
+import { OCRDataEntity } from "@/features/ocr-data/types";
+
 import { serverHttp } from "@/lib/server/server-fetch";
 
 /**

@@ -5,6 +5,48 @@ export interface RoleEntity {
     description: string | null,
 }
 
+export interface GetListRoleRequest {
+    page?: number | null;
+    perPage?: number | null;
+    filter?: string | null;
+    sort?: string | null;
+    expands?: string | null;
+}
+
+export interface GetRetrieveRoleRequest {
+    id: number;
+}
+
+export interface PostRoleRequest {
+    name: string;
+    icon: string;
+    description: string;
+}
+
+export interface PutRoleRequest {
+    id: number;
+    name: string;
+    icon: string;
+    description: string;
+}
+
+export interface DeleteRoleRequest {
+    id: number;
+}
+
+export interface RoleResponse {
+    id: number;
+    name: string;
+    icon: string;
+    description: string;
+    createdAt: string;
+    createdBy: number;
+    updatedAt: string;
+    updatedBy: number;
+    deletedAt: string;
+    deletedBy: number
+}
+
 // Data Utama Deposito
 export interface DataUtamaDepositoFormValues {
     cif: string;

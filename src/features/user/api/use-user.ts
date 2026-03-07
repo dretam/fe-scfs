@@ -1,19 +1,19 @@
 'use client'
 
 import { useReadHook } from "@/hooks/core/use-read"
-import { createUser, getListUser, getRetrieveUser, hardDeleteUser, putUser, softDeleteUser } from "@/data/user"
+import { createUser, getListUser, getRetrieveUser, hardDeleteUser, putUser, softDeleteUser } from "../service"
+
 import {
   DeleteUserRequest,
   GetListUserRequest,
   GetRetrieveUserRequest,
   PostUserRequest,
-  PutUserRequest
-} from "@/types/request"
-import {
-  UserResponse
-} from "@/types/response"
+  PutUserRequest,
+  UserResponse,
+  UserEntity
+} from "../types"
 import { useAppMutation } from "@/hooks/core/use-mutation"
-import { UserEntity } from "@/types/entity"
+
 
 export function useUserList(
   request: GetListUserRequest
