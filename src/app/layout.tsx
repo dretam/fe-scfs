@@ -4,9 +4,9 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import ReduxProvider from "@/app/redux-provider";
-import ThemeProvider from "@/app/theme-provider";
-import QueryProvider from "./query-provider";
+import ReduxProvider from "@/app/__provider/redux-provider";
+import ThemeProvider from "@/app/__provider/theme-provider";
+import QueryProvider from "./__provider/query-provider";
 
 export const metadata: Metadata = {
   title: "Dashboard TMG",

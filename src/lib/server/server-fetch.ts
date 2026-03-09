@@ -40,13 +40,19 @@ class ServerHttp {
     }
 
 
+    console.log(`[ServerHttp] Fetching: ${BACKEND_URL}${endpoint}`);
     const response = await fetch(
       `${BACKEND_URL}${endpoint}`,
       {
         ...fetchOptions,
         headers,
       }
-    )
+    ).catch(err => {
+      console.error(`[ServerHttp] Fetch failed for ${endpoint}:`, err);
+      throw err;
+    });
+
+    console.log(`[ServerHttp] Status: ${response.status} for ${endpoint}`);
 
     const data = await response
       .json()

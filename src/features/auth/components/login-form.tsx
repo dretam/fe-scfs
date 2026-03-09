@@ -26,7 +26,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginAction } from "@/features/auth/api/auth";
 import { toast } from "sonner";
-import { setUser } from "@/stores/entity/user";
+import { setUser } from "@/stores/entity/auth.store";
 import InputPassword from "@/components/input/password";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAppMutation } from "@/hooks/core/use-mutation";

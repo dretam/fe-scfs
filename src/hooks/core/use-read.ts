@@ -9,18 +9,14 @@ type UseReadHookOptions<TData> = {
   queryKey: QueryKey;
   apiCall: () => Promise<Result<TData>>;
 } & Omit<
-  UseQueryOptions<Result<TData>>,
+  UseQueryOptions<Result<TData>, Result<any>>,
   "queryKey" | "queryFn"
 >;
 
 export function useReadHook<TData>(
   options: UseReadHookOptions<TData>
 ) {
-  const {
-    queryKey,
-    apiCall,
-    ...queryOptions
-  } = options;
+  const { queryKey, apiCall, ...queryOptions } = options;
 
   const query = useQuery({
     queryKey,
@@ -38,7 +34,7 @@ export function useReadHook<TData>(
 
   return {
     data: query.data,
-    isLoading: query.isPending,
+    isLoading: query.isLoading,
     isError: query.isError,
     error: query.error as Result<any> | null,
     refetch: query.refetch,

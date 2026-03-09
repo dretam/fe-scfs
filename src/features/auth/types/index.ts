@@ -20,9 +20,36 @@ export interface AuthRefreshResponse {
     accessToken: string;
 }
 
+export interface SessionMenuResponse {
+    id: number;
+    name: string;
+    code: string;
+    path: string;
+    icon: string;
+    parentId: number | null;
+    sortOrder: number;
+}
+
+export interface SessionPermissionResponse {
+    id: number;
+    name: string;
+    code: string;
+    description: string;
+    menuId: number;
+}
+
+export interface SessionRoleResponse extends BaseAuditResponse {
+    id: number;
+    name: string;
+    icon: string;
+    description: string;
+    permissions: SessionPermissionResponse[];
+    menus: SessionMenuResponse[];
+}
+
 export interface UserSessionResponse extends BaseAuditResponse {
     id: number;
     name: string;
     email: string;
-    role: RoleResponse;
+    role: SessionRoleResponse;
 }

@@ -14,7 +14,7 @@ import { changePasswordSchema, ChangePasswordFormValues } from "@/features/auth/
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { selectUserId } from "@/stores/entity/user";
+import { selectUserId } from "@/stores/entity/auth.store";
 import InputPassword from "@/components/input/password";
 import { userChangePasswordAction } from "@/features/user/api/user";
 import { useAppSelector } from "@/hooks/store/use-app-selector";

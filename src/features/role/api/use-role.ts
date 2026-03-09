@@ -18,11 +18,11 @@ export function useRoleList(
       "role-list",
       request.page,
       request.perPage,
-      request.filter,
-      request.expands,
+      request.filter ?? "",
+      request.expands ?? "",
     ],
     apiCall: () => getListRole(request),
-  })
+  });
 }
 
 export function useRoleRetrieve(

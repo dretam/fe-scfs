@@ -30,9 +30,10 @@ export function useLogout() {
 /**
  * SESSION
  */
+
 export function useSession(expands?: string) {
     return useReadHook<UserSessionResponse>({
-        queryKey: ['auth-session', expands],
+        queryKey: ["auth-session", expands ?? ""],
         apiCall: () => getAuthSession(expands),
     });
 }

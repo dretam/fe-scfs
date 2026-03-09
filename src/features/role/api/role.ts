@@ -11,8 +11,6 @@ import {
   hardDeleteRole
 } from "../service"
 
-import { getListRole, getRetrieveRole } from "../service"
-
 import { Result } from "@/types/response"
 import { RoleResponse } from "../types"
 

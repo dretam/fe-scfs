@@ -12,22 +12,22 @@ import {
 } from "@/components/ui/alert-dialog"
 import * as React from "react";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
-import {useAppSelector} from "@/hooks/store/use-app-selector";
-import {selectLogoutDialogIsOpen, setLogoutDialog} from "@/stores/dialog/logout";
-import {useRouter} from "next/navigation";
-import {useAppDispatch} from "@/hooks/store/use-app-dispatch";
-import {resetUser} from "@/stores/entity/user";
-import {logoutAction} from "@/features/auth/api/auth";
+import { useAppSelector } from "@/hooks/store/use-app-selector";
+import { selectLogoutDialogIsOpen, setLogoutDialog } from "@/stores/dialog/logout";
+import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/hooks/store/use-app-dispatch";
+import { resetAuth } from "@/stores/entity/auth.store";
+import { logoutAction } from "@/features/auth/api/auth";
 
 
-export function DialogLogout({...props}: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
+export function DialogLogout({ ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
 	const router = useRouter();
 	const dialogIsOpen: boolean = useAppSelector(selectLogoutDialogIsOpen)
 	const dispatch = useAppDispatch();
 
 	async function onClick(): Promise<void> {
 		await logoutAction()
-		dispatch(resetUser())
+		dispatch(resetAuth())
 		dispatch(setLogoutDialog({
 			isOpen: false
 		}))

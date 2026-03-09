@@ -23,7 +23,7 @@ import {
   selectUserEmail,
   selectUserInitial,
   selectUserName,
-} from "@/stores/entity/user";
+} from "@/stores/entity/auth.store";
 import { setLogoutDialog } from "@/stores/dialog/logout";
 import Link from "next/link";
 

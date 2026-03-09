@@ -1,0 +1,28 @@
+import SidebarAppHeader from "@/components/sidebar/app-header";
+import { BreadcrumbNavItem } from "@/types/common";
+import LayoutSetting from "@/components/layout/setting";
+import HeadingSmall from "@/components/common/heading-small";
+import { FormSettingPassword } from "@/features/user";
+
+export default function SettingPasswordPage() {
+    const breadcrumbs: BreadcrumbNavItem[] = [
+        {
+            title: "Setting",
+            href: "/setting",
+        },
+        {
+            title: "Password",
+            href: "/setting/password",
+        },
+    ]
+    return (
+        <>
+            <SidebarAppHeader breadcrumbs={breadcrumbs} />
+            <LayoutSetting>
+                <HeadingSmall title="Update password"
+                    description="Ensure your account is using a long, random password to stay secure" />
+                <FormSettingPassword />
+            </LayoutSetting>
+        </>
+    )
+}

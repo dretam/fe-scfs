@@ -1,7 +1,6 @@
-import userReducer from '@/stores/entity/user';
-import roleReducer from '@/stores/entity/role';
+import authReducer from '@/stores/entity/auth.store';
 import logoutDialogReducer from '@/stores/dialog/logout';
-import {configureStore} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import {
 	persistStore,
 	persistReducer,
@@ -13,11 +12,10 @@ import {
 	REGISTER,
 } from "redux-persist";
 import storage from "@/lib/redux-storage"; // localStorage
-import {combineReducers} from "redux";
+import { combineReducers } from "redux";
 
 export const rootReducer = combineReducers({
-	user: userReducer,
-	role: roleReducer,
+	auth: authReducer,
 	logoutDialog: logoutDialogReducer,
 });
 

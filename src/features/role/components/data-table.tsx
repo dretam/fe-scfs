@@ -34,6 +34,7 @@ export function PageRoleDataTable({ className, ...props }: React.ComponentProps<
 
 	const { data: response, isLoading, isError } = useRoleList(request);
 
+
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 	const [selectedRole, setSelectedRole] = React.useState<RoleResponse | null>(null);
 	const [isHardDelete, setIsHardDelete] = React.useState(false);

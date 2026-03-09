@@ -13,7 +13,7 @@ import React from "react";
 import { changeProfileSchema, ChangeProfileFormValues } from "@/features/auth/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { selectUserEmail, selectUserId, selectUserName, setUser } from "@/stores/entity/user";
+import { selectUserEmail, selectUserId, selectUserName, setUser } from "@/stores/entity/auth.store";
 import { userChangeProfileAction } from "@/features/user/api/user";
 import { useAppSelector } from "@/hooks/store/use-app-selector";
 import { cn } from "@/lib/utils";
