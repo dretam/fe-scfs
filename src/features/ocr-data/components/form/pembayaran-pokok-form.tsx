@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import type { BulkDepositoOcrFormValues, PembayaranPokokFormValues } from "@/features/role/types";
+import type { BulkDepositoOcrFormValues, PembayaranPokokFormValues } from "@/features/ocr-data/types";
 
 export type { PembayaranPokokFormValues };
 

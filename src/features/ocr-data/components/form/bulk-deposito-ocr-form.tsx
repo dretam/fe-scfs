@@ -9,7 +9,7 @@ import { PembayaranBungaForm } from "./pembayaran-bunga-form";
 import { PembayaranPokokForm } from "./pembayaran-pokok-form";
 import { RateForm } from "./rate-form";
 import { AutomaticTransferForm } from "./automatic-transfer-form";
-import type { BulkDepositoOcrFormValues } from "@/features/role/types";
+import type { BulkDepositoOcrFormValues } from "@/features/ocr-data/types";
 
 export type { BulkDepositoOcrFormValues };
 

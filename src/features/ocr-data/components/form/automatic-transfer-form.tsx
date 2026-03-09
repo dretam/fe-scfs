@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { BulkDepositoOcrFormValues, AutomaticTransferFormValues } from "@/features/role/types";
+import type { BulkDepositoOcrFormValues, AutomaticTransferFormValues } from "@/features/ocr-data/types";
 
 export type { AutomaticTransferFormValues };
 

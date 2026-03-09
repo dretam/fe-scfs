@@ -3,7 +3,6 @@
 import { UseFormReturn } from "react-hook-form";
 
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -19,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { BulkDepositoOcrFormValues, RateFormValues } from "@/features/role/types";
+import type { BulkDepositoOcrFormValues, RateFormValues } from "@/features/ocr-data/types";
 
 export type { RateFormValues };
 
