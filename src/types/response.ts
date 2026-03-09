@@ -47,3 +47,12 @@ export interface ReadResponse<T> {
 	data: T;
 	pagination?: PaginationResponse
 }
+
+export interface BaseAuditResponse {
+	createdAt?: string | null;
+	createdBy?: number | null;
+	updatedAt?: string | null;
+	updatedBy?: number | null;
+	deletedAt?: string | null;
+	deletedBy?: number | null;
+}

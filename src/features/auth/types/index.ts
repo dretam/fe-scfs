@@ -1,4 +1,5 @@
 import { RoleResponse } from "@/features/role";
+import { BaseAuditResponse } from "@/types/response";
 
 export interface PostAuthLoginRequest {
     username: string;
@@ -19,15 +20,9 @@ export interface AuthRefreshResponse {
     accessToken: string;
 }
 
-export interface UserSessionResponse {
+export interface UserSessionResponse extends BaseAuditResponse {
     id: number;
     name: string;
     email: string;
     role: RoleResponse;
-    createdAt: string;
-    createdBy: number;
-    updatedAt: string;
-    updatedBy: number;
-    deletedAt: string | null;
-    deletedBy: number | null;
 }

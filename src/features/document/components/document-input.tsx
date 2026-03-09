@@ -187,7 +187,7 @@ export function PageDocumentDataTable() {
     });
   };
 
-  function parseNominal(value: string) {
+  function parseNominal(value: string) {    
     return Number(value.replace(/\./g, "").replace(",", "."));
   }
 
@@ -196,7 +196,6 @@ export function PageDocumentDataTable() {
   }
   return (
     <div className="flex flex-col justify-start items-start gap-4 p-5">
-      {JSON.stringify(ocrData)}
 
       <Dropzone {...dropzone}>
         <div className="max-w-xl">

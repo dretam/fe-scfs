@@ -1,3 +1,6 @@
+import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
+import { BaseAuditResponse } from "@/types/response";
+
 export interface DocumentEntity {
     id: number;
     filename: string;
@@ -15,18 +18,9 @@ export interface DocumentEntity {
     deletedBy: number;
 }
 
-export interface GetListDocumentRequest {
-    page?: number | null;
-    perPage?: number | null;
-    filter?: string | null;
-    sort?: string | null;
-    expands?: string | null;
-}
+export interface GetListDocumentRequest extends BaseListRequest { }
 
-export interface GetRetrieveDocumentRequest {
-    id: number;
-    expands?: string | null;
-}
+export interface GetRetrieveDocumentRequest extends BaseRetrieveRequest { }
 
 export interface PutDocumentRequest {
     id: number;
@@ -37,7 +31,7 @@ export interface DeleteDocumentRequest {
     id: number;
 }
 
-export interface DocumentResponse {
+export interface DocumentResponse extends BaseAuditResponse {
     id: number
     filename: string
     url: string
@@ -48,11 +42,5 @@ export interface DocumentResponse {
     mimeType: string
     uploadedBy: number
     userId: number
-    createdAt: string
-    createdBy: number
-    updatedAt: string
-    updatedBy: number
-    deletedAt: string
-    deletedBy: number
 }
 

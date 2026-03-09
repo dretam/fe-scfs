@@ -1,4 +1,6 @@
 import { UserEntity, UserResponse } from "@/features/user";
+import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
+import { BaseAuditResponse } from "@/types/response";
 
 
 export interface AccessLogEntity {
@@ -16,20 +18,11 @@ export interface AccessLogEntity {
     createdAt: string;
 }
 
-export interface GetListAccessLogRequest {
-    page?: number | null;
-    perPage?: number | null;
-    filter?: string | null;
-    sort?: string | null;
-    expands?: string | null;
-}
+export interface GetListAccessLogRequest extends BaseListRequest { }
 
-export interface GetRetrieveAccessLogRequest {
-    id: number;
-    expands?: string | null;
-}
+export interface GetRetrieveAccessLogRequest extends BaseRetrieveRequest { }
 
-export interface AccessLogResponse {
+export interface AccessLogResponse extends BaseAuditResponse {
     id: number;
     user: UserResponse | null;
     ipAddress: string;
@@ -41,6 +34,5 @@ export interface AccessLogResponse {
     responseTimeMs: number;
     errorMessage: string | null;
     httpMethod: string;
-    createdAt: string;
 }
 

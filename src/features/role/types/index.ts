@@ -1,3 +1,6 @@
+import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
+import { BaseAuditResponse } from "@/types/response";
+
 export interface RoleEntity {
     id: number | null,
     name: string | null,
@@ -5,17 +8,9 @@ export interface RoleEntity {
     description: string | null,
 }
 
-export interface GetListRoleRequest {
-    page?: number | null;
-    perPage?: number | null;
-    filter?: string | null;
-    sort?: string | null;
-    expands?: string | null;
-}
+export interface GetListRoleRequest extends BaseListRequest { }
 
-export interface GetRetrieveRoleRequest {
-    id: number;
-}
+export interface GetRetrieveRoleRequest extends BaseRetrieveRequest { }
 
 export interface PostRoleRequest {
     name: string;
@@ -34,17 +29,11 @@ export interface DeleteRoleRequest {
     id: number;
 }
 
-export interface RoleResponse {
+export interface RoleResponse extends BaseAuditResponse {
     id: number;
     name: string;
     icon: string;
     description: string;
-    createdAt: string;
-    createdBy: number;
-    updatedAt: string;
-    updatedBy: number;
-    deletedAt: string;
-    deletedBy: number
 }
 
 // Data Utama Deposito

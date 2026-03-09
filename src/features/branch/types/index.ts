@@ -1,4 +1,6 @@
-export interface BranchResponse {
+import { BaseAuditResponse } from "@/types/response";
+
+export interface BranchResponse extends BaseAuditResponse {
     id?: number;
     idBranch?: string;
     branchName?: string;
@@ -12,10 +14,4 @@ export interface BranchResponse {
     telepon?: number;
     faximile?: number;
     singkatan?: string;
-    createdAt?: string;
-    createdBy?: number;
-    updatedAt?: string;
-    updatedBy?: number;
-    deletedAt?: string;
-    deletedBy?: number;
 }

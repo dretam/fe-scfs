@@ -1,4 +1,6 @@
 import { DocumentEntity, DocumentResponse } from "@/features/document";
+import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
+import { BaseAuditResponse } from "@/types/response";
 
 
 export interface OCRDataEntity {
@@ -17,18 +19,9 @@ export interface OCRDataEntity {
     status: string
 }
 
-export interface GetListOcrDataRequest {
-    page?: number | null;
-    perPage?: number | null;
-    filter?: string | null;
-    sort?: string | null;
-    expands?: string | null;
-}
+export interface GetListOcrDataRequest extends BaseListRequest { }
 
-export interface GetRetrieveOcrDataRequest {
-    id: number;
-    expands?: string | null;
-}
+export interface GetRetrieveOcrDataRequest extends BaseRetrieveRequest { }
 
 export interface PutOcrDataRequest {
     id: number;
@@ -48,7 +41,7 @@ export interface PostBulkOcrDataRequest {
     ids: number[];
 }
 
-export interface OCRResponse {
+export interface OCRResponse extends BaseAuditResponse {
     id: number
     document: DocumentResponse | null
     atasNama: string
@@ -62,12 +55,6 @@ export interface OCRResponse {
     nomorRekeningPengirim: string
     nomorRekeningPlacement: string
     status: string
-    createdAt: string
-    createdBy: number
-    updatedAt: any
-    updatedBy: any
-    deletedAt: any
-    deletedBy: any
 }
 
 

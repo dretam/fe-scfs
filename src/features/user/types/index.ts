@@ -1,4 +1,6 @@
 import { RoleEntity, RoleResponse } from "@/features/role";
+import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
+import { BaseAuditResponse } from "@/types/response";
 
 
 export interface UserEntity {
@@ -8,18 +10,9 @@ export interface UserEntity {
     role: RoleEntity | null,
 }
 
-export interface GetListUserRequest {
-    page?: number | null;
-    perPage?: number | null;
-    filter?: string | null;
-    sort?: string | null;
-    expands?: string | null;
-}
+export interface GetListUserRequest extends BaseListRequest { }
 
-export interface GetRetrieveUserRequest {
-    id: number;
-    expands?: string | null;
-}
+export interface GetRetrieveUserRequest extends BaseRetrieveRequest { }
 
 export interface PutUserRequest {
     id: number;
@@ -44,17 +37,11 @@ export interface GetRetrieveInternalUser {
     username: string;
 }
 
-export interface UserResponse {
+export interface UserResponse extends BaseAuditResponse {
     id: number;
     name: string;
     email: string;
     role: RoleResponse | null;
-    createdAt: string;
-    createdBy: number;
-    updatedAt: string;
-    updatedBy: number;
-    deletedAt: string;
-    deletedBy: number
 }
 
 export interface InternalUserResponse {
