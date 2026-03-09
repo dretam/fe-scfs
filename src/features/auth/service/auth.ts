@@ -1,13 +1,13 @@
 "use server";
 
 import { NextRequest } from 'next/server';
-import { PostAuthLoginRequest, AuthLoginResponse } from "../types";
+import { PostAuthLoginRequest, AuthLoginResponse, UserSessionResponse } from "../types";
 import { Result } from "@/types/response";
 
 import { serverHttp } from "@/lib/server/server-fetch";
 import { cookies } from "next/headers";
 import { COOKIE_ACCESS_TOKEN, COOKIE_REFRESH_TOKEN, BACKEND_URL } from "@/lib/config-const";
-import { UserEntity, UserResponse } from "@/features/user";
+import { UserEntity } from "@/features/user";
 
 
 
@@ -58,7 +58,7 @@ export async function postAuthLogin(
 /**
  * GET /auth/session
  */
-export async function getAuthSession(): Promise<Result<UserEntity>> {
+export async function getAuthSession(expands?: string): Promise<Result<UserSessionResponse>> {
   const appCookies = await cookies();
   const isHasAccessToken: boolean = appCookies.has(COOKIE_ACCESS_TOKEN);
 
@@ -73,28 +73,13 @@ export async function getAuthSession(): Promise<Result<UserEntity>> {
   }
 
   const params = new URLSearchParams({
-    expands: "role"
+    ...(expands && { expands })
   });
 
-  const result = await serverHttp.get<UserResponse>(
-    `/auth/session?${params.toString()}`,
+  const queryString = params.toString() ? `?${params.toString()}` : '';
+
+  return serverHttp.get<UserSessionResponse>(
+    `/auth/session${queryString}`,
     { withAuth: true }
   );
-
-  if (!result.success) {
-    return result;
-  }
-
-  const data = result.data;
-
-  return {
-    success: true,
-    message: "Success",
-    data: {
-      id: data.id,
-      name: data.name,
-      email: data.email,
-      role: data.role,
-    }
-  };
 }

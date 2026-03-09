@@ -163,14 +163,40 @@ export function PageDocumentDataTable() {
         toast.success(`Uploaded: ${file.name}`, { id: toastId });
 
         setOcrData(result.data as OCRDataEntity[]);
+
+        if (result.data.length > 0) {
+          const ocr = result.data[0];
+
+          form.reset({
+            ...form.getValues(),
+
+            namaNasabah: ocr.atasNama,
+            nominal: parseNominal(ocr.nominal),
+            tenor: ocr.jangkaWaktu,
+            effectiveDate: parseEffectiveDate(ocr.periode),
+
+            noRekeningTujuanPokok: ocr.nomorRekeningTujuanPencairan,
+            bankTujuanPokok: ocr.namaRekeningTujuanPencairan,
+
+            rekeningSumberDana: ocr.nomorRekeningPengirim,
+          });
+        }
       } catch {
         toast.error(`Unexpected error: ${file.name}`, { id: toastId });
       }
     });
   };
+
+  function parseNominal(value: string) {
+    return Number(value.replace(/\./g, "").replace(",", "."));
+  }
+
+  function parseEffectiveDate(periode: string) {
+    return periode.split(" to ")[0];
+  }
   return (
     <div className="flex flex-col justify-start items-start gap-4 p-5">
-
+      {JSON.stringify(ocrData)}
 
       <Dropzone {...dropzone}>
         <div className="max-w-xl">
@@ -249,7 +275,9 @@ export function PageDocumentDataTable() {
           jenisTransaksiSKNBungaOptions={jenisTransaksiSKNBungaOptions}
           jenisTransaksiRTGSBungaOptions={jenisTransaksiRTGSBungaOptions}
           jenisNasabahPenerimaBungaOptions={jenisNasabahPenerimaBungaOptions}
-          statusKependudukanPenerimaBungaOptions={statusKependudukanPenerimaBungaOptions}
+          statusKependudukanPenerimaBungaOptions={
+            statusKependudukanPenerimaBungaOptions
+          }
           metodePokokOptions={metodePokokOptions}
           bankTujuanPokokOptions={bankTujuanPokokOptions}
           approverBungaOptions={approverBungaOptions}

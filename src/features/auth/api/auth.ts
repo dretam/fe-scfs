@@ -19,10 +19,16 @@ import { UserEntity } from "@/features/user";
 /**
  * LOGOUT
  */
-export async function logoutAction(): Promise<void> {
+export async function logoutAction(): Promise<Result<void>> {
   await removeCookieAccessToken();
   await removeCookieRefreshToken();
   await persistor.purge();
+
+  return {
+    success: true,
+    message: "Logged out successfully",
+    data: undefined,
+  };
 }
 
 

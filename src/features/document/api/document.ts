@@ -19,7 +19,6 @@ import {
   GetRetrieveDocumentRequest,
   DocumentResponse,
 } from "../types";
-import { OCRResponse } from "@/features/ocr-data/types";
 import { Result } from "@/types/response";
 
 

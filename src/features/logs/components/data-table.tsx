@@ -19,7 +19,6 @@ import { Badge } from "@/components/ui/badge";
 export function PageLogsDataTable({ className, ...props }: React.ComponentProps<"div">) {
 	const searchParams = useSearchParams();
 
-	// ✅ Memoized request (IMPORTANT: prevent infinite SWR re-fetch)
 	const request = React.useMemo(() => ({
 		page: Number(searchParams.get("page") ?? 1),
 		perPage: Number(searchParams.get("perPage") ?? 10),

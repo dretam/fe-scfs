@@ -39,6 +39,7 @@ class ServerHttp {
       headers.set("Authorization", `Bearer ${token}`)
     }
 
+
     const response = await fetch(
       `${BACKEND_URL}${endpoint}`,
       {
@@ -61,7 +62,7 @@ class ServerHttp {
         }
       }
     }
-    
+
     return {
       success: true,
       ...data
@@ -83,9 +84,16 @@ class ServerHttp {
     body?: any,
     options?: FetchOptions
   ) {
+    let requestBody;
+    if (!(body instanceof FormData)) {
+      requestBody = body ? JSON.stringify(body) : undefined;
+    } else {
+      requestBody = body || undefined;
+    }
+
     return this.request<T>(endpoint, {
       method: "POST",
-      body: body ? JSON.stringify(body) : undefined,
+      body: requestBody,
       ...options,
     })
   }
