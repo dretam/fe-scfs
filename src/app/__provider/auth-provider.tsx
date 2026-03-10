@@ -23,14 +23,8 @@ export function AuthSessionProvider({ children }: AuthSessionProviderProps) {
   const permissions = useAppSelector(selectPermissions);
   const menus = useAppSelector(selectMenus);
 
-  // check if redux already has session
   const hasSession =
     user?.id !== null && permissions.length > 0 && menus.length > 0;
-
-  console.log({ hasSession });
-  console.log({ user });
-  console.log({ permissions });
-  console.log({ menus });
 
   const { data, isLoading, isError } = useSession(
     "role,menus,permissions",

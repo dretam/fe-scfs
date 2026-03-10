@@ -5,13 +5,15 @@ import {
   QueryKey,
 } from "@tanstack/react-query";
 
+export type IReactQueryOptions<TData> = Omit<
+  UseQueryOptions<Result<TData>, Result<any>>,
+  "queryKey" | "queryFn"
+>
+
 type UseReadHookOptions<TData> = {
   queryKey: QueryKey;
   apiCall: () => Promise<Result<TData>>;
-} & Omit<
-  UseQueryOptions<Result<TData>, Result<any>>,
-  "queryKey" | "queryFn"
->;
+} & IReactQueryOptions<TData>;
 
 export function useReadHook<TData>(
   options: UseReadHookOptions<TData>

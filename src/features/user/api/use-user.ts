@@ -1,6 +1,6 @@
 'use client'
 
-import { useReadHook } from "@/hooks/core/use-read"
+import { IReactQueryOptions, useReadHook } from "@/hooks/core/use-read"
 import { createUser, getListUser, getRetrieveUser, hardDeleteUser, putUser, softDeleteUser } from "../service"
 
 import {
@@ -31,12 +31,13 @@ export function useUserList(
 }
 
 export function useUserRetrieve(
-  request: GetRetrieveUserRequest
+  request: GetRetrieveUserRequest, 
+  options: IReactQueryOptions<UserResponse>
 ) {
   return useReadHook<UserResponse>({
     queryKey: ["user-retrieve", request.id],
     apiCall: () => getRetrieveUser(request),
-    enabled: !!request.id,
+    ...options
   })
 }
 
