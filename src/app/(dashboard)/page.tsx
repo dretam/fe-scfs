@@ -1,3 +1,5 @@
+"use client"
+
 import SidebarAppHeader from "@/components/sidebar/app-header";
 import { BreadcrumbNavItem } from "@/types/common";
 

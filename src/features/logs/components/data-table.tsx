@@ -143,7 +143,7 @@ export function PageLogsDataTable({ className, ...props }: React.ComponentProps<
 									<div>
 										<p className="text-sm text-muted-foreground">Timestamp</p>
 										<p className="font-medium">
-											{new Date(selectedLog.createdAt).toLocaleString("id-ID")}
+											{new Date(selectedLog.createdAt ?? "").toLocaleString("id-ID")}
 										</p>
 									</div>
 								</div>

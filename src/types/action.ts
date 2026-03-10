@@ -1,4 +1,4 @@
-import { UserEntity } from "@/types/entity";
+import { UserEntity } from "@/features/user";
 import { Result } from "./response";
 
 export interface AuthLoginAction {

@@ -18,7 +18,6 @@ export async function getListRole(
 ): Promise<
   Result<RoleResponse[]>
 > {
-
   const params = new URLSearchParams({
     page: String(request.page ?? 1),
     perPage: String(request.perPage ?? 5),

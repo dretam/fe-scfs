@@ -31,9 +31,12 @@ export function useLogout() {
  * SESSION
  */
 
-export function useSession(expands?: string) {
+export function useSession(expands?: string, enabled: boolean = false) {
     return useReadHook<UserSessionResponse>({
         queryKey: ["auth-session", expands ?? ""],
         apiCall: () => getAuthSession(expands),
+        enabled: enabled,
+        staleTime: Infinity,
+        refetchOnWindowFocus: false,
     });
 }

@@ -19,17 +19,18 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch } from "@/hooks/store/use-app-dispatch";
 import { loginSchema, LoginFormValues } from "@/features/auth/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginAction } from "@/features/auth/api/auth";
 import { toast } from "sonner";
-import { setUser } from "@/stores/entity/auth.store";
+import { setUser, setAuthData } from "@/stores/entity/auth.store";
 import InputPassword from "@/components/input/password";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAppMutation } from "@/hooks/core/use-mutation";
+import { useSession } from "@/features/auth/api/use-auth";
 
 export function FormLogin({
   className,
@@ -38,9 +39,13 @@ export function FormLogin({
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const { execute: login, isLoading } = useAppMutation(loginAction);
+  const { execute: login } = useAppMutation(loginAction);
 
-  // 1. Define your form.
+  const { data: sessionData, refetch: fetchSession } = useSession(
+    "role,menus,permissions",
+    false,
+  );
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -50,25 +55,41 @@ export function FormLogin({
     },
   });
 
-  // 2. Define a submit handler.
-  const onSubmit = async (
-    values: LoginFormValues,
-  ): Promise<void> => {
+  useEffect(() => {
+    if (!sessionData?.success || !sessionData.data) return;
+
+    const session = sessionData.data;
+
+    dispatch(
+      setAuthData({
+        permissions: session.role?.permissions ?? [],
+        menus: session.role?.menus ?? [],
+      }),
+    );
+
+    router.push("/");
+  }, [sessionData, dispatch, router]);
+
+  const onSubmit = async (values: LoginFormValues): Promise<void> => {
     try {
       const { data } = await login(values);
 
       dispatch(setUser(data));
+
       toast(`Welcome, ${data?.name}`);
-      router.push("/");
+
+      await fetchSession(); // call session API
     } catch (error: any) {
       form.setError("username", {
         type: "server",
         message: "Please check your username again",
       });
+
       form.setError("password", {
         type: "server",
         message: "Double check your capslock and password",
       });
+
       toast(error?.message || "Username or Password is wrong!");
     }
   };
@@ -87,6 +108,7 @@ export function FormLogin({
               Enter your username or email below to login to your account
             </p>
           </div>
+
           <FormField
             control={form.control}
             name="username"
@@ -100,6 +122,7 @@ export function FormLogin({
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="password"
@@ -117,6 +140,7 @@ export function FormLogin({
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="rememberMe"
@@ -143,12 +167,15 @@ export function FormLogin({
               </FormItem>
             )}
           />
+
           <Field>
-            <Button className="cursor-pointer" type="submit">
+            <Button className="cursor-pointer w-full" type="submit">
               Login
             </Button>
           </Field>
+
           <FieldSeparator />
+
           <Field>
             <FieldDescription className="text-center">
               Don&apos;t have an account?{" "}
