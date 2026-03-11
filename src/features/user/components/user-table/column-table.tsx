@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { UserResponse } from "../types";
+import { UserResponse } from "../../types";
 
 import { Button } from "@/components/ui/button";
 import { SortIcon } from "@/components/common/sort-icon";

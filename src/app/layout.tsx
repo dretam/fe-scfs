@@ -4,9 +4,11 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { GlobalDialog } from "@/components/global/dialog";
 import ReduxProvider from "@/app/__provider/redux-provider";
 import ThemeProvider from "@/app/__provider/theme-provider";
 import QueryProvider from "./__provider/query-provider";
+import { DialogProvider } from "./__provider/dialog-provider";
 
 export const metadata: Metadata = {
   title: "Dashboard TMG",
@@ -30,10 +32,13 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <QueryProvider>
-            <ReduxProvider>
-              {children}
-              <Toaster richColors />
-            </ReduxProvider>
+            <DialogProvider>
+              <ReduxProvider>
+                <GlobalDialog />
+                {children}
+                <Toaster richColors />
+              </ReduxProvider>
+            </DialogProvider>
           </QueryProvider>
         </ThemeProvider>
       </body>
