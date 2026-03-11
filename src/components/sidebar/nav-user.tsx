@@ -18,21 +18,38 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAppSelector } from "@/hooks/store/use-app-selector";
-import { useAppDispatch } from "@/hooks/store/use-app-dispatch";
 import {
   selectUserEmail,
   selectUserInitial,
   selectUserName,
 } from "@/stores/entity/auth.store";
-import { setLogoutDialog } from "@/stores/dialog/logout";
+import { useDialog } from "@/hooks/ui/use-dialog";
+import { useRouter } from "next/navigation";
+import { resetAuth } from "@/stores/entity/auth.store";
+import { logoutAction } from "@/features/auth/api/auth";
+import { useAppDispatch } from "@/hooks/store/use-app-dispatch";
 import Link from "next/link";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
   const dispatch = useAppDispatch();
+  const dialog = useDialog();
+  const router = useRouter();
   const userName = useAppSelector(selectUserName);
   const userInitial = useAppSelector(selectUserInitial);
   const userEmail = useAppSelector(selectUserEmail);
+
+  async function handleLogout(): Promise<void> {
+    const confirmed = await dialog.confirm({
+      title: "Are you sure?",
+      description: "This action cannot be undone. This will redirect you to login page.",
+    });
+    if (confirmed) {
+      await logoutAction();
+      dispatch(resetAuth());
+      router.push("/login");
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -94,7 +111,7 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => dispatch(setLogoutDialog({ isOpen: true }))}
+              onClick={handleLogout}
               className="cursor-pointer"
             >
               <LogOut />

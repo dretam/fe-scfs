@@ -1,5 +1,4 @@
 import authReducer from '@/stores/entity/auth.store';
-import logoutDialogReducer from '@/stores/dialog/logout';
 import { configureStore } from '@reduxjs/toolkit';
 import {
 	persistStore,
@@ -16,7 +15,6 @@ import { combineReducers } from "redux";
 
 export const rootReducer = combineReducers({
 	auth: authReducer,
-	logoutDialog: logoutDialogReducer,
 });
 
 const persistConfig = {
