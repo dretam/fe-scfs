@@ -5,7 +5,7 @@ import {
   UserChangeProfileActionFormData,
   UserCreateActionFormData,
   UserDeleteActionFormData
-} from "@/types/form-data";
+} from "../types";
 
 
 import {

@@ -1,6 +1,6 @@
 "use server";
 
-import { OcrDataUpdateActionFormData } from "@/types/form-data";
+import { OcrDataUpdateActionFormData } from "../types";
 import {
   GetListOcrDataRequest,
   GetRetrieveOcrDataRequest,

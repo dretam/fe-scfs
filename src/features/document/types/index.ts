@@ -1,4 +1,3 @@
-import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
 import { BaseAuditResponse } from "@/types/response";
 
 export interface DocumentEntity {

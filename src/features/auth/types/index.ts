@@ -1,7 +1,12 @@
-import { RoleResponse } from "@/features/role";
 import { BaseAuditResponse } from "@/types/response";
 
 export interface PostAuthLoginRequest {
+    username: string;
+    password: string;
+    rememberMe: boolean;
+}
+
+export interface AuthLoginActionFormData {
     username: string;
     password: string;
     rememberMe: boolean;

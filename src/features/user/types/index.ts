@@ -10,6 +10,30 @@ export interface UserEntity {
     role: RoleEntity | null,
 }
 
+export interface UserChangePasswordActionFormData {
+    userId: number;
+    existingPassword: string;
+    newPassword: string;
+    retypeNewPassword: string;
+}
+
+export interface UserChangeProfileActionFormData {
+    userId: number;
+    name: string;
+    email: string;
+}
+
+export interface UserCreateActionFormData {
+    username: string;
+    password: string;
+    roleId: number;
+    permissionOverrides?: PermissionOverride[];
+}
+
+export interface UserDeleteActionFormData {
+    userId: number;
+}
+
 export interface GetListUserRequest extends BaseListRequest { }
 
 export interface GetRetrieveUserRequest extends BaseRetrieveRequest { }

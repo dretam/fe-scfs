@@ -10,6 +10,17 @@ export interface RoleEntity {
     description: string | null,
 }
 
+export interface RoleFormActionFormData {
+    id?: number;
+    name: string;
+    icon: string;
+    description: string;
+}
+
+export interface RoleDeleteActionFormData {
+    roleId: number;
+}
+
 export interface GetListRoleRequest extends BaseListRequest { }
 
 export interface GetRetrieveRoleRequest extends BaseRetrieveRequest { }

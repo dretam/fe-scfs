@@ -10,7 +10,7 @@ import { getAuthSession, postAuthLogin } from "../service";
 
 import { persistor } from "@/lib/store";
 import { Result } from "@/types/response";
-import { AuthLoginActionFormData } from "@/types/form-data";
+import { AuthLoginActionFormData } from "../types";
 import { UserEntity } from "@/features/user";
 
 

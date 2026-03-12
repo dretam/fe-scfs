@@ -1,77 +1,111 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { menuService } from "../service";
-import { CreateMenuCommand, UpdateMenuCommand, SoftDeleteMenuCommand } from "../types";
+'use client'
 
-export const useMenus = (params?: { page?: number; perPage?: number; filter?: string; sort?: string }) => {
-    return useQuery({
-        queryKey: ["menus", params],
-        queryFn: () => menuService.list(params),
-    });
-};
+import { IReactQueryOptions, useReadHook } from "@/hooks/core/use-read"
+import {
+  createMenu,
+  getListMenu,
+  getRetrieveMenu,
+  getMenuByRole,
+  getMenuTreeByRole,
+  softDeleteMenu,
+  hardDeleteMenu,
+  updateMenu
+} from "../service"
 
-export const useMenu = (id: number) => {
-    return useQuery({
-        queryKey: ["menus", id],
-        queryFn: () => menuService.retrieve(id),
-        enabled: !!id,
-    });
-};
+import {
+  DeleteMenuRequest,
+  GetListMenuRequest,
+  GetRetrieveMenuRequest,
+  PostMenuRequest,
+  PutMenuRequest,
+  MenuResponse,
+  MenuEntity
+} from "../types"
+import { useAppMutation } from "@/hooks/core/use-mutation"
 
-export const useMenusByRole = (roleId: number) => {
-    return useQuery({
-        queryKey: ["menus", "role", roleId],
-        queryFn: () => menuService.getByRole(roleId),
-        enabled: !!roleId,
-    });
-};
 
-export const useMenuTreeByRole = (roleId: number) => {
-    return useQuery({
-        queryKey: ["menus", "role", roleId, "tree"],
-        queryFn: () => menuService.getTreeByRole(roleId),
-        enabled: !!roleId,
-    });
-};
+export function useMenuList(
+  request: GetListMenuRequest
+) {
+  return useReadHook<MenuResponse[]>({
+    queryKey: [
+      "menu-list",
+      request.page,
+      request.perPage,
+      request.filter,
+      request.expands,
+    ],
+    apiCall: () => getListMenu(request),
+  })
+}
 
-export const useCreateMenu = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (data: CreateMenuCommand) => menuService.create(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["menus"] });
-        },
-    });
-};
+export function useMenuRetrieve(
+  request: GetRetrieveMenuRequest,
+  options: IReactQueryOptions<MenuResponse>
+) {
+  return useReadHook<MenuResponse>({
+    queryKey: ["menu-retrieve", request.id],
+    apiCall: () => getRetrieveMenu(request),
+    ...options
+  })
+}
 
-export const useUpdateMenu = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (data: UpdateMenuCommand) => menuService.update(data),
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ["menus"] });
-            if (data.success && 'id' in data.data) {
-                queryClient.invalidateQueries({ queryKey: ["menus", data.data.id] });
-            }
-        },
-    });
-};
+export function useMenuByRole(
+  roleId: number
+) {
+  return useReadHook<MenuResponse[]>({
+    queryKey: ["menu-by-role", roleId],
+    apiCall: () => getMenuByRole(roleId),
+    enabled: !!roleId,
+  })
+}
 
-export const useSoftDeleteMenu = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (data: SoftDeleteMenuCommand) => menuService.softDelete(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["menus"] });
-        },
-    });
-};
+export function useMenuTreeByRole(
+  roleId: number
+) {
+  return useReadHook<MenuResponse[]>({
+    queryKey: ["menu-tree-by-role", roleId],
+    apiCall: () => getMenuTreeByRole(roleId),
+    enabled: !!roleId,
+  })
+}
 
-export const useDestroyMenu = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (id: number) => menuService.destroy(id),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["menus"] });
-        },
-    });
-};
+/**
+ * CREATE
+ */
+export function useMenuCreate() {
+  return useAppMutation<MenuEntity, PostMenuRequest>(
+    createMenu,
+    ['menu-list']
+  )
+}
+
+/**
+ * UPDATE
+ */
+export function useMenuUpdate() {
+  return useAppMutation<MenuEntity, PutMenuRequest>(
+    updateMenu,
+    ['menu-list', 'menu-retrieve']
+  )
+}
+
+/**
+ * SOFT DELETE
+ */
+export function useMenuSoftDelete() {
+  return useAppMutation<MenuEntity, DeleteMenuRequest>(
+    softDeleteMenu,
+    ['menu-list']
+  )
+}
+
+/**
+ * HARD DELETE
+ */
+export function useMenuHardDelete() {
+  return useAppMutation<{ id: number }, number>(
+    hardDeleteMenu,
+    ['menu-list']
+  )
+}

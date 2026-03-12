@@ -3,7 +3,7 @@
 import {
   RoleFormActionFormData,
   RoleDeleteActionFormData
-} from "@/types/form-data"
+} from "../types"
 import {
   createRole,
   updateRole,

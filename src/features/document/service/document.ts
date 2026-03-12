@@ -2,7 +2,6 @@
 
 import { Result } from "@/types/response";
 
-
 import { OCRDataEntity } from "@/features/ocr-data/types";
 
 import { serverHttp } from "@/lib/server/server-fetch";

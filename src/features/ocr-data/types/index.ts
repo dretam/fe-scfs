@@ -18,6 +18,24 @@ export interface OCRDataEntity {
     status: string
 }
 
+export interface OcrDataUpdateActionFormData {
+    id: number;
+    atasNama?: string;
+    nominal?: string;
+    jangkaWaktu?: string;
+    periode?: string;
+    rate?: string;
+    alokasi?: string;
+    namaRekeningTujuanPencairan?: string;
+    nomorRekeningTujuanPencairan?: string;
+    nomorRekeningPengirim?: string;
+    nomorRekeningPlacement?: string;
+}
+
+export interface OcrDataDeleteActionFormData {
+    ocrDataId: number;
+}
+
 export interface GetListOcrDataRequest extends BaseListRequest { }
 
 export interface GetRetrieveOcrDataRequest extends BaseRetrieveRequest { }
