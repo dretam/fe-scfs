@@ -5,6 +5,7 @@ import { BreadcrumbNavItem } from "@/types/common";
 import HeadingSmall from "@/components/common/heading-small";
 import { PageDocumentDataTable } from "@/features/document/components";
 import { Separator } from "@/components/ui/separator";
+import { PageDepositListTable } from "@/features/document/components/instruksi/data-table";
 
 export default async function DocumentPage() {
     const breadcrumbs: BreadcrumbNavItem[] = [
@@ -26,11 +27,8 @@ export default async function DocumentPage() {
             <PageDocumentDataTable />
 
             <Separator className="my-6" />
-            {/*       
-      <div className="m-5">
-        <h3 className="text-lg font-semibold mb-4">Uploaded Documents</h3>
-        <PageDocumentListTable />
-      </div> */}
+            
+            <PageDepositListTable />
         </>
     );
 }

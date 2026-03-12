@@ -17,10 +17,16 @@ export interface UserChangeProfileActionFormData {
 	email: string;
 }
 
+export interface PermissionOverride {
+	permissionId: number;
+	effect: "ALLOW" | "DENY";
+}
+
 export interface UserCreateActionFormData {
 	username: string;
 	password: string;
 	roleId: number;
+	permissionOverrides?: PermissionOverride[];
 }
 
 export interface UserDeleteActionFormData {

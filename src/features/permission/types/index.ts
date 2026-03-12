@@ -1,4 +1,7 @@
-export interface PermissionResponse {
+import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
+import { BaseAuditResponse } from "@/types/response";
+
+export interface PermissionResponse extends BaseAuditResponse {
     id: number;
     name: string;
     code: string;
@@ -6,14 +9,18 @@ export interface PermissionResponse {
     menuId: number;
 }
 
-export interface CreatePermissionCommand {
+export interface GetListPermissionRequest extends BaseListRequest { }
+
+export interface GetRetrievePermissionRequest extends BaseRetrieveRequest { }
+
+export interface PostPermissionRequest {
     name: string;
     code: string;
     description?: string;
     menuId?: number;
 }
 
-export interface UpdatePermissionCommand {
+export interface PutPermissionRequest {
     id: number;
     name?: string;
     code?: string;
@@ -21,7 +28,7 @@ export interface UpdatePermissionCommand {
     menuId?: number;
 }
 
-export interface SoftDeletePermissionCommand {
+export interface DeletePermissionRequest {
     id: number;
 }
 

@@ -1,19 +1,51 @@
 import { z } from "zod";
+import { passwordValidation } from "@/shared/schema/validation";
 
 export function userCreateFormSchema() {
 	return z.object({
-		name: z.string().min(1, {
-			message: "Name is required",
-		}),
-		email: z.email({
-			message: "Email must be a valid email address",
-		}),
-		password: z.string().min(8, {
-			message: "Password must be at least 8 characters",
-		}),
-		roleId: z.number().refine(v => v > 0, {
+		username: z
+			.string()
+			.min(3, { message: "Username must be at least 3 characters" })
+			.max(50, { message: "Username must be at most 50 characters" })
+			.regex(/^[a-zA-Z0-9]+$/, {
+				message: "Username can only contain letters and numbers",
+			}),
+		password: passwordValidation,
+		roleId: z.number().refine((v) => v > 0, {
 			message: "Role is required",
 		}),
+		permissionOverrides: z
+			.array(
+				z.object({
+					permissionId: z.number().int().positive(),
+					effect: z.enum(["ALLOW", "DENY"]),
+				})
+			)
+			.optional(),
+	});
+}
+
+export function userEditFormSchema() {
+	return z.object({
+		username: z
+			.string()
+			.min(3, { message: "Username must be at least 3 characters" })
+			.max(50, { message: "Username must be at most 50 characters" })
+			.regex(/^[a-zA-Z0-9]+$/, {
+				message: "Username can only contain letters and numbers",
+			}),
+		password: passwordValidation.optional(),
+		roleId: z.number().refine((v) => v > 0, {
+			message: "Role is required",
+		}),
+		permissionOverrides: z
+			.array(
+				z.object({
+					permissionId: z.number().int().positive(),
+					effect: z.enum(["ALLOW", "DENY"]),
+				})
+			)
+			.optional(),
 	});
 }
 

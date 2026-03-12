@@ -23,10 +23,16 @@ export interface PutUserRequest {
     roleId?: number | null;
 }
 
+export interface PermissionOverride {
+    permissionId: number;
+    effect: "ALLOW" | "DENY";
+}
+
 export interface PostUserRequest {
     username: string;
     password: string;
     roleId: number;
+    permissionOverrides?: PermissionOverride[];
 }
 
 export interface DeleteUserRequest {

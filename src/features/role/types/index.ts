@@ -1,3 +1,5 @@
+import { MenuResponse } from "@/features/menu";
+import { PermissionResponse } from "@/features/permission";
 import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
 import { BaseAuditResponse } from "@/types/response";
 
@@ -34,4 +36,6 @@ export interface RoleResponse extends BaseAuditResponse {
     name: string;
     icon: string;
     description: string;
+    permissions: PermissionResponse[]
+    menus: MenuResponse[]
 }

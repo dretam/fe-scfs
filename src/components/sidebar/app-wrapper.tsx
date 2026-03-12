@@ -3,7 +3,6 @@
 import * as React from "react";
 import SidebarAppSidebar from "@/components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { DialogLogout } from "@/components/dialog/logout";
 
 export default function SidebarAppWrapper({ children }: { children: React.ReactNode; }) {
 	return (
@@ -14,7 +13,6 @@ export default function SidebarAppWrapper({ children }: { children: React.ReactN
 					{children}
 				</SidebarInset>
 			</SidebarProvider>
-			<DialogLogout />
 		</>
 	)
 }

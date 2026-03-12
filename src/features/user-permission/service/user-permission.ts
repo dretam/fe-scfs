@@ -1,24 +1,73 @@
-import { serverHttp } from "@/lib/server/server-fetch";
+"use server"
+
 import {
-    UserPermissionResponse,
-    CreateUserPermissionCommand,
-    UpdateUserPermissionCommand
+  ListByUserUserPermissionRequest,
+  PostUserPermissionRequest,
+  PutUserPermissionRequest,
+  DeleteUserPermissionRequest,
+  UserPermissionResponse
 } from "../types";
+import { Result } from "@/types/response";
 
-export const userPermissionService = {
-    listByUser: async (userId: number) => {
-        return serverHttp.get<UserPermissionResponse[]>(`/api/v1/users/${userId}/permissions`, { withAuth: true });
-    },
+import { serverHttp } from "@/lib/server/server-fetch"
 
-    create: async (userId: number, data: CreateUserPermissionCommand) => {
-        return serverHttp.post<UserPermissionResponse>(`/api/v1/users/${userId}/permissions`, data, { withAuth: true });
-    },
 
-    update: async (userId: number, permissionId: number, data: UpdateUserPermissionCommand) => {
-        return serverHttp.put<UserPermissionResponse>(`/api/v1/users/${userId}/permissions/${permissionId}`, data, { withAuth: true });
-    },
+/**
+ * GET /users/:userId/permissions
+ */
+export async function listByUserPermission(
+  request: ListByUserUserPermissionRequest
+): Promise<
+  Result<UserPermissionResponse[]>
+> {
 
-    delete: async (userId: number, permissionId: number) => {
-        return serverHttp.delete<void>(`/api/v1/users/${userId}/permissions/${permissionId}`, { withAuth: true });
-    },
-};
+  return serverHttp.get<
+    UserPermissionResponse[]
+  >(`/users/${request.userId}/permissions`, {
+    withAuth: true,
+  })
+}
+
+/**
+ * POST /users/:userId/permissions
+ */
+export async function createUserPermission(
+  request: PostUserPermissionRequest
+): Promise<Result<UserPermissionResponse>> {
+
+  return serverHttp.post<UserPermissionResponse>(
+    `/users/${request.userId}/permissions`,
+    request,
+    { withAuth: true }
+  )
+}
+
+
+/**
+ * PUT /users/:userId/permissions/:permissionId
+ */
+export async function updateUserPermission(
+  request: PutUserPermissionRequest
+): Promise<Result<UserPermissionResponse>> {
+
+  return serverHttp.put<UserPermissionResponse>(
+    `/users/${request.userId}/permissions/${request.permissionId}`,
+    request,
+    { withAuth: true }
+  )
+}
+
+
+
+/**
+ * DELETE /users/:userId/permissions/:permissionId
+ */
+export async function deleteUserPermission(
+  request: DeleteUserPermissionRequest
+): Promise<Result<void>> {
+
+  return serverHttp.delete(
+    `/users/${request.userId}/permissions/${request.permissionId}`,
+    { withAuth: true }
+  )
+}

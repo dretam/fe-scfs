@@ -1,43 +1,112 @@
-import { serverHttp } from "@/lib/server/server-fetch";
-import { Result, ReadResponse } from "@/types/response";
+"use server"
+
 import {
-    PermissionResponse,
-    CreatePermissionCommand,
-    UpdatePermissionCommand,
-    SoftDeletePermissionCommand
+  GetListPermissionRequest,
+  GetRetrievePermissionRequest,
+  PostPermissionRequest,
+  PutPermissionRequest,
+  DeletePermissionRequest,
+  PermissionResponse
 } from "../types";
+import { Result } from "@/types/response";
 
-export const permissionService = {
-    list: async (params?: { page?: number; perPage?: number; filter?: string; sort?: string }) => {
-        const query = new URLSearchParams();
-        if (params?.page) query.append("page", params.page.toString());
-        if (params?.perPage) query.append("perPage", params.perPage.toString());
-        if (params?.filter) query.append("filter", params.filter);
-        if (params?.sort) query.append("sort", params.sort);
+import { serverHttp } from "@/lib/server/server-fetch"
 
-        return serverHttp.get<PermissionResponse[]>(`/api/v1/permissions?${query.toString()}`, { withAuth: true });
-    },
 
-    retrieve: async (id: number) => {
-        return serverHttp.get<PermissionResponse>(`/api/v1/permissions/${id}`, { withAuth: true });
-    },
+/**
+ * GET /permissions
+ */
+export async function getListPermission(
+  request: GetListPermissionRequest
+): Promise<
+  Result<PermissionResponse[]>
+> {
+  const params = new URLSearchParams({
+    page: String(request.page ?? 1),
+    perPage: String(request.perPage ?? 5),
+    ...(request.filter && { filter: request.filter }),
+    ...(request.sort && { sort: request.sort }),
+  })
 
-    create: async (data: CreatePermissionCommand) => {
-        return serverHttp.post<PermissionResponse>("/api/v1/permissions", data, { withAuth: true });
-    },
+  return serverHttp.get<
+    PermissionResponse[]
+  >(`/permissions?${params.toString()}`, {
+    withAuth: true,
+  })
+}
 
-    update: async (data: UpdatePermissionCommand) => {
-        return serverHttp.put<PermissionResponse>("/api/v1/permissions", data, { withAuth: true });
-    },
+/**
+ * GET /permissions/:id
+ */
+export async function getRetrievePermission(
+  request: GetRetrievePermissionRequest
+): Promise<Result<PermissionResponse>> {
 
-    softDelete: async (data: SoftDeletePermissionCommand) => {
-        return serverHttp.delete<number>("/api/v1/permissions", {
-            withAuth: true,
-            body: JSON.stringify(data)
-        });
-    },
+  return serverHttp.get(
+    `/permissions/${request.id}`,
+    { withAuth: true }
+  )
+}
 
-    destroy: async (id: number) => {
-        return serverHttp.delete<number>(`/api/v1/permissions/${id}/destroy`, { withAuth: true });
-    },
-};
+
+
+/**
+ * POST /permissions
+ */
+export async function createPermission(
+  request: PostPermissionRequest
+): Promise<Result<PermissionResponse>> {
+
+  return serverHttp.post<PermissionResponse>(
+    "/permissions",
+    request,
+    { withAuth: true }
+  )
+}
+
+
+/**
+ * PUT /permissions/:id
+ */
+export async function updatePermission(
+  request: PutPermissionRequest
+): Promise<Result<PermissionResponse>> {
+
+  return serverHttp.put<PermissionResponse>(
+    `/permissions/${request.id}`,
+    request,
+    { withAuth: true }
+  )
+}
+
+
+
+/**
+ * DELETE /permissions (soft delete)
+ */
+export async function softDeletePermission(
+  request: DeletePermissionRequest
+): Promise<Result<PermissionResponse>> {
+
+  return serverHttp.delete(
+    "/permissions",
+    {
+      body: JSON.stringify(request),
+      withAuth: true,
+    }
+  )
+}
+
+
+/**
+ * DELETE /permissions/:id/destroy (hard delete)
+ */
+export async function hardDeletePermission(
+  id: number
+): Promise<Result<{ id: number }>> {
+
+  return serverHttp.delete(
+    `/permissions/${id}/destroy`,
+    { withAuth: true }
+  )
+}

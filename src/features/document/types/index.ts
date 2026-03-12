@@ -18,19 +18,6 @@ export interface DocumentEntity {
     deletedBy: number;
 }
 
-export interface GetListDocumentRequest extends BaseListRequest { }
-
-export interface GetRetrieveDocumentRequest extends BaseRetrieveRequest { }
-
-export interface PutDocumentRequest {
-    id: number;
-    file: File;
-}
-
-export interface DeleteDocumentRequest {
-    id: number;
-}
-
 export interface DocumentResponse extends BaseAuditResponse {
     id: number
     filename: string
