@@ -13,10 +13,9 @@ import {
   useDropzone,
 } from "@/components/ui/dropzone";
 import { FileIcon, Trash2Icon } from "lucide-react";
-import { useTransition, useState } from "react";
+import { useTransition } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { OCRDataEntity } from "@/features/ocr-data/types";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -53,7 +52,6 @@ import { useForm, FormProvider } from "react-hook-form";
 
 export function PageDocumentDataTable() {
   const [isPending, startTransition] = useTransition();
-  const [ocrData, setOcrData] = useState<OCRDataEntity[] | null>(null);
 
   const form = useForm<BulkDepositoOcrFormValues>({
     defaultValues: {
@@ -160,9 +158,7 @@ export function PageDocumentDataTable() {
           return;
         }
 
-        toast.success(`Uploaded: ${file.name}`, { id: toastId });
-
-        setOcrData(result.data as OCRDataEntity[]);
+        toast.success(`Scan dokumen berhasil: ${file.name}`, { id: toastId });
 
         if (result.data.length > 0) {
           const ocr = result.data[0];
@@ -298,7 +294,7 @@ export function PageDocumentDataTable() {
         onClick={handleAddToList}
         disabled={isPending}
       >
-        {"Add to List"}
+        Add to List
       </Button>
 
       <Card>
