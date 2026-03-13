@@ -1,66 +1,66 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-import { DialogFooter } from "@/components/ui/dialog";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
 } from "@/components/ui/form";
+
 import {
   Select,
-  SelectContent,
-  SelectItem,
   SelectTrigger,
+  SelectContent,
   SelectValue,
+  SelectItem,
 } from "@/components/ui/select";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRoleList } from "../../../role/api";
-import { passwordValidation } from "@/shared/schema/validation";
+import { UserFormValues, userSchema } from "../../schemas";
 import { useDialog } from "@/hooks/ui/use-dialog";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import { useInternalUserRetrieve } from "../../api";
+import { useRoleList } from "@/features/role";
+import { useMenuList } from "@/features/menu";
+import { useInternalUserRetrieve, useUserRetrieve } from "../../api";
 import { useDebouncedCallback } from "@/hooks/helper/useDebounce";
-
-export const userSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  nama: z.string().min(1, "Full name is required"),
-  email: z.email("Invalid email"),
-  area: z.string().min(1, "Area is required"),
-  roleId: z.number(),
-  jobTitle: z.string().min(1, "Job title is required"),
-  direktorat: z.string().min(1, "Directorate is required"),
-  mobile: z.string().min(1, "Mobile number is required"),
-  password: passwordValidation,
-});
-
-export type UserFormValues = z.infer<typeof userSchema>;
+import { PermissionOverrideSelector } from "./permission-override-selector";
+import { UserResponse } from "../../types";
 
 interface UserFormDialogProps {
   resolve: (values?: UserFormValues) => void;
   isEdit?: boolean;
-  defaultValues?: Partial<UserFormValues>;
+  selectedUserId?: number;
 }
 
 export function UserFormDialog({
   resolve,
   isEdit = false,
-  defaultValues,
+  selectedUserId,
 }: UserFormDialogProps) {
   const dialog = useDialog();
 
-  const { data: roles } = useRoleList({
+  const { data: roles, isLoading: roleLoading } = useRoleList({
     page: 1,
     perPage: 100,
+    expands: "permissions",
   });
+
+  const { data: menus, isLoading: menuLoading } = useMenuList({
+    page: 1,
+    perPage: 100,
+    expands: "permissions",
+  });
+
+  const { data: singleUser, isLoading: isLoadingEdit } = useUserRetrieve(
+    { id: selectedUserId ?? 0, expands: "role,userPermission,userDetail" },
+    { enabled: isEdit, refetchOnWindowFocus: false },
+  );
 
   const [username, setUsername] = useState("");
 
@@ -82,7 +82,7 @@ export function UserFormDialog({
       mobile: "",
       password: "",
       roleId: 1,
-      ...defaultValues,
+      overrides: [],
     },
   });
 
@@ -99,15 +99,38 @@ export function UserFormDialog({
     form.setValue("mobile", user.mobile ?? "");
   }, [internalUser, form]);
 
+  useEffect(() => {
+    if (!singleUser?.data) return;
+
+    const user = singleUser.data as UserResponse;
+
+    form.setValue("username", user.name ?? "");
+    form.setValue("nama", user.userDetail?.nama ?? "");
+    form.setValue("email", user.email ?? "");
+    form.setValue("area", user.userDetail?.area ?? "");
+    form.setValue("jobTitle", user.userDetail?.jobTitle ?? "");
+    form.setValue("direktorat", user.userDetail?.direktorat ?? "");
+    form.setValue("mobile", user.userDetail?.mobile ?? "");
+
+    form.setValue("roleId", user.role?.id ?? 1); 
+
+    if (user.userPermissionOverride) {
+      form.setValue("overrides", user.userPermissionOverride);
+    }
+  }, [singleUser, form]);
+
   const onSubmit = (values: UserFormValues) => {
     resolve(values);
-
     dialog.close();
   };
 
+  if (roleLoading || menuLoading || isLoadingEdit) {
+    return <>Fetching....</>;
+  }
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-4">
             <FormField
@@ -116,6 +139,7 @@ export function UserFormDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
+
                   <FormControl>
                     <Input
                       {...field}
@@ -127,6 +151,7 @@ export function UserFormDialog({
                       }}
                     />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -139,9 +164,8 @@ export function UserFormDialog({
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
                   <FormControl>
-                    <Input disabled {...field} placeholder="Full Name" />
+                    <Input disabled {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -155,7 +179,6 @@ export function UserFormDialog({
                   <FormControl>
                     <Input disabled {...field} type="email" />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -169,13 +192,11 @@ export function UserFormDialog({
                   <FormControl>
                     <Input disabled {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
-          {/* RIGHT */}
           <div className="space-y-4">
             <FormField
               control={form.control}
@@ -186,7 +207,6 @@ export function UserFormDialog({
                   <FormControl>
                     <Input disabled {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -200,7 +220,6 @@ export function UserFormDialog({
                   <FormControl>
                     <Input disabled {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -210,14 +229,14 @@ export function UserFormDialog({
               name="mobile"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mobile Number</FormLabel>
+                  <FormLabel>Mobile</FormLabel>
                   <FormControl>
                     <Input disabled {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="roleId"
@@ -225,25 +244,29 @@ export function UserFormDialog({
                 <FormItem>
                   <FormLabel>Role</FormLabel>
                   <Select
-                    value={field.value ? String(field.value) : ""}
-                    onValueChange={(value) => {
-                      field.onChange(value ? Number(value) : null);
-                    }}
+                    value={String(field.value)}
+                    onValueChange={(v) => field.onChange(Number(v))}
                   >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select role" />
                       </SelectTrigger>
                     </FormControl>
+
                     <SelectContent>
-                      {roles?.data?.map((role: any) => (
-                        <SelectItem key={role.id} value={String(role.id)}>
-                          {role.name}
+                      {roleLoading ? (
+                        <SelectItem value="loading" disabled>
+                          Loading roles...
                         </SelectItem>
-                      ))}
+                      ) : (
+                        roles?.data?.map((role: any) => (
+                          <SelectItem key={role.id} value={String(role.id)}>
+                            {role.name}
+                          </SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -251,6 +274,7 @@ export function UserFormDialog({
         </div>
 
         {/* PASSWORD */}
+
         <FormField
           control={form.control}
           name="password"
@@ -259,19 +283,27 @@ export function UserFormDialog({
               <FormLabel>
                 {isEdit ? "New Password (optional)" : "Password"}
               </FormLabel>
+
               <FormControl>
-                <Input
-                  type={isEdit ? "password" : "text"}
-                  {...field}
-                  placeholder={
-                    isEdit ? "Leave blank to keep current" : "Password"
-                  }
-                />
+                <Input type="password" {...field} placeholder="Password" />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
+
+        {/* PERMISSION OVERRIDES */}
+
+        {!roleLoading && !menuLoading && (
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold">Permission Overrides</h3>
+
+            <PermissionOverrideSelector
+              menus={menus?.data}
+              roles={roles?.data}
+              form={form}
+            />
+          </div>
+        )}
 
         <Button type="submit">Submit</Button>
       </form>

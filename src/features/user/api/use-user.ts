@@ -37,6 +37,7 @@ export function useUserRetrieve(
   return useReadHook<UserResponse>({
     queryKey: ["user-retrieve", request.id],
     apiCall: () => getRetrieveUser(request),
+    refetchOnWindowFocus: false,
     ...options
   })
 }

@@ -20,15 +20,7 @@ export function GlobalDialog() {
       <DialogContent className="max-h-[90vh] p-0">
         {dialog.type === "confirm" && (
           <>
-            {dialog.props?.title && (
-              <DialogHeader className="p-6 pb-2">
-                <DialogTitle>{dialog.props.title}</DialogTitle>
-                {dialog.props.description && (
-                  <DialogDescription>{dialog.props.description}</DialogDescription>
-                )}
-              </DialogHeader>
-            )}
-            <ScrollArea className="max-h-[calc(90vh-8rem)] px-6">
+            <ScrollArea className="max-h-[calc(90vh-8rem)] px-6 py-6">
               <ConfirmDialog {...dialog.props} />
             </ScrollArea>
             {dialog.props?.footer && (

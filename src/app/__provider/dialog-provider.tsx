@@ -77,7 +77,10 @@ export function DialogProvider({ children }: { children: ReactNode }) {
         id: ++dialogId,
         type: "custom",
         component,
-        props,
+        props: {
+          ...props,
+          resolve
+        },
         resolve,
       })
     })

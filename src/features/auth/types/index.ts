@@ -30,9 +30,10 @@ export interface SessionMenuResponse {
     name: string;
     code: string;
     path: string;
-    icon: string;
+    icon: any;
     parentId: number | null;
     sortOrder: number;
+    children: SessionMenuResponse[]
 }
 
 export interface SessionPermissionResponse {

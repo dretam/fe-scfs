@@ -109,7 +109,6 @@ export async function putUser(
 export async function createUser(
   request: PostUserRequest
 ): Promise<Result<UserEntity>> {
-
   const result = await serverHttp.post<UserResponse>(
     "/users",
     request,

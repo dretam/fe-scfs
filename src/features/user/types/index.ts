@@ -47,9 +47,11 @@ export interface PutUserRequest {
     roleId?: number | null;
 }
 
+type PermissionOverrideEffectType = "ALLOW" | "DENY";
+
 export interface PermissionOverride {
     permissionId: number;
-    effect: "ALLOW" | "DENY";
+    effect: PermissionOverrideEffectType;
 }
 
 export interface PostUserRequest {
@@ -72,6 +74,36 @@ export interface UserResponse extends BaseAuditResponse {
     name: string;
     email: string;
     role: RoleResponse | null;
+    userDetail?: UserDetail
+    userPermissionOverride?: UserPermissionOverride[]
+}
+
+export interface UserDetail {
+    id: number
+    userId: number
+    nama: string
+    jabatan: number
+    email: string
+    area: string
+    jobTitle: string
+    direktorat: string
+    sex: string
+    mobile: string
+    tglLahir: string
+    usersCabang: any
+    usersBranch: any
+    createdAt: string
+    createdBy: number
+    updatedAt: any
+    updatedBy: any
+    deletedAt: any
+    deletedBy: any
+}
+
+export interface UserPermissionOverride {
+    userId: number
+    permissionId: number
+    effect: PermissionOverrideEffectType
 }
 
 export interface InternalUserResponse {

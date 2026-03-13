@@ -22,3 +22,10 @@ export function roleDeleteFormSchema() {
 		}),
 	});
 }
+
+export const roleSchema = z.object({
+  name: z.string().min(1, "Role name is required"),
+  permissions: z.array(z.number()),
+})
+
+export type RoleFormValues = z.infer<typeof roleSchema>

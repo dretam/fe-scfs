@@ -17,21 +17,18 @@ import {
   useUserUpdate,
 } from "../../api";
 
-import {
-  UserFormDialog,
-  UserFormValues,
-} from "@/features/user/components/form/user-form-dialog";
+import { UserFormDialog } from "@/features/user/components/form/user-form-dialog";
 
 import { UserResponse } from "../../types";
 import { useDialog } from "@/hooks/ui/use-dialog";
+import { UserFormValues } from "../../schemas";
 export function PageUserDataTable({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const dialog = useDialog();
 
-  const dialog = useDialog()
-
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
   const request = React.useMemo(
     () => ({
@@ -41,101 +38,73 @@ export function PageUserDataTable({
       expands: "role",
     }),
     [searchParams],
-  )
+  );
 
-  const { data: response, isLoading } = useUserList(request)
+  const { data: response, isLoading } = useUserList(request);
 
-  const userCreate = useUserCreate()
-  const userUpdate = useUserUpdate()
-  const userSoftDelete = useUserSoftDelete()
+  const userCreate = useUserCreate();
+  const userUpdate = useUserUpdate();
+  const userSoftDelete = useUserSoftDelete();
 
   const handleOpenAdd = async () => {
+    const values = await dialog.form<UserFormValues>(UserFormDialog, {
+      isEdit: false,
+    });
 
-    const values = await dialog.form<UserFormValues>(
-      UserFormDialog,
-      { isEdit: false }
-    )
-
-    if (!values) return
+    if (!values) return;
 
     try {
-
       const result = await userCreate.execute({
         username: values.username,
         password: values.password ?? "",
-        roleId: values.roleId,
-      })
-
-      toast.success(result.message || "User created successfully")
-
+        roleId: Number(values.roleId) ?? "1",
+        permissionOverrides: values.overrides,
+      });
+      toast.success(result.message || "User created successfully");
     } catch (error: any) {
-
-      toast.error(error?.error?.message || "Failed to create user")
-
+      toast.error(error?.error?.message || "Failed to create user");
     }
-
-  }
-
+  };
 
   const handleEdit = async (user: UserResponse) => {
+    const values = await dialog.form<UserFormValues>(UserFormDialog, {
+      isEdit: true,
+      selectedUserId: user.id,
+    });
 
-    const values = await dialog.form<UserFormValues>(
-      UserFormDialog,
-      {
-        isEdit: true,
-        defaultValues: {
-          username: user.name,
-          nama: user.name,
-          email: user.email,
-          roleId: user.role?.id ?? 1,
-        },
-      }
-    )
-
-    if (!values) return
+    if (!values) return;
 
     try {
-
       const result = await userUpdate.execute({
         id: user.id,
         password: values.password,
-        roleId: values.roleId,
-      })
+        roleId: Number(values.roleId) ?? "1",
+      });
 
-      toast.success(result.message || "User updated successfully")
-
+      toast.success(result.message || "User updated successfully");
     } catch (error: any) {
-
-      toast.error(error?.error?.message || "Failed to update user")
-
+      toast.error(error?.error?.message || "Failed to update user");
     }
-
-  }
+  };
 
   const handleDelete = async (user: UserResponse) => {
-
     const confirmed = await dialog.confirm({
       title: "Delete User?",
       description: `${user.name} (${user.email})`,
-    })
+    });
 
-    if (!confirmed) return
+    if (!confirmed) return;
 
     try {
-
       const result = await userSoftDelete.execute({
         id: user.id,
-      })
+      });
 
-      toast.success(result.message || "User soft deleted")
-
+      toast.success(result.message || "User soft deleted");
     } catch (error: any) {
-
-      toast.error(error?.error?.message || "Failed to delete user")
-
+      toast.error(error?.error?.message || "Failed to delete user");
     }
-
-  }
+  };
 
   const userColumns = React.useMemo(
     () =>
@@ -144,20 +113,17 @@ export function PageUserDataTable({
         onDelete: handleDelete,
       }),
     [handleEdit, handleDelete],
-  )
+  );
 
   return (
     <div className={className} {...props}>
-
       <div className="flex justify-between items-center mb-4">
-
         <PageUserFilterTable className="my-0" />
 
         <Button onClick={handleOpenAdd}>
           <Plus className="mr-2 h-4 w-4" />
           Add User
         </Button>
-
       </div>
 
       {isLoading && <div>Loading...</div>}
@@ -169,7 +135,6 @@ export function PageUserDataTable({
           pagination={response.pagination}
         />
       )}
-
     </div>
-  )
+  );
 }

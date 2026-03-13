@@ -1,3 +1,4 @@
+import { PermissionResponse } from "@/features/permission";
 import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
 import { BaseAuditResponse } from "@/types/response";
 
@@ -60,6 +61,7 @@ export interface MenuResponse extends BaseAuditResponse {
     icon: string;
     parentId?: number;
     sortOrder: number;
+    permissions: PermissionResponse[]
 }
 
 export interface CreateMenuCommand {
