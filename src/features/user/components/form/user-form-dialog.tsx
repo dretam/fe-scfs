@@ -104,20 +104,18 @@ export function UserFormDialog({
 
     const user = singleUser.data as UserResponse;
 
-    form.setValue("username", user.name ?? "");
-    form.setValue("nama", user.userDetail?.nama ?? "");
-    form.setValue("email", user.email ?? "");
-    form.setValue("area", user.userDetail?.area ?? "");
-    form.setValue("jobTitle", user.userDetail?.jobTitle ?? "");
-    form.setValue("direktorat", user.userDetail?.direktorat ?? "");
-    form.setValue("mobile", user.userDetail?.mobile ?? "");
-
-    form.setValue("roleId", user.role?.id ?? 1); 
-
-    if (user.userPermissionOverride) {
-      form.setValue("overrides", user.userPermissionOverride);
-    }
-  }, [singleUser, form]);
+    form.reset({
+      username: user.name ?? "",
+      nama: user.userDetail?.nama ?? "",
+      email: user.email ?? "",
+      area: user.userDetail?.area ?? "",
+      jobTitle: user.userDetail?.jobTitle ?? "",
+      direktorat: user.userDetail?.direktorat ?? "",
+      mobile: user.userDetail?.mobile ?? "",
+      roleId: user.role?.id ?? 1,
+      overrides: user.userPermissionOverride ?? [],
+    });
+  }, [singleUser]);
 
   const onSubmit = (values: UserFormValues) => {
     resolve(values);
@@ -245,7 +243,7 @@ export function UserFormDialog({
                   <FormLabel>Role</FormLabel>
                   <Select
                     value={String(field.value)}
-                    onValueChange={(v) => field.onChange(Number(v))}
+                    onValueChange={(e) => field.onChange(Number(e))}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -254,7 +252,7 @@ export function UserFormDialog({
                     </FormControl>
 
                     <SelectContent>
-                      {roleLoading ? (
+                      {(roleLoading || menuLoading || isLoadingEdit) ? (
                         <SelectItem value="loading" disabled>
                           Loading roles...
                         </SelectItem>
