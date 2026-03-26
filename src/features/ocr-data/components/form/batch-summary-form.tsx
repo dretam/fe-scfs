@@ -3,9 +3,7 @@
 import { UseFormReturn } from "react-hook-form";
 
 import { Label } from "@/components/ui/label";
-import type { BulkDepositoOcrFormValues, BatchSummaryFormValues } from "./types";
-
-export type { BatchSummaryFormValues };
+import { BulkDepositoOcrFormValues } from "./bulk-deposito-ocr-form";
 
 interface BatchSummaryFormProps {
   form: UseFormReturn<BulkDepositoOcrFormValues>;

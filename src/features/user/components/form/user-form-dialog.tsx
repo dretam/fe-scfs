@@ -128,16 +128,18 @@ export function UserFormDialog({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-[80vw]">
+        <div className="grid grid-cols-2 gap-6">
+          {/* First Column - User Details */}
           <div className="space-y-4">
+            <h3 className="text-lg font-semibold">User Details</h3>
+            
             <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
-
                   <FormControl>
                     <Input
                       {...field}
@@ -149,7 +151,6 @@ export function UserFormDialog({
                       }}
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -193,9 +194,7 @@ export function UserFormDialog({
                 </FormItem>
               )}
             />
-          </div>
 
-          <div className="space-y-4">
             <FormField
               control={form.control}
               name="jobTitle"
@@ -237,6 +236,26 @@ export function UserFormDialog({
 
             <FormField
               control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {isEdit ? "New Password (optional)" : "Password"}
+                  </FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} placeholder="Password" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Second Column - Role & Permissions */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Role & Permissions</h3>
+            
+            <FormField
+              control={form.control}
               name="roleId"
               render={({ field }) => (
                 <FormItem>
@@ -268,40 +287,19 @@ export function UserFormDialog({
                 </FormItem>
               )}
             />
+
+            {/* Permission Overrides */}
+            {!roleLoading && !menuLoading && (
+              <div className="space-y-2">
+                <PermissionOverrideSelector
+                  menus={menus?.data}
+                  roles={roles?.data}
+                  form={form}
+                />
+              </div>
+            )}
           </div>
         </div>
-
-        {/* PASSWORD */}
-
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                {isEdit ? "New Password (optional)" : "Password"}
-              </FormLabel>
-
-              <FormControl>
-                <Input type="password" {...field} placeholder="Password" />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        {/* PERMISSION OVERRIDES */}
-
-        {!roleLoading && !menuLoading && (
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Permission Overrides</h3>
-
-            <PermissionOverrideSelector
-              menus={menus?.data}
-              roles={roles?.data}
-              form={form}
-            />
-          </div>
-        )}
 
         <Button type="submit">Submit</Button>
       </form>

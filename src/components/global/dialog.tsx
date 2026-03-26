@@ -1,23 +1,33 @@
-"use client"
+"use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
-import { ConfirmDialog } from "../dialog/ConfirmDialog"
-import { LoadingDialog } from "../dialog/LoadingDialog"
-import { useDialogContext } from "@/app/__provider/dialog-provider"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { ConfirmDialog } from "../dialog/ConfirmDialog";
+import { LoadingDialog } from "../dialog/LoadingDialog";
+import { useDialogContext } from "@/app/__provider/dialog-provider";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function GlobalDialog() {
-  const { dialogs, close } = useDialogContext()
+  const { dialogs, close } = useDialogContext();
 
-  const dialog = dialogs[dialogs.length - 1]
+  const dialog = dialogs[dialogs.length - 1];
 
-  if (!dialog) return null
+  if (!dialog) return null;
 
-  const Component = dialog.component
+  const Component = dialog.component;
 
   return (
     <Dialog open onOpenChange={() => close(false)}>
-      <DialogContent className="max-h-[90vh] p-0">
+      <DialogContent
+        className="max-h-[90vh] p-0"
+        style={{ width: "auto", minWidth: "500px", maxWidth: "90vw" }}
+      >
         {dialog.type === "confirm" && (
           <>
             <ScrollArea className="max-h-[calc(90vh-8rem)] px-6 py-6">
@@ -46,5 +56,5 @@ export function GlobalDialog() {
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }
