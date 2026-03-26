@@ -14,12 +14,11 @@ import { changeProfileSchema, ChangeProfileFormValues } from "@/features/auth/sc
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { selectUserEmail, selectUserId, selectUserName, setUser } from "@/stores/entity/auth.store";
-import { userChangeProfileAction } from "@/features/user/api/user";
 import { useAppSelector } from "@/hooks/store/use-app-selector";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/store/use-app-dispatch";
-import { useAppMutation } from "@/hooks/core/use-mutation";
+import { useUserUpdateProfile } from "@/features/user";
 
 
 export function FormSettingProfile({ className, ...props }: React.ComponentProps<"form">) {
@@ -28,7 +27,7 @@ export function FormSettingProfile({ className, ...props }: React.ComponentProps
 	const userEmail: string | null = useAppSelector(selectUserEmail);
 	const dispatch = useAppDispatch();
 
-	const { execute: updateProfile, isLoading } = useAppMutation(userChangeProfileAction);
+	const { execute: updateProfile, isLoading } = useUserUpdateProfile();
 
 	// 1. Define your form.
 	const form = useForm<ChangeProfileFormValues>({

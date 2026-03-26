@@ -24,13 +24,11 @@ import { useAppDispatch } from "@/hooks/store/use-app-dispatch";
 import { loginSchema, LoginFormValues } from "@/features/auth/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginAction } from "@/features/auth/api/auth";
 import { toast } from "sonner";
 import { setUser, setAuthData } from "@/stores/entity/auth.store";
 import InputPassword from "@/components/input/password";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useAppMutation } from "@/hooks/core/use-mutation";
-import { useSession } from "@/features/auth/api/use-auth";
+import { useLogin, useSession } from "@/features/auth";
 
 export function FormLogin({
   className,
@@ -39,7 +37,7 @@ export function FormLogin({
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const { execute: login } = useAppMutation(loginAction);
+  const { execute: login } = useLogin();
 
   const { data: sessionData, refetch: fetchSession } = useSession(
     "role,menus,permissions",

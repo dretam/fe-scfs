@@ -16,10 +16,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { selectUserId } from "@/stores/entity/auth.store";
 import InputPassword from "@/components/input/password";
-import { userChangePasswordAction } from "@/features/user/api/user";
 import { useAppSelector } from "@/hooks/store/use-app-selector";
 import { cn } from "@/lib/utils";
-import { useAppMutation } from "@/hooks/core/use-mutation";
+import { useUserChangePassword } from "@/features/user";
 
 export function FormSettingPassword({
   className,
@@ -27,7 +26,7 @@ export function FormSettingPassword({
 }: React.ComponentProps<"form">) {
   const userId: number | null = useAppSelector(selectUserId);
 
-  const { execute: changePassword, isLoading } = useAppMutation(userChangePasswordAction);
+  const { execute: changePassword, isLoading } = useUserChangePassword();
 
   // 1. Define your form.
   const form = useForm<ChangePasswordFormValues>({

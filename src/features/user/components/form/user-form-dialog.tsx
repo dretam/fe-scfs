@@ -27,7 +27,7 @@ import { UserFormValues, userSchema } from "../../schemas";
 import { useDialog } from "@/hooks/ui/use-dialog";
 import { useRoleList } from "@/features/role";
 import { useMenuList } from "@/features/menu";
-import { useInternalUserRetrieve, useUserRetrieve } from "../../api";
+import { useInternalUserRetrieve, useUserRetrieve } from "../../hooks";
 import { useDebouncedCallback } from "@/hooks/helper/useDebounce";
 import { PermissionOverrideSelector } from "./permission-override-selector";
 import { UserResponse } from "../../types";

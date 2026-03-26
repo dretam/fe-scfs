@@ -15,7 +15,7 @@ import {
   useUserList,
   useUserSoftDelete,
   useUserUpdate,
-} from "../../api";
+} from "../../hooks";
 
 import { UserFormDialog } from "@/features/user/components/form/user-form-dialog";
 
@@ -97,7 +97,7 @@ export function PageUserDataTable({
 
     try {
       const result = await userSoftDelete.execute({
-        id: user.id,
+        userId: user.id,
       });
 
       toast.success(result.message || "User soft deleted");

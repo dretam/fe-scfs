@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSession } from "@/features/auth/api/use-auth";
+import { useSession } from "@/features/auth";
 import { useAppDispatch } from "@/hooks/store/use-app-dispatch";
 import { useAppSelector } from "@/hooks/store/use-app-selector";
 import {

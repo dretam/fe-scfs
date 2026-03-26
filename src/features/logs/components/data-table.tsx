@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components/common/data-table";
 import { useSearchParams } from "next/navigation";
-import { useAccessLogList } from "../api";
+import { useAccessLogList } from "../hooks";
 import * as React from "react";
 import PageLogsFilterTable from "@/features/logs/components/filter-table";
 import { columns } from "@/features/logs/components/column-table";

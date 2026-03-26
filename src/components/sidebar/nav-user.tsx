@@ -26,7 +26,7 @@ import {
 import { useDialog } from "@/hooks/ui/use-dialog";
 import { useRouter } from "next/navigation";
 import { resetAuth } from "@/stores/entity/auth.store";
-import { logoutAction } from "@/features/auth/api/auth";
+import { useLogout } from "@/features/auth";
 import { useAppDispatch } from "@/hooks/store/use-app-dispatch";
 import Link from "next/link";
 
@@ -39,13 +39,15 @@ export function NavUser() {
   const userInitial = useAppSelector(selectUserInitial);
   const userEmail = useAppSelector(selectUserEmail);
 
+  const { execute: logout } = useLogout();
+
   async function handleLogout(): Promise<void> {
     const confirmed = await dialog.confirm({
       title: "Are you sure?",
       description: "This action cannot be undone. This will redirect you to login page.",
     });
     if (confirmed) {
-      await logoutAction();
+      await logout();
       dispatch(resetAuth());
       router.push("/login");
     }

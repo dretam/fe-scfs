@@ -1,6 +1,6 @@
 "use client";
 
-import { uploadDocumentAction } from "@/features/document/api/document";
+import { uploadDocumentAction } from "@/features/document/actions";
 import {
   Dropzone,
   DropZoneArea,
