@@ -1,5 +1,4 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { RoleResponse } from "../types";
 
 import { Button } from "@/components/ui/button";
 import { SortIcon } from "@/components/common/sort-icon";
@@ -10,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { RoleResponse } from "../../types";
 
 interface ColumnsProps {
   onEdit: (role: RoleResponse) => void;

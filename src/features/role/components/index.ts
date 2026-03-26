@@ -1,3 +1,3 @@
-export * from './column-table';
-export * from './data-table';
-export * from './filter-table';
+export * from './table/column-table';
+export * from './table/data-table';
+export * from './table/filter-table';

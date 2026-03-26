@@ -2,11 +2,7 @@
 
 import { DataTable } from "@/components/common/data-table";
 import { useSearchParams } from "next/navigation";
-import { useRoleList } from "../api";
 import * as React from "react";
-import PageRoleFilterTable from "@/features/role/components/filter-table";
-import { columns } from "@/features/role/components/column-table";
-import { RoleResponse } from "../types";
 
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -22,6 +18,10 @@ import {
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { roleDeleteAction, roleDestroyAction } from "@/features/role/api/role";
+import { useRoleList } from "../../api";
+import { RoleResponse } from "../../types";
+import { columns } from "./column-table";
+import PageRoleFilterTable from "./filter-table";
 
 export function PageRoleDataTable({ className, ...props }: React.ComponentProps<"div">) {
 	const searchParams = useSearchParams();
