@@ -40,8 +40,12 @@ export async function getRetrieveRole(
   request: GetRetrieveRoleRequest
 ): Promise<Result<RoleResponse>> {
 
+  const params = new URLSearchParams({
+    ...(request.expands && { expands: request.expands }),
+  })
+
   return serverHttp.get(
-    `/roles/${request.id}`,
+    `/roles/${request.id}?${params.toString()}`,
     { withAuth: true }
   )
 }
@@ -71,7 +75,7 @@ export async function updateRole(
 ): Promise<Result<RoleResponse>> {
 
   return serverHttp.put<RoleResponse>(
-    `/roles/${request.id}`,
+    `/roles`,
     request,
     { withAuth: true }
   )

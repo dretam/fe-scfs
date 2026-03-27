@@ -4,8 +4,6 @@ import { IReactQueryOptions, useReadHook } from "@/hooks/core/use-read"
 import {
   getListMenu,
   getRetrieveMenu,
-  getMenuByRole,
-  getMenuTreeByRole
 } from "../service"
 
 import {
@@ -15,8 +13,6 @@ import {
   MenuEntity,
   MenuCreateActionFormData,
   MenuDeleteActionFormData,
-  PostMenuRequest,
-  PutMenuRequest
 } from "../types"
 import { useAppMutation } from "@/hooks/core/use-mutation"
 import {
@@ -50,26 +46,6 @@ export function useMenuRetrieve(
     queryKey: ["menu-retrieve", request.id],
     apiCall: () => getRetrieveMenu(request),
     ...options
-  })
-}
-
-export function useMenuByRole(
-  roleId: number
-) {
-  return useReadHook<MenuResponse[]>({
-    queryKey: ["menu-by-role", roleId],
-    apiCall: () => getMenuByRole(roleId),
-    enabled: !!roleId,
-  })
-}
-
-export function useMenuTreeByRole(
-  roleId: number
-) {
-  return useReadHook<MenuResponse[]>({
-    queryKey: ["menu-tree-by-role", roleId],
-    apiCall: () => getMenuTreeByRole(roleId),
-    enabled: !!roleId,
   })
 }
 

@@ -23,7 +23,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { UserFormValues, userSchema } from "../../schemas";
+import { createUserSchema, editUserSchema, UserFormValues } from "../../schemas";
 import { useDialog } from "@/hooks/ui/use-dialog";
 import { useRoleList } from "@/features/role";
 import { useMenuList } from "@/features/menu";
@@ -71,7 +71,7 @@ export function UserFormDialog({
   }, 500);
 
   const form = useForm<UserFormValues>({
-    resolver: zodResolver(userSchema),
+    resolver: zodResolver(isEdit ? editUserSchema : createUserSchema),
     defaultValues: {
       username: "",
       nama: "",
@@ -128,12 +128,15 @@ export function UserFormDialog({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-[80vw]">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 w-[80vw]"
+      >
         <div className="grid grid-cols-2 gap-6">
           {/* First Column - User Details */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">User Details</h3>
-            
+
             <FormField
               control={form.control}
               name="username"
@@ -253,7 +256,7 @@ export function UserFormDialog({
           {/* Second Column - Role & Permissions */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Role & Permissions</h3>
-            
+
             <FormField
               control={form.control}
               name="roleId"
@@ -271,7 +274,7 @@ export function UserFormDialog({
                     </FormControl>
 
                     <SelectContent>
-                      {(roleLoading || menuLoading || isLoadingEdit) ? (
+                      {roleLoading || menuLoading || isLoadingEdit ? (
                         <SelectItem value="loading" disabled>
                           Loading roles...
                         </SelectItem>

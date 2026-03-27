@@ -71,34 +71,6 @@ export async function getRetrieveMenu(
 
 
 /**
- * GET BY ROLE
- */
-export async function getMenuByRole(
-  roleId: number
-): Promise<Result<MenuResponse[]>> {
-
-  return serverHttp.get<MenuResponse[]>(
-    `/menus/role/${roleId}`,
-    { withAuth: true }
-  );
-}
-
-
-/**
- * GET TREE BY ROLE
- */
-export async function getMenuTreeByRole(
-  roleId: number
-): Promise<Result<MenuResponse[]>> {
-
-  return serverHttp.get<MenuResponse[]>(
-    `/menus/role/${roleId}/tree`,
-    { withAuth: true }
-  );
-}
-
-
-/**
  * CREATE
  */
 export async function createMenu(

@@ -79,6 +79,7 @@ export function PageUserDataTable({
         id: user.id,
         password: values.password,
         roleId: Number(values.roleId) ?? "1",
+        permissionOverrides: values.overrides,
       });
 
       toast.success(result.message || "User updated successfully");

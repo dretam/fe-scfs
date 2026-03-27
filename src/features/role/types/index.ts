@@ -15,6 +15,7 @@ export interface RoleFormActionFormData {
     name: string;
     icon: string;
     description: string;
+    permissionIds: number[];
 }
 
 export interface RoleDeleteActionFormData {
@@ -29,6 +30,7 @@ export interface PostRoleRequest {
     name: string;
     icon: string;
     description: string;
+    permissionIds: number[];
 }
 
 export interface PutRoleRequest {
@@ -36,6 +38,7 @@ export interface PutRoleRequest {
     name: string;
     icon: string;
     description: string;
+    permissionIds: number[];
 }
 
 export interface DeleteRoleRequest {

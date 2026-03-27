@@ -25,7 +25,9 @@ export function roleDeleteFormSchema() {
 
 export const roleSchema = z.object({
   name: z.string().min(1, "Role name is required"),
-  permissions: z.array(z.number()),
+  icon: z.string().min(1, "Icon is required"),
+  description: z.string().min(1, "Description is required"),
+  permissionIds: z.array(z.number()),
 })
 
 export type RoleFormValues = z.infer<typeof roleSchema>

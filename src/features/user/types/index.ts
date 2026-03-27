@@ -40,11 +40,10 @@ export interface GetRetrieveUserRequest extends BaseRetrieveRequest { }
 
 export interface PutUserRequest {
     id: number;
-    name?: string | null;
-    email?: string | null;
     existingPassword?: string | null;
     password?: string | null;
     roleId?: number | null;
+    permissionOverrides?: PermissionOverride[];
 }
 
 type PermissionOverrideEffectType = "ALLOW" | "DENY";

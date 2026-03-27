@@ -1,6 +1,6 @@
 'use client'
 
-import { useReadHook } from "@/hooks/core/use-read"
+import { IReactQueryOptions, useReadHook } from "@/hooks/core/use-read"
 import { useAppMutation } from "@/hooks/core/use-mutation"
 import { getListRole, getRetrieveRole } from "../service"
 import {
@@ -35,12 +35,14 @@ export function useRoleList(
 }
 
 export function useRoleRetrieve(
-  request: GetRetrieveRoleRequest
+  request: GetRetrieveRoleRequest,
+  options?: IReactQueryOptions<RoleResponse>
 ) {
   return useReadHook<RoleResponse>({
-    queryKey: ["role-retrieve", request.id],
+    queryKey: ["role-retrieve", request.id, request.expands],
     apiCall: () => getRetrieveRole(request),
     enabled: !!request.id,
+    ...options
   })
 }
 

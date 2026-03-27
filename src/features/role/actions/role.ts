@@ -24,7 +24,8 @@ export async function roleCreateAction(
   return createRole({
     name: formData.name,
     icon: formData.icon,
-    description: formData.description
+    description: formData.description,
+    permissionIds: formData.permissionIds
   })
 }
 
@@ -51,7 +52,8 @@ export async function roleUpdateAction(
     id: formData.id,
     name: formData.name,
     icon: formData.icon,
-    description: formData.description
+    description: formData.description,
+    permissionIds: formData.permissionIds
   })
 }
 
