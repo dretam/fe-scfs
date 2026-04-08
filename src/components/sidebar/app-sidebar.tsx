@@ -29,7 +29,7 @@ export default function SidebarAppSidebar({...props}: React.ComponentProps<typeo
 								<CommonCompanyLogo width={50} height={50} href="/"/>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-medium">Bank Mega</span>
-									<span className="truncate text-xs">Corporate System</span>
+									<span className="truncate text-xs">SCFS</span>
 								</div>
 							</div>
 						</SidebarMenuButton>

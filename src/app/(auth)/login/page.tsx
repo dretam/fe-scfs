@@ -8,7 +8,7 @@ export default function LoginPage() {
 				<div className="flex justify-center gap-2 md:justify-start">
 					<div className="flex items-center gap-2 font-medium">
 						<CommonCompanyLogo href="/" width={50} height={50} />
-						Corporate System
+						SCFS
 					</div>
 				</div>
 				<div className="flex flex-1 items-center justify-center">

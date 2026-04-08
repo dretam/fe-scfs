@@ -7,4 +7,5 @@ export const COOKIE_ACCESS_TOKEN: any = "access-token";
 export const ACCESS_TOKEN_TTL: Date = new Date(Date.now() + (Number.parseInt(process.env.ACCESS_TOKEN_TTL_SECONDS || "1000") - 1) * 1000);
 export const PUBLIC_ROUTES: string[] = [
 	'/login',
+	'/changePass',
 ]

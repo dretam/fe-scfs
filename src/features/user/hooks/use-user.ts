@@ -14,7 +14,9 @@ import {
   UserCreateActionFormData,
   UserDeleteActionFormData,
   UserChangeProfileActionFormData,
-  UserChangePasswordActionFormData
+  UserChangePasswordActionFormData,
+  ForgotPasswordResponse,
+  UserSendTokenChangePasswordActionFormData
 } from "../types"
 import { useAppMutation } from "@/hooks/core/use-mutation"
 import {
@@ -22,7 +24,8 @@ import {
   userHardDeleteAction,
   userSoftDeleteAction,
   userChangeProfileAction,
-  userChangePasswordAction
+  userChangePasswordAction,
+  userSendTokenChangePasswordAction
 } from "../actions"
 
 
@@ -90,6 +93,16 @@ export function useUserUpdateProfile() {
 export function useUserChangePassword() {
   return useAppMutation<UserEntity, UserChangePasswordActionFormData>(
     userChangePasswordAction,
+    []
+  )
+}
+
+/**
+ * SEND TOKEN CHANGE PASSWORD
+ */
+export function useUserSendTokenChangePassword() {
+  return useAppMutation<ForgotPasswordResponse, UserSendTokenChangePasswordActionFormData>(
+    userSendTokenChangePasswordAction,
     []
   )
 }

@@ -1,13 +1,67 @@
+import { CompanyEntity, CompanyResponse } from "@/features/company/types";
 import { RoleEntity, RoleResponse } from "@/features/role";
 import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
 import { BaseAuditResponse } from "@/types/response";
 
+export interface ForgotPasswordRequest {
+    email: string;
+}
+
+export interface ForgotPasswordResponse {
+    status: number;
+    message: string;
+    data: boolean;
+}
+
+export interface UserSendTokenChangePasswordActionFormData {
+    email: string;
+}
+
+export interface UserChangeNewPasswordRequest {
+    id: string;
+    forgotPasswordTokenHash: string;
+    username: string;
+    oldPassword: string;
+    password: string;
+    passwordConfirmation: string;
+}
+
+export interface UserChangeNewPasswordActionFormData {
+    id: string;
+    forgotPasswordTokenHash: string;
+    username: string;
+    oldPassword: string;
+    password: string;
+    passwordConfirmation: string;
+}
+
+export interface UserChangeNewPasswordResponse {
+    status: number;
+    message: string;
+    data: UserResponse;
+}
+
+export interface UserResponse extends BaseAuditResponse {
+    id: string;
+    name: string;
+    fullName: string | null,
+    email: string | null,
+    isActive: boolean | null,
+    photoPath: string | null,
+    role: RoleResponse | null;
+    company: CompanyResponse | null;
+    userPermissionOverride?: UserPermissionOverride[]
+}
 
 export interface UserEntity {
-    id: number | null,
+    userId: string | null,
     name: string | null,
+    fullName: string | null,
     email: string | null,
+    isActive: boolean | null,
+    photoPath: string | null,
     role: RoleEntity | null,
+    company: CompanyEntity | null
 }
 
 export interface UserChangePasswordActionFormData {
@@ -100,8 +154,8 @@ export interface UserDetail {
 }
 
 export interface UserPermissionOverride {
-    userId: number
-    permissionId: number
+    userId: string
+    permissionId: string
     effect: PermissionOverrideEffectType
 }
 

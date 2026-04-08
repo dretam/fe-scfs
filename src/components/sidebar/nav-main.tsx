@@ -38,15 +38,32 @@ export function NavMain() {
     return Icon || DatabaseIcon;
   };
 
+  // const buildDynamicItems = (menus: SessionMenuResponse[]): SessionMenuResponse[] => {
+  //   const rootMenus = menus
+  //     .filter((m) => m.parentId === null)
+  //     .sort((a, b) => a.sortOrder - b.sortOrder);
+
+  //   return rootMenus.map((root) => ({
+  //     ...root,
+  //     icon: getIcon(root.icon),
+  //     children: root.children
+  //       .sort((a, b) => a.sortOrder - b.sortOrder)
+  //       .map((child) => ({
+  //         ...child,
+  //         icon: getIcon(child.icon),
+  //       })),
+  //   }));
+  // };
+
   const buildDynamicItems = (menus: SessionMenuResponse[]): SessionMenuResponse[] => {
-    const rootMenus = menus
+    const rootMenus = [...menus] // 👈 clone first
       .filter((m) => m.parentId === null)
       .sort((a, b) => a.sortOrder - b.sortOrder);
 
     return rootMenus.map((root) => ({
       ...root,
       icon: getIcon(root.icon),
-      children: root.children
+      children: [...(root.children || [])] // 👈 clone + safety null check
         .sort((a, b) => a.sortOrder - b.sortOrder)
         .map((child) => ({
           ...child,

@@ -7,12 +7,17 @@ import {
   PutUserRequest,
   DeleteUserRequest,
   UserResponse,
-  UserEntity
+  UserEntity,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
+  UserChangeNewPasswordRequest,
+  UserChangeNewPasswordResponse
 } from "../types";
 
 import { Result } from "@/types/response";
 
 import { serverHttp } from "@/lib/server/server-fetch";
+import { da } from "zod/v4/locales";
 
 
 /**
@@ -130,6 +135,56 @@ export async function createUser(
       email: data.email,
       role: data.role,
     }
+  };
+}
+
+/**
+ * FORGOT PASSWORD
+ */
+export async function sendTokenChangePass(
+  request: ForgotPasswordRequest
+): Promise<Result<ForgotPasswordResponse>> {
+  const result = await serverHttp.post<ForgotPasswordResponse>(
+    "/users/sendTokenChangePass",
+    request,
+    { withAuth: false }
+  );
+
+  if (!result.success) {
+    return result;
+  }
+
+  const data = result.data;
+
+  return {
+    success: true,
+    message: result.message,
+    data: data
+  };
+}
+
+/**
+ * CHANGE PASSWORD
+ */
+export async function changePass(
+  request: UserChangeNewPasswordRequest
+): Promise<Result<UserChangeNewPasswordResponse>> {
+  const result = await serverHttp.put<UserChangeNewPasswordResponse>(
+    "/users/changePass",
+    request,
+    { withAuth: false }
+  );
+
+  if (!result.success) {
+    return result;
+  }
+
+  const data = result.data;
+
+  return {
+    success: true,
+    message: result.message,
+    data: data
   };
 }
 

@@ -11,8 +11,8 @@ import QueryProvider from "./__provider/query-provider";
 import { DialogProvider } from "./__provider/dialog-provider";
 
 export const metadata: Metadata = {
-  title: "Dashboard TMG",
-  description: "Bank Mega Corporate System Frontend Starter Kit",
+  title: "SCFS",
+  description: "Bank Mega SCFS Frontend",
 };
 
 export default async function RootLayout({

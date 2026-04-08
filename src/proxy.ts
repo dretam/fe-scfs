@@ -35,7 +35,7 @@ export default async function proxy(req: NextRequest) {
 	}
 
 	// Base response tanpa next-intl
-	let response = NextResponse.next();
+	const response = NextResponse.next();
 
 	// 5. Generate access token baru kalau expired
 	if (!isPublicRoute && hasRefreshToken && !hasAccessToken) {

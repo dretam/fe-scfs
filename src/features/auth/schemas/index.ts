@@ -42,3 +42,32 @@ export const changePasswordSchema = z.object({
 })
 
 export type ChangePasswordFormValues = z.infer<typeof changePasswordSchema>
+
+/**
+ * CHANGE PASSWORD (FORGOT PASSWORD) SCHEMA
+ */
+export const changeNewPasswordSchema = z.object({
+    id: z.string().min(1, {
+        message: "User ID is required",
+    }),
+    forgotPasswordTokenHash: z.string().min(1, {
+        message: "Forgot password token hash is required",
+    }),
+    username: z.string().min(1, {
+        message: "Username is required",
+    }),
+    oldPassword: z.string().min(1, {
+        message: "Old password is required",
+    }),
+    password: z.string().min(8, {
+        message: "Password must be at least 8 characters",
+    }),
+    passwordConfirmation: z.string().min(1, {
+        message: "Password confirmation is required",
+    }),
+}).refine((data) => data.password === data.passwordConfirmation, {
+    message: "Passwords don't match",
+    path: ["passwordConfirmation"],
+})
+
+export type ChangeNewPasswordFormValues = z.infer<typeof changeNewPasswordSchema>

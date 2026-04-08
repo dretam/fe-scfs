@@ -46,7 +46,7 @@ export interface DeleteRoleRequest {
 }
 
 export interface RoleResponse extends BaseAuditResponse {
-    id: number;
+    id: string;
     name: string;
     icon: string;
     description: string;

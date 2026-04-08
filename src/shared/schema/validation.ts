@@ -9,3 +9,6 @@ export const passwordValidation = z.string()
             message: "Password must contain at least one digit, one lowercase, one uppercase, and one special character"
         }
     );
+
+export const emailValidation = z.string()
+    .includes("@", { message: "Email is invalid" });

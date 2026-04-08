@@ -1,22 +1,76 @@
 "use server";
 
 import {
+  ForgotPasswordResponse,
+  UserChangeNewPasswordActionFormData,
+  UserChangeNewPasswordResponse,
   UserChangePasswordActionFormData,
   UserChangeProfileActionFormData,
   UserCreateActionFormData,
-  UserDeleteActionFormData
+  UserDeleteActionFormData,
+  UserSendTokenChangePasswordActionFormData
 } from "../types";
 
 import {
   putUser,
   createUser,
   softDeleteUser,
-  hardDeleteUser
+  hardDeleteUser,
+  sendTokenChangePass,
+  changePass
 } from "../service";
 
 import { UserEntity } from "../types";
 import { Result } from "@/types/response";
 
+/**
+ * SEND TOKEN CHANGE PASSWORD
+ */
+export async function userSendTokenChangePasswordAction(
+  formData: UserSendTokenChangePasswordActionFormData
+): Promise<Result<ForgotPasswordResponse>> {
+
+  if (!formData.email) {
+    return {
+      success: false,
+      error: {
+        status: 400,
+        message: "Email is required"
+      }
+    };
+  }
+
+  return sendTokenChangePass({
+    email: formData.email
+  });
+}
+
+/**
+ * CHANGE PASSWORD (FORGOT PASSWORD)
+ */
+export async function userChangeNewPasswordAction(
+  formData: UserChangeNewPasswordActionFormData
+): Promise<Result<UserChangeNewPasswordResponse>> {
+
+  if (!formData.id) {
+    return {
+      success: false,
+      error: {
+        status: 400,
+        message: "User ID is required"
+      }
+    };
+  }
+
+  return changePass({
+    id: formData.id,
+    forgotPasswordTokenHash: formData.forgotPasswordTokenHash,
+    username: formData.username,
+    oldPassword: formData.oldPassword,
+    password: formData.password,
+    passwordConfirmation: formData.passwordConfirmation,
+  });
+}
 
 /**
  * CHANGE PASSWORD

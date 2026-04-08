@@ -1,7 +1,5 @@
 import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { passwordValidation } from "@/shared/schema/validation";
+import { emailValidation, passwordValidation } from "@/shared/schema/validation";
 
 /**
  * Base schema (shared fields)
@@ -26,6 +24,17 @@ const baseUserSchema = z.object({
     .optional(),
 });
 
+/**
+ * Send token change password schema
+ */
+const baseUserSendTokenChangePasswordSchema = z.object({
+  email: z.string().email("Invalid email")
+});
+
+export const sendTokenChangePasswordUserSchema = baseUserSendTokenChangePasswordSchema.extend({
+  email: emailValidation,
+});
+
 export const createUserSchema = baseUserSchema.extend({
   password: passwordValidation,
 });
@@ -41,4 +50,8 @@ export const editUserSchema = baseUserSchema.extend({
 
 export type UserFormValues = z.infer<typeof baseUserSchema> & {
   password?: string;
+};
+
+export type UserSendTokenChangePasswordFormValues = z.infer<typeof baseUserSendTokenChangePasswordSchema> & {
+  email?: string;
 };

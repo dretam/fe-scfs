@@ -29,11 +29,14 @@ import { setUser, setAuthData } from "@/stores/entity/auth.store";
 import InputPassword from "@/components/input/password";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLogin, useSession } from "@/features/auth";
+import { UserSendTokenChangePasswordFormDialog } from "@/features/user/components/form/user-send-token-change-password-form-dialog";
+import { useDialog } from "@/hooks/ui/use-dialog";
 
 export function FormLogin({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const dialog = useDialog();
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -177,8 +180,18 @@ export function FormLogin({
           <Field>
             <FieldDescription className="text-center">
               Don&apos;t have an account?{" "}
-              <a href="#" className="underline underline-offset-4">
-                Sign up
+              <a 
+                href="#" 
+                className="underline underline-offset-4"
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  dialog.form((resolve) => (
+                    <UserSendTokenChangePasswordFormDialog resolve={resolve} />
+                  ));
+                }}
+              >
+                Forgot Password
               </a>
             </FieldDescription>
           </Field>
