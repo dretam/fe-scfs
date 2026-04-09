@@ -43,7 +43,7 @@ export function FormLogin({
   const { execute: login } = useLogin();
 
   const { data: sessionData, refetch: fetchSession } = useSession(
-    "role,menus,permissions",
+    "role,menus,permissions,company",
     false,
   );
 
@@ -77,7 +77,7 @@ export function FormLogin({
 
       dispatch(setUser(data));
 
-      toast(`Welcome, ${data?.name}`);
+      toast(`Welcome, ${data?.fullName}`);
 
       await fetchSession(); // call session API
     } catch (error: any) {

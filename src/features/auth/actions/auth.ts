@@ -53,7 +53,9 @@ export async function loginAction(
     await createCookieAccessToken(result.accessToken);
   }
 
-  const sessionResult = await getAuthSession();
+  const expands = "role";
+
+  const sessionResult = await getAuthSession(expands);
 
   if (!sessionResult.success) {
     return sessionResult;

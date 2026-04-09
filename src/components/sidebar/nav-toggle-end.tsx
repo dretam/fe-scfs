@@ -9,14 +9,10 @@ export default function NavToggleEnd({className, ...props}: Readonly<{
 	return (
 		<nav
 			aria-label="Theme Navigation"
-			className={cn("absolute top-0 right-0 z-50 flex flex-row-reverse justify-between p-4", className)}
+			className={cn("flex items-center", className)}
 			{...props}
 		>
-			<div>
-				<div className="flex items-center space-x-1 sm:space-x-2 text-sm">
-					<ToggleTheme/>
-				</div>
-			</div>
+			<ToggleTheme/>
 		</nav>
 	)
 }

@@ -13,6 +13,7 @@ const initialState: AuthState = {
     user: {
         id: null,
         name: null,
+        fullName: null,
         email: null,
         role: null,
     },
@@ -31,6 +32,7 @@ export const authSlice = createSlice({
         setUser: (state, action: PayloadAction<UserEntity>): void => {
             state.user.id = action.payload.id
             state.user.name = action.payload.name
+            state.user.fullName = action.payload.fullName
             state.user.email = action.payload.email
             state.user.role = action.payload.role
         },
@@ -44,6 +46,8 @@ export const { setAuthData, setUser, resetAuth } = authSlice.actions
 export const selectUser = (state: RootState): UserEntity => state.auth?.user || initialState.user
 export const selectUserId = (state: RootState): number => state.auth?.user?.id ?? 0
 export const selectUserName = (state: RootState): string => state.auth?.user?.name ?? ""
+export const selectUserFullName = (state: RootState): string => state.auth?.user?.fullName ?? ""
+export const selectUserRole = (state: RootState): string => state.auth?.user?.role?.name ?? ""
 export const selectUserEmail = (state: RootState): string => state.auth?.user?.email ?? ""
 
 export const selectUserInitial = (state: RootState): string => {

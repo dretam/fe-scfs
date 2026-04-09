@@ -1,18 +1,11 @@
 "use client"
 
-import SidebarAppHeader from "@/components/sidebar/app-header";
-import { BreadcrumbNavItem } from "@/types/common";
+import HeadingSmall from "@/components/common/heading-small";
 
 export default function DashboardPage() {
-    const breadcrumbs: BreadcrumbNavItem[] = [
-        {
-            title: "Dashboard",
-            href: "/",
-        }
-    ]
     return (
         <>
-            <SidebarAppHeader breadcrumbs={breadcrumbs} />
+            <HeadingSmall className="m-5" title="Dashboard" description="Dashboard" />
             <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     <div className="bg-muted/50 aspect-video rounded-xl" />
