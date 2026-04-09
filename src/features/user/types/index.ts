@@ -3,6 +3,20 @@ import { RoleEntity, RoleResponse } from "@/features/role";
 import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
 import { BaseAuditResponse } from "@/types/response";
 
+export interface UserByTokenChangePasswordRequest {
+    token: string;
+}
+
+export interface UserByTokenChangePasswordActionFormData {
+    token: string;
+}
+
+export interface UserByTokenChangePasswordResponse {
+    status: number;
+    message: string;
+    data: UserResponse;
+}
+
 export interface ForgotPasswordRequest {
     email: string;
 }

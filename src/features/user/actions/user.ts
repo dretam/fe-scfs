@@ -2,12 +2,14 @@
 
 import {
   ForgotPasswordResponse,
+  UserByTokenChangePasswordActionFormData,
   UserChangeNewPasswordActionFormData,
   UserChangeNewPasswordResponse,
   UserChangePasswordActionFormData,
   UserChangeProfileActionFormData,
   UserCreateActionFormData,
   UserDeleteActionFormData,
+  UserResponse,
   UserSendTokenChangePasswordActionFormData
 } from "../types";
 
@@ -17,11 +19,35 @@ import {
   softDeleteUser,
   hardDeleteUser,
   sendTokenChangePass,
-  changePass
+  changePass,
+  getUserByToken
 } from "../service";
 
 import { UserEntity } from "../types";
 import { Result } from "@/types/response";
+import { id } from "zod/v4/locales";
+
+/**
+ * GET USER BY TOKEN CHANGE PASSWORD
+ */
+export async function userByTokenChangePasswordAction(
+  formData: UserByTokenChangePasswordActionFormData
+): Promise<Result<UserResponse>> {
+
+  if (!formData.token) {
+    return {
+      success: false,
+      error: {
+        status: 400,
+        message: "Email is required"
+      }
+    };
+  }
+
+  return getUserByToken({
+    id: formData.token
+  });
+}
 
 /**
  * SEND TOKEN CHANGE PASSWORD

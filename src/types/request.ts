@@ -6,7 +6,12 @@ export interface BaseListRequest {
     expands?: string | null;
 }
 
+// export interface BaseRetrieveRequest {
+//     id: number;
+//     expands?: string | null;
+// }
+
 export interface BaseRetrieveRequest {
-    id: number;
+    id: string;
     expands?: string | null;
 }

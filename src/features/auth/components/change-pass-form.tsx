@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,30 +18,36 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import React, { useEffect } from "react";
-import { useAppDispatch } from "@/hooks/store/use-app-dispatch";
 import { ChangeNewPasswordFormValues, changeNewPasswordSchema } from "@/features/auth/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import InputPassword from "@/components/input/password";
-import { useDialog } from "@/hooks/ui/use-dialog";
-import { useChangePass } from "../hooks/use-user";
+import { useChangePass, useUserChangePass } from "../hooks/use-user";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export function FormChangePass({
   className,
   ...props
 }: React.ComponentProps<"form">) {
   const { execute: changePass } = useChangePass();
-  const dialog = useDialog();
+
   const router = useRouter();
-  const dispatch = useAppDispatch();
+
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
+
+  const { data: singleUser, isLoading: isLoadingUser } = useUserChangePass(
+    { id: token ?? '', expands: "role,userPermission,company" },
+    { refetchOnWindowFocus: false },
+  );
 
   const form = useForm<ChangeNewPasswordFormValues>({
     resolver: zodResolver(changeNewPasswordSchema),
     defaultValues: {
-      id: "",
-      forgotPasswordTokenHash: "",
-      username: "",
+      id: '',
+      forgotPasswordTokenHash: token ?? '',
+      username: '',
       oldPassword: "",
       password: "",
       passwordConfirmation: ""
@@ -50,14 +55,24 @@ export function FormChangePass({
   });
 
   useEffect(() => {
-    router.push("/");
-  }, [dispatch, router]);
+    if (singleUser?.data) {
+      form.reset({
+        id: singleUser.data.id,
+        forgotPasswordTokenHash: token ?? '',
+        username: singleUser.data.name,
+        oldPassword: "",
+        password: "",
+        passwordConfirmation: ""
+      });
+    }
+  }, [form, singleUser, token]);
 
   const onSubmit = async (values: ChangeNewPasswordFormValues): Promise<void> => {
     try {
       const { data } = await changePass(values);
 
       toast("Change password success");
+      router.push('/login');
     } catch (error: any) {
       form.setError("id", {
         type: "server",
@@ -92,6 +107,10 @@ export function FormChangePass({
       toast(error?.message || "Change password fail");
     }
   };
+
+  if (isLoadingUser) {
+    return <>Fetching....</>;
+  }
 
   return (
     <Form {...form}>
@@ -194,7 +213,7 @@ export function FormChangePass({
                 <FormLabel>Password Confirmation</FormLabel>
                 <FormControl>
                   <InputPassword
-                    disabled={form.getValues("passwordConfirmation") === ""}
+                    disabled={form.getValues("password") === ""}
                     placeholder="******"
                     {...field}
                   />
@@ -216,7 +235,7 @@ export function FormChangePass({
             <FieldDescription className="text-center">
               Want to back login page?{" "}
               <a 
-                href="#" 
+                href="/login" 
                 className="underline underline-offset-4">
                 Back to Login Page
               </a>

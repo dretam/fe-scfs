@@ -41,6 +41,38 @@ export async function getListUser(
   );
 }
 
+/**
+ * GET USER BY TOKEN
+ */
+export async function getUserByToken(
+  request: GetRetrieveUserRequest
+): Promise<Result<UserResponse>> {
+
+  if (!request.id) {
+    return {
+      success: false,
+      data: null,
+      error: {
+        status: 400,
+        message: "Change Password Token is required"
+      }
+    };
+  }
+
+  let endpoint = `/users/getUserByToken/${request.id}`;
+
+  if (request.expands) {
+    const params = new URLSearchParams({
+      expands: request.expands
+    });
+    endpoint += `?${params.toString()}`;
+  }
+
+  return serverHttp.get<UserResponse>(
+    endpoint,
+    { withAuth: false }
+  );
+}
 
 /**
  * GET DETAIL
