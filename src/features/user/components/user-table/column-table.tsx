@@ -2,7 +2,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { UserResponse } from "../../types";
 
 import { Button } from "@/components/ui/button";
-import { SortIcon } from "@/components/common/sort-icon";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
@@ -32,32 +31,12 @@ export const columns = ({
     },
     {
       accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Name
-            <SortIcon column={column} />
-          </Button>
-        );
-      },
+      header: "Nama",
       cell: ({ row }) => row.getValue("name"),
     },
     {
       accessorKey: "email",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <SortIcon column={column} />
-          </Button>
-        );
-      },
+      header: "Email",
       cell: ({ row }) => row.getValue("email"),
     },
     {
@@ -69,25 +48,35 @@ export const columns = ({
       },
     },
     {
-      accessorKey: "createdAt",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Created at
-            <SortIcon column={column} />
-          </Button>
-        );
-      },
+      accessorKey: "roleChildren",
+      header: "User Role",
       cell: ({ row }) => {
-        const date = new Date(row.getValue("createdAt") as string);
-        return date.toLocaleDateString("id-ID", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        });
+        const role = row.getValue("roleChildren") as UserResponse["roleChildren"];
+        return role?.name ?? "-";
+      },
+    },
+    {
+      accessorKey: "companyCif",
+      header: "CIF",
+      cell: ({ row }) => {
+        const companyCif = row.original.company?.companyCif;
+        return companyCif ?? "-";
+      },
+    },
+    {
+      accessorKey: "companyName",
+      header: "Company",
+      cell: ({ row }) => {
+        const companyName = row.original.company?.companyName;
+        return companyName ?? "-";
+      },
+    },
+    {
+      accessorKey: "userStatus",
+      header: "Status",
+      cell: ({ row }) => {
+        const status = (row.original.isActive ? 'AKTIF' : 'TIDAK AKTIF');
+        return status;
       },
     },
     {

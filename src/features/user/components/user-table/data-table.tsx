@@ -35,7 +35,7 @@ export function PageUserDataTable({
       page: Number(searchParams.get("page") ?? 1),
       perPage: Number(searchParams.get("perPage") ?? 10),
       filter: searchParams.get("filter"),
-      expands: "role",
+      expands: "role,roleChildren,company",
     }),
     [searchParams],
   );

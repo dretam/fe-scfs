@@ -63,6 +63,7 @@ export interface UserResponse extends BaseAuditResponse {
     isActive: boolean | null,
     photoPath: string | null,
     role: RoleResponse | null;
+    roleChildren: RoleResponse | null;
     company: CompanyResponse | null;
     userPermissionOverride?: UserPermissionOverride[]
 }
