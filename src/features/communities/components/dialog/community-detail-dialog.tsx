@@ -29,7 +29,9 @@ export function CommunityDetailDialog({
   );
 
   if (isLoading) {
-    return <div className="p-10 text-center">Fetching community details...</div>;
+    return (
+      <div className="p-10 text-center">Fetching community details...</div>
+    );
   }
 
   if (!singleCommunity?.data) {
@@ -39,8 +41,11 @@ export function CommunityDetailDialog({
   const community = singleCommunity.data;
 
   // Helper function to get label from value
-  const getLabel = (options: Array<{ value: string; label: string }>, value: string) => {
-    return options.find(opt => opt.value === value)?.label || value;
+  const getLabel = (
+    options: Array<{ value: string; label: string }>,
+    value: string,
+  ) => {
+    return options.find((opt) => opt.value === value)?.label || value;
   };
 
   return (
@@ -86,9 +91,14 @@ export function CommunityDetailDialog({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm font-medium text-gray-500">Holiday Treatment</p>
+              <p className="text-sm font-medium text-gray-500">
+                Holiday Treatment
+              </p>
               <p className="mt-1">
-                {getLabel(HOLIDAY_TREATMENT_OPTIONS, community.holidayTreatment)}
+                {getLabel(
+                  HOLIDAY_TREATMENT_OPTIONS,
+                  community.holidayTreatment,
+                )}
               </p>
             </div>
 
@@ -116,44 +126,63 @@ export function CommunityDetailDialog({
             <div>
               <p className="text-sm font-medium text-gray-500">Fee Type</p>
               <p className="mt-1">
-                {getLabel(TRANSACTION_FEE_TYPE_OPTIONS, community.transactionFeeType)}
+                {getLabel(
+                  TRANSACTION_FEE_TYPE_OPTIONS,
+                  community.transactionFeeType,
+                )}
               </p>
             </div>
 
             <div>
-              <p className="text-sm font-medium text-gray-500">Transaction Fee</p>
+              <p className="text-sm font-medium text-gray-500">
+                Transaction Fee
+              </p>
               <p className="mt-1">
-                {community.transactionFee !== undefined ? community.transactionFee : "-"}
+                {community.transactionFee !== undefined
+                  ? community.transactionFee
+                  : "-"}
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm font-medium text-gray-500">Min. Financing</p>
+              <p className="text-sm font-medium text-gray-500">
+                Min. Financing
+              </p>
               <p className="mt-1">
-                {community.minFinancing !== undefined ? community.minFinancing : "-"}
+                {community.minFinancing !== undefined
+                  ? community.minFinancing
+                  : "-"}
               </p>
             </div>
 
             <div>
-              <p className="text-sm font-medium text-gray-500">Max. Financing</p>
+              <p className="text-sm font-medium text-gray-500">
+                Max. Financing
+              </p>
               <p className="mt-1">
-                {community.maxFinancing !== undefined ? community.maxFinancing : "-"}
+                {community.maxFinancing !== undefined
+                  ? community.maxFinancing
+                  : "-"}
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm font-medium text-gray-500">Min. Tenor (Days)</p>
+              <p className="text-sm font-medium text-gray-500">
+                Min. Tenor (Days)
+              </p>
               <p className="mt-1">
                 {community.minTenor !== undefined ? community.minTenor : "-"}
               </p>
             </div>
 
             <div>
-              <p className="text-sm font-medium text-gray-500">Max. Tenor (Days)</p>
+              <p className="text-sm font-medium text-gray-500">
+                Max. Tenor (Days)
+              </p>
               <p className="mt-1">
                 {community.maxTenor !== undefined ? community.maxTenor : "-"}
               </p>
@@ -162,32 +191,49 @@ export function CommunityDetailDialog({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm font-medium text-gray-500">Grace Period (Days)</p>
+              <p className="text-sm font-medium text-gray-500">
+                Grace Period (Days)
+              </p>
               <p className="mt-1">
-                {community.gracePeriod !== undefined ? community.gracePeriod : "-"}
+                {community.gracePeriod !== undefined
+                  ? community.gracePeriod
+                  : "-"}
               </p>
             </div>
 
             <div>
-              <p className="text-sm font-medium text-gray-500">Penalty Rate (%)</p>
+              <p className="text-sm font-medium text-gray-500">
+                Penalty Rate (%)
+              </p>
               <p className="mt-1">
-                {community.penaltyRate !== undefined ? community.penaltyRate : "-"}
+                {community.penaltyRate !== undefined
+                  ? community.penaltyRate
+                  : "-"}
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm font-medium text-gray-500">Early Payment Fee Type</p>
+              <p className="text-sm font-medium text-gray-500">
+                Early Payment Fee Type
+              </p>
               <p className="mt-1">
-                {getLabel(EARLY_PAYMENT_FEE_TYPE_OPTIONS, community.earlyPaymentFeeType)}
+                {getLabel(
+                  EARLY_PAYMENT_FEE_TYPE_OPTIONS,
+                  community.earlyPaymentFeeType,
+                )}
               </p>
             </div>
 
             <div>
-              <p className="text-sm font-medium text-gray-500">Early Payment Fee Amount</p>
+              <p className="text-sm font-medium text-gray-500">
+                Early Payment Fee Amount
+              </p>
               <p className="mt-1">
-                {community.earlyPaymentFeeAmount !== undefined ? community.earlyPaymentFeeAmount : "-"}
+                {community.earlyPaymentFeeAmount !== undefined
+                  ? community.earlyPaymentFeeAmount
+                  : "-"}
               </p>
             </div>
           </div>
@@ -200,9 +246,7 @@ export function CommunityDetailDialog({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex flex-row items-center justify-between rounded-lg border p-4">
             <p className="text-sm font-medium">Active Status</p>
-            <p className="text-sm">
-              {community.isActive ? "Yes" : "No"}
-            </p>
+            <p className="text-sm">{community.isActive ? "Yes" : "No"}</p>
           </div>
           <div className="flex flex-row items-center justify-between rounded-lg border p-4">
             <p className="text-sm font-medium">Interest Reserve</p>
@@ -212,9 +256,7 @@ export function CommunityDetailDialog({
           </div>
           <div className="flex flex-row items-center justify-between rounded-lg border p-4">
             <p className="text-sm font-medium">Fund Reserve</p>
-            <p className="text-sm">
-              {community.isFundReserve ? "Yes" : "No"}
-            </p>
+            <p className="text-sm">{community.isFundReserve ? "Yes" : "No"}</p>
           </div>
           <div className="flex flex-row items-center justify-between rounded-lg border p-4">
             <p className="text-sm font-medium">Sharing Income</p>
@@ -237,31 +279,112 @@ export function CommunityDetailDialog({
 
         {community.pricingTiers && community.pricingTiers.length > 0 ? (
           community.pricingTiers.map((tier: any, index: number) => (
-            <div
-              key={index}
-              className="border rounded-lg p-4 space-y-4"
-            >
+            <div key={index} className="border rounded-lg p-4 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Comparison Logic</p>
+                  <p className="text-sm font-medium text-gray-500">
+                    Comparison Logic
+                  </p>
                   <p className="mt-1">
                     {getLabel(PRICING_TIER_LOGIC_OPTIONS, tier.logic)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Nominal Value</p>
-                  <p className="mt-1">{tier.nominal !== undefined ? tier.nominal : "-"}</p>
+                  <p className="text-sm font-medium text-gray-500">
+                    Nominal Value
+                  </p>
+                  <p className="mt-1">
+                    {tier.nominal !== undefined ? tier.nominal : "-"}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Quantity Value</p>
-                  <p className="mt-1">{tier.quantity !== undefined ? tier.quantity : "-"}</p>
+                  <p className="text-sm font-medium text-gray-500">
+                    Quantity Value
+                  </p>
+                  <p className="mt-1">
+                    {tier.quantity !== undefined ? tier.quantity : "-"}
+                  </p>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <p className="text-gray-500 text-center py-4">No pricing tiers defined</p>
+          <p className="text-gray-500 text-center py-4">
+            No pricing tiers defined
+          </p>
         )}
+      </div>
+
+      {/* Pricing Tiers Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Pricing Tiers</h3>
+
+        {community.pricingTiers && community.pricingTiers.length > 0 ? (
+          community.pricingTiers.map((tier: any, index: number) => (
+            <div key={index} className="border rounded-lg p-4 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">
+                    Comparison Logic
+                  </p>
+                  <p className="mt-1">
+                    {getLabel(PRICING_TIER_LOGIC_OPTIONS, tier.logic)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500">
+                    Nominal Value
+                  </p>
+                  <p className="mt-1">
+                    {tier.nominal !== undefined ? tier.nominal : "-"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500">
+                    Quantity Value
+                  </p>
+                  <p className="mt-1">
+                    {tier.quantity !== undefined ? tier.quantity : "-"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500 text-center py-4">
+            No pricing tiers defined
+          </p>
+        )}
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Audit Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg border p-4">
+          <div>
+            <p className="text-sm font-medium text-gray-500">Created At</p>
+            <p className="mt-1">
+              {community.createdAt
+                ? new Date(community.createdAt).toLocaleString()
+                : "-"}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-500">Created By</p>
+            <p className="mt-1">{community.createdBy ?? "-"}</p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-500">Updated At</p>
+            <p className="mt-1">
+              {community.updatedAt
+                ? new Date(community.updatedAt).toLocaleString()
+                : "-"}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-500">Updated By</p>
+            <p className="mt-1">{community.updatedBy ?? "-"}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
