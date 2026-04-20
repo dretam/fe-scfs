@@ -37,7 +37,7 @@ export function TabsNav({
         <TabsList className="w-full justify-start overflow-x-auto">
           {sortedMenus?.map((menu) => (
             <TabsTrigger key={menu.code} value={menu.path}>
-              {menu.name}
+              {menu.name} {menu.path}
             </TabsTrigger>
           ))}
         </TabsList>

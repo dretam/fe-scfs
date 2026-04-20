@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   ColumnDef,
   SortingState,
+  TableOptions,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
@@ -33,6 +34,8 @@ interface DataTableProps<TData, TValue> {
   onRowSelectionChange?: any;
 
   isLoading?: boolean;
+
+  getRowId?: (row: TData) => string;
 }
 
 export function DataTable<TData, TValue>({
@@ -42,6 +45,7 @@ export function DataTable<TData, TValue>({
   rowSelection,
   onRowSelectionChange,
   isLoading,
+  getRowId,
 }: DataTableProps<TData, TValue>) {
   const router = useRouter();
   const pathname = usePathname();
@@ -64,6 +68,7 @@ export function DataTable<TData, TValue>({
   };
 
   const safePagination = pagination ?? defaultPagination;
+  const isRowSelectionEnabled = rowSelection !== undefined && onRowSelectionChange !== undefined;
 
   React.useEffect(() => {
     if (!pagination) return;
@@ -133,7 +138,8 @@ export function DataTable<TData, TValue>({
     });
   };
 
-  const table = useReactTable({
+  // Prepare table configuration based on whether row selection is enabled
+  const tableConfig: any = {
     data,
     columns,
     manualPagination: true,
@@ -143,18 +149,22 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onPaginationChange: handlePaginationChange,
     onSortingChange: handleSortingChange,
-
-    getRowId: (row: any) => row.id.toString(), // ⭐ WAJIB
+    getRowId: (row: any) => (getRowId ? getRowId(row) : row.id?.toString()),
     autoResetPageIndex: false,
-    enableRowSelection: true,
-    onRowSelectionChange,
-
     state: {
       sorting,
       pagination: pagination ? paginationState : undefined,
-      rowSelection,
     },
-  });
+  };
+
+  // Add row selection configuration only if enabled
+  if (isRowSelectionEnabled) {
+    tableConfig.enableRowSelection = true;
+    tableConfig.onRowSelectionChange = onRowSelectionChange;
+    tableConfig.state.rowSelection = rowSelection;
+  }
+
+  const table = useReactTable(tableConfig);
 
   function getStickyStyle(
     column: any,
