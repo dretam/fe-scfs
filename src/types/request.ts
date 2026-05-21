@@ -12,6 +12,6 @@ export interface BaseListRequest {
 // }
 
 export interface BaseRetrieveRequest {
-    id: string;
+    id?: string;
     expands?: string | null;
 }
