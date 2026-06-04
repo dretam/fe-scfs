@@ -48,7 +48,6 @@ export function FormChangePass({
       id: '',
       forgotPasswordTokenHash: token ?? '',
       username: '',
-      oldPassword: "",
       password: "",
       passwordConfirmation: ""
     },
@@ -60,7 +59,6 @@ export function FormChangePass({
         id: singleUser.data.id,
         forgotPasswordTokenHash: token ?? '',
         username: singleUser.data.name,
-        oldPassword: "",
         password: "",
         passwordConfirmation: ""
       });
@@ -87,11 +85,6 @@ export function FormChangePass({
       form.setError("username", {
         type: "server",
         message: "Please check your username again",
-      });
-
-      form.setError("oldPassword", {
-        type: "server",
-        message: "Double check your capslock and old password",
       });
 
       form.setError("password", {
@@ -163,24 +156,6 @@ export function FormChangePass({
                 <FormLabel>Username</FormLabel>
                 <FormControl>
                   <Input type="text" disabled placeholder="johndoe" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="oldPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Old Password</FormLabel>
-                <FormControl>
-                  <InputPassword
-                    disabled={form.getValues("oldPassword") === ""}
-                    placeholder="******"
-                    {...field}
-                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

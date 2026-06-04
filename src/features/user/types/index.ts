@@ -35,7 +35,6 @@ export interface UserChangeNewPasswordRequest {
     id: string;
     forgotPasswordTokenHash: string;
     username: string;
-    oldPassword: string;
     password: string;
     passwordConfirmation: string;
 }
@@ -44,7 +43,6 @@ export interface UserChangeNewPasswordActionFormData {
     id: string;
     forgotPasswordTokenHash: string;
     username: string;
-    oldPassword: string;
     password: string;
     passwordConfirmation: string;
 }

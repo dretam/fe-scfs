@@ -92,7 +92,6 @@ export async function userChangeNewPasswordAction(
     id: formData.id,
     forgotPasswordTokenHash: formData.forgotPasswordTokenHash,
     username: formData.username,
-    oldPassword: formData.oldPassword,
     password: formData.password,
     passwordConfirmation: formData.passwordConfirmation,
   });

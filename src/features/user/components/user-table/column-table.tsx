@@ -21,7 +21,7 @@ export const columns = ({
 }: ColumnsProps): ColumnDef<UserResponse>[] => [
     {
       accessorKey: "id",
-      header: "ID",
+      header: "No.",
       cell: ({ row, table }) => {
         const pageIndex = table.getState().pagination.pageIndex;
         const pageSize = table.getState().pagination.pageSize;
@@ -52,7 +52,15 @@ export const columns = ({
       header: "User Role",
       cell: ({ row }) => {
         const role = row.getValue("roleChildren") as UserResponse["roleChildren"];
-        return role?.name ?? "-";
+        return <span
+          className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+            role?.name
+              ? "bg-green-100 text-green-800"
+              : ""
+          }`}
+        >
+          {role?.name ? role?.name : "-"}
+        </span>
       },
     },
     {
@@ -75,34 +83,42 @@ export const columns = ({
       accessorKey: "userStatus",
       header: "Status",
       cell: ({ row }) => {
-        const status = (row.original.isActive ? 'AKTIF' : 'TIDAK AKTIF');
-        return status;
+        const status = row.original.isActive;
+        return <span
+          className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+            status
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
+          }`}
+        >
+          {status ? "AKTIF" : "TIDAK AKTIF"}
+        </span>
       },
     },
     {
       id: "actions",
+      header: "Aksi",
       cell: ({ row }) => {
         const user = row.original;
 
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onEdit(user)}>
-                <Pencil className="mr-2 h-4 w-4" />
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onDelete(user)}>
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onEdit(user)}
+            >
+              <Pencil className="h-4 w-4 mr-1 text-blue-500" />
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onDelete(user)}
+            >
+              <Trash2 className="h-4 w-4 mr-1 text-red-500" />
+            </Button>
+          </div>
         );
       },
     },
