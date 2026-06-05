@@ -67,13 +67,14 @@ export interface UserResponse extends BaseAuditResponse {
 }
 
 export interface UserEntity {
-    userId: string | null,
+    id: string | null,
     name: string | null,
     fullName: string | null,
     email: string | null,
     isActive: boolean | null,
     photoPath: string | null,
     role: RoleEntity | null,
+    roleChildren: RoleEntity | null,
     company: CompanyEntity | null
 }
 
@@ -136,34 +137,15 @@ export interface GetRetrieveInternalUser {
 }
 
 export interface UserResponse extends BaseAuditResponse {
-    id: number;
-    name: string;
-    email: string;
+    id: string;
+    username: string;
+    fullName: string | null;
+    email: string | null;
     role: RoleResponse | null;
-    userDetail?: UserDetail
+    roleChildren: RoleResponse | null;
+    companyId: string;
+    status: boolean;
     userPermissionOverride?: UserPermissionOverride[]
-}
-
-export interface UserDetail {
-    id: number
-    userId: number
-    nama: string
-    jabatan: number
-    email: string
-    area: string
-    jobTitle: string
-    direktorat: string
-    sex: string
-    mobile: string
-    tglLahir: string
-    usersCabang: any
-    usersBranch: any
-    createdAt: string
-    createdBy: number
-    updatedAt: any
-    updatedBy: any
-    deletedAt: any
-    deletedBy: any
 }
 
 export interface UserPermissionOverride {
@@ -173,29 +155,16 @@ export interface UserPermissionOverride {
 }
 
 export interface InternalUserResponse {
-    userName: string
-    nama: string
-    joinDate: string
-    jabatan: number
-    approval1: string
-    approval2: string
-    lastLogin: string
-    updatePass: string
-    status: number
-    count: number
-    email: string
-    area: string
-    jobTitle: string
-    direktorat: string
-    sex: string
-    employee: string
-    mobile: string
-    extOffice: any
-    tglLahir: string
-    pangkat: string
-    sessionId: any
-    usersCabang: any
-    usersBranch: any
+    id: string;
+    name: string;
+    fullName: string | null,
+    email: string | null,
+    isActive: boolean | null,
+    photoPath: string | null,
+    role: RoleResponse | null;
+    roleChildren: RoleResponse | null;
+    company: CompanyResponse | null;
+    userPermissionOverride?: UserPermissionOverride[]
 }
 
 

@@ -125,26 +125,29 @@ export async function userChangePasswordAction(
 /**
  * CHANGE PROFILE
  */
-export async function userChangeProfileAction(
-  formData: UserChangeProfileActionFormData
-): Promise<Result<UserEntity>> {
+// export async function userChangeProfileAction(
+//   formData: UserChangeProfileActionFormData
+// ): Promise<Result<UserEntity>> {
 
-  if (!formData.userId) {
-    return {
-      success: false,
-      error: {
-        status: 400,
-        message: "User ID is required"
-      }
-    };
-  }
+//   if (!formData.userId) {
+//     return {
+//       success: false,
+//       error: {
+//         status: 400,
+//         message: "User ID is required"
+//       }
+//     };
+//   }
 
-  return putUser({
-    id: formData.userId,
-    name: formData.name,
-    email: formData.email
-  });
-}
+//   return putUser({
+//     id: formData.userId,
+//     existingPassword?: formData.,
+//     password?: ,
+//     roleId?: ,
+//     permissionOverrides?: PermissionOverride[],
+//     email: formData.email
+//   });
+// }
 
 
 /**

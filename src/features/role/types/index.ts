@@ -4,7 +4,7 @@ import { BaseListRequest, BaseRetrieveRequest } from "@/types/request";
 import { BaseAuditResponse } from "@/types/response";
 
 export interface RoleEntity {
-    id: number | null,
+    id: string | null,
     name: string | null,
     icon: string | null,
     description: string | null,

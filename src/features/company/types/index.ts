@@ -1,3 +1,4 @@
+import { BaseListRequest, BaseRetrieveRequest } from "@/types/request"
 import { BaseAuditResponse } from "@/types/response"
 
 export interface CompanyEntity {
@@ -19,3 +20,7 @@ export interface CompanyResponse extends BaseAuditResponse {
     companyDiscountRate: number,
     companyMaxFinancing: number
 }
+
+export interface GetListCompanyRequest extends BaseListRequest { }
+
+export interface GetRetrieveCompanyRequest extends BaseRetrieveRequest { }

@@ -123,7 +123,7 @@ export function PageUserDataTable({
 
         <Button onClick={handleOpenAdd}>
           <Plus className="mr-2 h-4 w-4" />
-          Add User
+          Tambah User
         </Button>
       </div>
 

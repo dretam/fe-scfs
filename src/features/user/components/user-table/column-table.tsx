@@ -31,8 +31,13 @@ export const columns = ({
     },
     {
       accessorKey: "name",
-      header: "Nama",
+      header: "Username",
       cell: ({ row }) => row.getValue("name"),
+    },
+    {
+      accessorKey: "fullName",
+      header: "Nama",
+      cell: ({ row }) => row.getValue("fullName"),
     },
     {
       accessorKey: "email",
@@ -44,22 +49,36 @@ export const columns = ({
       header: "Role",
       cell: ({ row }) => {
         const role = row.getValue("role") as UserResponse["role"];
-        return role?.name ?? "-";
+        let color = "bg-green-100 text-green-800";
+
+        if(role?.id === "SUPPLIER") {
+          color = "bg-blue-100 text-blue-800";
+        } else if(role?.id === "ANCHOR") {
+          color = "bg-purple-100 text-purple-800";
+        } else {
+          color = "bg-gray-100 text-gray-800";
+        }
+
+        return <span
+          className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${color}`}
+        >
+          {role?.name ? role?.name : "-"}
+        </span>;
       },
     },
     {
       accessorKey: "roleChildren",
       header: "User Role",
       cell: ({ row }) => {
-        const role = row.getValue("roleChildren") as UserResponse["roleChildren"];
+        const roleChildren = row.getValue("roleChildren") as UserResponse["roleChildren"];
         return <span
           className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
-            role?.name
+            roleChildren?.name
               ? "bg-green-100 text-green-800"
               : ""
           }`}
         >
-          {role?.name ? role?.name : "-"}
+          {roleChildren?.name ? roleChildren?.name : "-"}
         </span>
       },
     },

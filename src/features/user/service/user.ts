@@ -162,9 +162,14 @@ export async function createUser(
     message: result.message,
     data: {
       id: data.id,
-      name: data.name,
+      name: data.username,
+      fullName: data.fullName,
       email: data.email,
+      isActive: data.isActive,
+      photoPath: data.photoPath,
       role: data.role,
+      roleChildren: data.roleChildren,
+      company: data.company,
     }
   };
 }

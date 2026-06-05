@@ -23,7 +23,7 @@ import {
   userCreateAction,
   userHardDeleteAction,
   userSoftDeleteAction,
-  userChangeProfileAction,
+  // userChangeProfileAction,
   userChangePasswordAction,
   userSendTokenChangePasswordAction
 } from "../actions"
@@ -80,12 +80,12 @@ export function useUserUpdate() {
 /**
  * UPDATE PROFILE (Settings form - name/email only)
  */
-export function useUserUpdateProfile() {
-  return useAppMutation<UserEntity, UserChangeProfileActionFormData>(
-    userChangeProfileAction,
-    ['user-list', 'user-retrieve']
-  )
-}
+// export function useUserUpdateProfile() {
+//   return useAppMutation<UserEntity, UserChangeProfileActionFormData>(
+//     userChangeProfileAction,
+//     ['user-list', 'user-retrieve']
+//   )
+// }
 
 /**
  * UPDATE PASSWORD (Settings form - password only)
